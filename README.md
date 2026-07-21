@@ -1,6 +1,14 @@
 # Personal Notes
 
-A personal notes and portfolio site built with [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
+Hi, I'm Jorge Benedicto Centeno, a Spanish electronic engineer specialized in embedded systems. I've designed hardware and firmware for IoT devices, and I'm now branching out into other areas as well. This repo holds the source for my personal notes site: doubts, tech research, and design notes for the public projects I work on.
+
+📖 **[Read the docs](https://jbenedictocenteno.github.io/jbenedictocenteno/)**
+
+Built with [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
+
+## Contact
+
+If you need to reach me, feel free to email me at [jorgebene_dicto@yahoo.es](mailto:jorgebene_dicto@yahoo.es).
 
 ## Serve locally
 
@@ -13,8 +21,10 @@ mkdocs serve
 
 ## Deploy
 
-```bash
-mkdocs build
-```
+Every push to `main` triggers [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), which builds the site and publishes it to the `gh-pages` branch automatically.
 
-This generates a static site in `site/`, which can be deployed to any static hosting provider (e.g. GitHub Pages via `mkdocs gh-deploy`).
+To deploy manually instead:
+
+```bash
+mkdocs gh-deploy
+```
