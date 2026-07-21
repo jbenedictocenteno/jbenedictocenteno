@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "editor-browser",
+      "request": "launch",
+      "name": "Docs: serve + abrir en navegador de VS Code",
+      "url": "http://127.0.0.1:8000",
+      "preLaunchTask": "mkdocs: serve"
+    }
+  ]
+}

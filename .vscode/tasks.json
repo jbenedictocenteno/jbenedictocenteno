@@ -1,0 +1,27 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "mkdocs: serve",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/mkdocs",
+      "args": ["serve", "-a", "127.0.0.1:8000"],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Building documentation",
+          "endsPattern": "Serving on"
+        }
+      }
+    }
+  ]
+}

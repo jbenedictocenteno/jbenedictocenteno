@@ -1,16 +1,20 @@
-## Hi there 👋
+# Personal Notes
 
-<!--
-**jbenedictocenteno/jbenedictocenteno** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+A personal notes and portfolio site built with [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
 
-Here are some ideas to get you started:
+## Serve locally
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+mkdocs serve
+```
+
+## Deploy
+
+```bash
+mkdocs build
+```
+
+This generates a static site in `site/`, which can be deployed to any static hosting provider (e.g. GitHub Pages via `mkdocs gh-deploy`).

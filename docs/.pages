@@ -1,0 +1,5 @@
+nav:
+  - Home: index.md
+  - notes
+  - projects
+  - about.md
