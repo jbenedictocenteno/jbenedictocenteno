@@ -1,0 +1,4 @@
+# Build artifacts
+firmware.elf
+firmware.bin
+*.o
