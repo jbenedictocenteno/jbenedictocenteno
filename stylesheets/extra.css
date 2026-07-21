@@ -1,0 +1,81 @@
+.mermaid {
+  display: flex;
+  justify-content: center;
+}
+
+/* --- Round logo --------------------------------------------------------- */
+
+.md-logo img {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* --- General polish -------------------------------------------------- */
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.md-typeset code {
+  border-radius: 4px;
+}
+
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 0.6rem;
+}
+
+/* --- Homepage hero ----------------------------------------------------- */
+
+.hero {
+  padding: 3rem 0 2.5rem;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(120deg, var(--md-primary-fg-color), var(--md-accent-fg-color) 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  color: var(--md-default-fg-color--light);
+  max-width: 38rem;
+  margin: 0 auto;
+}
+
+/* --- Homepage grid cards ------------------------------------------------ */
+
+.md-typeset .grid.cards > ul > li {
+  --card-color: var(--md-accent-fg-color);
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.85rem;
+  border-top: 3px solid var(--card-color);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--card-color) 10%, transparent), transparent 65%);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.md-typeset .grid.cards > ul > li:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--card-color) 35%, transparent);
+}
+
+.md-typeset .grid.cards > ul > li .twemoji,
+.md-typeset .grid.cards > ul > li svg {
+  color: var(--card-color);
+}
+
+/* Distinct accent per card */
+.md-typeset .grid.cards > ul > li:nth-child(1) { --card-color: #6366f1; } /* indigo — Notes */
+.md-typeset .grid.cards > ul > li:nth-child(2) { --card-color: #10b981; } /* emerald — Projects */
+.md-typeset .grid.cards > ul > li:nth-child(3) { --card-color: #ec4899; } /* pink — About */

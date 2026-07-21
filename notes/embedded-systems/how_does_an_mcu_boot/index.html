@@ -1,0 +1,1433 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Personal notes and projects">
+      
+      
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../../programming/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>How does an MCU gets to main()? - Personal Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-does-an-mcu-gets-to-main" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Personal Notes" class="md-header__button md-logo" aria-label="Personal Notes" data-md-component="logo">
+      
+  <img src="../../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Personal Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              How does an MCU gets to main()?
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../projects/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Projects
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Personal Notes" class="md-nav__button md-logo" aria-label="Personal Notes" data-md-component="logo">
+      
+  <img src="../../../assets/logo.png" alt="logo">
+
+    </a>
+    Personal Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Embedded Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does an MCU gets to main()?
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does an MCU gets to main()?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-are-the-program-counter-and-stack-pointer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What are the program counter and stack pointer?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-firmware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example firmware.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#startupc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        startup.c.
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="startup.c.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-vector-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The vector table.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reset_handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reset_Handler.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linkerld" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        linker.ld.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-it-and-looking-inside" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building it, and looking inside.
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../programming/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Programming
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Programming
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../programming/c-cpp/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/Cpp
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3_2" id="__nav_2_3_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    C/Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../programming/c-cpp/how_does_a_machine_know_c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does a machine know C?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../programming/c-cpp/stack_and_heap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What are the stack and the heap?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../projects/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projects
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-are-the-program-counter-and-stack-pointer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What are the program counter and stack pointer?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-firmware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example firmware.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#startupc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        startup.c.
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="startup.c.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-vector-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The vector table.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reset_handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reset_Handler.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linkerld" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        linker.ld.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-it-and-looking-inside" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building it, and looking inside.
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="how-does-an-mcu-gets-to-main">How does an MCU gets to <code>main()</code>?<a class="headerlink" href="#how-does-an-mcu-gets-to-main" title="Permanent link">&para;</a></h1>
+<!-- WIP — draft in progress, do not publish yet -->
+
+<p>In <a href="../../programming/c-cpp/how_does_a_machine_know_c/">How does a machine know C?</a> we followed a <code>.c</code> file all the way down to the <code>.bin</code> that gets flashed, and watched the linker hand out final addresses: <code>.text</code>/<code>.rodata</code> in flash, <code>.data</code>/<code>.bss</code> in RAM. The linker only <em>decides where things live</em> — it doesn't actually put anything there. When the chip powers on, RAM is just noise: nobody has copied the initial values of our global variables into <code>.data</code>, and nobody has zeroed <code>.bss</code>. And there's a more basic question still unanswered: how does the CPU even start running code? A freshly reset CPU doesn't know what <code>main</code> is any more than it knew what C was.</p>
+<h2 id="introduction">Introduction.<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>I'll target an <strong>STM32U575</strong> (Arm Cortex-M33). The exact part barely matters — the boot sequence is essentially the same across the whole Cortex-M family, and the same ideas carry over to most other cores too, give or take a few quirks and differences. But pinning it to a real chip lets us use real addresses and inspect real binaries. Two facts about this target, both read from the STM32U575 reference manual:</p>
+<ul>
+<li><strong>Flash</strong> is mapped at <code>0x08000000</code>, and <strong>SRAM</strong> at <code>0x20000000</code>.</li>
+<li>The Cortex-M33 has <strong>TrustZone</strong>, but the part ships with it disabled (the <code>TZEN</code> option bit is <code>0</code>), so it boots in a single security state — a plain, classic Cortex-M boot.</li>
+</ul>
+<p>"Reset" here just means the CPU is in its power-on state: registers cleared, nothing initialized, the program counter about to be loaded from a fixed place in flash. Everything below is the chip climbing out of that state and into our C program.</p>
+<h2 id="what-are-the-program-counter-and-stack-pointer">What are the program counter and stack pointer?<a class="headerlink" href="#what-are-the-program-counter-and-stack-pointer" title="Permanent link">&para;</a></h2>
+<p>Two CPU registers do most of the work in this note, so they're worth a quick refresher before we start leaning on them.</p>
+<p>The <strong>program counter (PC)</strong> is a register inside the CPU that holds the address of the <em>next</em> instruction to run. The CPU's whole life is one tight loop: fetch the instruction PC points at, execute it, advance PC, repeat — forever. A jump, a branch, a function call: none of them are magic, they're just <em>writing a new address into PC</em>. So the question "how does the CPU start running our code?" is really the sharper question "<strong>what address ends up in PC at reset?</strong>".</p>
+<p>The <strong>stack pointer (SP)</strong> holds the address of the top of the stack: the slice of RAM the CPU uses for return addresses, function arguments, and local variables. Almost nothing in C survives without it — even a plain function call pushes a return address onto the stack — so SP has to point at valid RAM <em>before</em> the first instruction of our program runs.</p>
+<p>Here's the neat part, and the reason this refresher is up front: on a Cortex-M, these two registers are special enough that the <strong>hardware loads both of them for us at reset, before a single instruction executes</strong>. Where does it get the values? From the first two words of flash — the <em>vector table</em>.</p>
+<h2 id="example-firmware">Example firmware.<a class="headerlink" href="#example-firmware" title="Permanent link">&para;</a></h2>
+<p>To have something to work with, let's create a simple project:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>prj/
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>|- main.c        the application (main() function)
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>|- startup.c     the vector table + Reset_Handler
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>|- linker.ld     the memory layout
+</code></pre></div>
+<p>Starting from the end — the application — because it's the part we actually care about, and because it quietly sets the requirements for everything else:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w">   </span><span class="cm">/* initialized  -&gt; lands in .data */</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">flag</span><span class="p">;</span><span class="w">          </span><span class="cm">/* zero-init    -&gt; lands in .bss  */</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">{</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="n">counter</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">}</span>
+</code></pre></div>
+<p>These two globals are our testing probes into the booting process:</p>
+<ul>
+<li><code>counter</code> has a non-zero initializer (<code>7</code>), so it lands in the <code>.data</code> section. That <code>7</code> lives in flash and has to be <em>copied</em> into the RAM address reserved for <code>counter</code> before <code>main</code> runs — otherwise <code>counter++</code> would just increment whatever garbage happened to be sitting at that direction at power-on.</li>
+<li><code>flag</code> has no initializer, so it lands in <code>.bss</code>. The C standard promises it reads as <code>0</code> at program start — but nobody zeroes RAM for free, so <em>something</em> has to write that <code>0</code>.</li>
+</ul>
+<p>That "something" is the startup code we're about to write — the whole point of this note is that those two guarantees don't happen by themselves. (<code>volatile</code> is just there so the compiler can't optimize the variables away; we want them to really exist in memory. And <code>&lt;stdint.h&gt;</code> is safe to include even in a bare-metal build — these <em>freestanding</em> headers ship with the compiler itself (the <code>arm-none-eabi-gcc</code> toolchain from <a href="../../programming/c-cpp/how_does_a_machine_know_c/">How does a machine know C?</a>), so no C library is required.)</p>
+<p>We'll compile all three files with a single bare-metal invocation of <code>arm-none-eabi-gcc</code> and flatten the result into an image — but that command only makes sense once <code>startup.c</code> and <code>linker.ld</code> exist. So let's first take a look at <code>startup.c</code>:</p>
+<h2 id="startupc"><code>startup.c</code>.<a class="headerlink" href="#startupc" title="Permanent link">&para;</a></h2>
+<p><code>startup.c</code> has two jobs, and together they <em>are</em> the boot process:</p>
+<ol>
+<li>Provide the <strong>vector table</strong>, so the CPU knows where to begin.</li>
+<li>Provide the <strong><code>Reset_Handler</code></strong> — the very first code that runs. It makes good on the <code>.data</code>/<code>.bss</code> guarantees from above and then calls <code>main</code>.</li>
+</ol>
+<p>Let's take them in that order.</p>
+<h3 id="the-vector-table">The vector table.<a class="headerlink" href="#the-vector-table" title="Permanent link">&para;</a></h3>
+<p>The vector table is nothing but an <strong>array of addresses</strong> sitting at the very start of flash. On reset the CPU reads the first two entries — nothing has to "install" it, the linker simply places this array first, at <code>0x08000000</code>. Here's the top of <code>startup.c</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="cm">/* Defined by the linker script: the top of RAM, which we&#39;ll use</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="cm">   as the initial stack pointer. */</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">extern</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_estack</span><span class="p">;</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="cm">/* Defined further down in this same file. */</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Reset_Handler</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="cm">/* Each entry is just the address of something. Declaring them as</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="cm">   function pointers makes the compiler bake in the Thumb bit for us. */</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">vector_t</span><span class="p">)(</span><span class="kt">void</span><span class="p">);</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="n">__attribute__</span><span class="p">((</span><span class="n">section</span><span class="p">(</span><span class="s">&quot;.isr_vector&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">used</span><span class="p">))</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="k">const</span><span class="w"> </span><span class="n">vector_t</span><span class="w"> </span><span class="n">vector_table</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="p">(</span><span class="n">vector_t</span><span class="p">)</span><span class="o">&amp;</span><span class="n">_estack</span><span class="p">,</span><span class="w">   </span><span class="cm">/* 0x00  initial stack pointer (loaded into SP) */</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">    </span><span class="n">Reset_Handler</span><span class="p">,</span><span class="w">        </span><span class="cm">/* 0x04  reset vector        (loaded into PC)   */</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">    </span><span class="cm">/* NMI, HardFault, ... would continue here — omitted until we need them */</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="p">};</span>
+</code></pre></div>
+<p>Four things worth unpacking:</p>
+<ul>
+<li><strong>Entry 0 — the initial stack pointer.</strong> Remember the SP refresher: it must point at valid RAM <em>before</em> the first instruction. <code>_estack</code> is the top of RAM (<code>0x20000000</code> + the RAM size), a value the linker script hands us. On Cortex-M the stack grows <em>downward</em>, so we start it at the highest address and let it grow down from there. The hardware copies this word straight into SP.</li>
+<li><strong>Entry 1 — the reset vector.</strong> The address of <code>Reset_Handler</code>. The hardware copies this word into PC, so execution begins there. This one entry is the entire answer to "how does the CPU start running <em>our</em> code?" from the intro.</li>
+<li><strong><code>.isr_vector</code> and <code>used</code>.</strong> We tag the array into its own section so the linker script can force it to the base of flash (we'll write that placement into <code>linker.ld</code>). The <code>used</code> attribute stops the compiler from garbage-collecting the array — nothing ever <em>calls</em> <code>vector_table</code>, so without it the optimizer could legitimately drop the whole thing, and the chip would boot on garbage.</li>
+<li><strong>The Thumb bit, for free.</strong> Cortex-M only ever runs <em>Thumb</em> instructions, and it marks that by keeping bit 0 of every function address set to <code>1</code>. Because we listed <code>Reset_Handler</code> as a function pointer, that odd address is stored for us automatically. Hand-write the table in assembly with a plain even address and the CPU faults on the spot: it reads bit 0 as <code>0</code>, tries to switch to ARM state (which Cortex-M doesn't have), and locks up before running a single instruction. (<code>_estack</code> is a data address, not a function, so it's the one entry we cast — the hardware just loads it into SP as a raw number, so its type doesn't matter to the silicon.)</li>
+</ul>
+<p>We can't <em>see</em> these two hexadecimal words yet (PC &amp; SP): the value of <code>_estack</code> isn't pinned down until the linker script exists and we actually build.</p>
+<p>Next, the code the reset vector points at: <code>Reset_Handler</code>.</p>
+<h3 id="reset_handler"><code>Reset_Handler</code>.<a class="headerlink" href="#reset_handler" title="Permanent link">&para;</a></h3>
+<p>The reset vector points here, so this is the first instruction the CPU runs. Its job is to build the C environment <code>main</code> expects — the <code>.data</code> and <code>.bss</code> guarantees we set up as probes — and then hand over to main().</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cm">/* All provided by the linker script (linker.ld) — see the next section.</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="cm">   These are addresses, not variables: we only ever take their address. */</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">extern</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_sidata</span><span class="p">;</span><span class="w">   </span><span class="cm">/* .data&#39;s initial values, stored in flash (LMA) */</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">extern</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_sdata</span><span class="p">;</span><span class="w">    </span><span class="cm">/* .data start in RAM (VMA)                       */</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">extern</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_edata</span><span class="p">;</span><span class="w">    </span><span class="cm">/* .data end   in RAM                             */</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">extern</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_sbss</span><span class="p">;</span><span class="w">     </span><span class="cm">/* .bss start  in RAM                             */</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="k">extern</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_ebss</span><span class="p">;</span><span class="w">     </span><span class="cm">/* .bss end    in RAM                             */</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Reset_Handler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="p">{</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="cm">/* 1. Copy .data from flash into RAM. */</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">src</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_sidata</span><span class="p">;</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">dst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_sdata</span><span class="p">;</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">dst</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_edata</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">        </span><span class="o">*</span><span class="n">dst</span><span class="o">++</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">src</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">    </span><span class="cm">/* 2. Zero-fill .bss. */</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_sbss</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_ebss</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">        </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">    </span><span class="cm">/* 3. Hand control to the application. */</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="w">    </span><span class="n">main</span><span class="p">();</span>
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">    </span><span class="cm">/* 4. main() shouldn&#39;t return on bare metal; if it does, spin forever. */</span>
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="p">}</span>
+</code></pre></div>
+<p>That's the whole thing — the same work a vendor's <code>startup_stm32u5xx.s</code> does, just written out in a few lines of C. Point by point:</p>
+<ul>
+<li><strong>Those <code>extern</code> symbols are addresses, not data.</strong>. <code>_sdata</code> and friends are defined by the <em>linker</em>, not by any C code — the "contents" of <code>_sdata</code> are meaningless. That's why we always write <code>&amp;_sdata</code>, never <code>_sdata</code>: it's just how the linker tells our C code "Hey here's where my <code>.data</code> starts / ends".</li>
+<li><strong>Step 1 — why  does <code>.data</code> needs copying at all (LMA vs VMA)??.</strong> At runtime our initialized globals live in RAM (<code>_sdata</code>..<code>_edata</code>). But RAM is volatile — it's garbage at power-on — so their <em>initial</em> values have to be kept somewhere non-volatile and copied over. The linker stashes that copy in flash, right after the code, and calls its start <code>_sidata</code> (the <strong>L</strong>oad address LMA), while the variables' run-time home is <code>_sdata</code> (the <strong>V</strong>irtual, i.e. run-time, address VMA). Step 1 is just <code>memcpy(_sdata, _sidata, _edata - _sdata)</code> spelled out by hand. This is the missing half of the previous note: the linker <em>decided</em> <code>.data</code> lives in RAM — here's the code that actually <em>puts</em> it there.</li>
+<li><strong>Step 2 — why <code>.bss</code> is separate.</strong> <code>.bss</code> is all zeros, so there's nothing to store in flash — a block of zeros in the binary would just be wasted space. The linker only records the range, and we zero it here. That's why an all-zero global costs nothing in flash while a <code>= 7</code> global costs four bytes <img alt="🤯" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f92f.svg" title=":exploding_head:" />.</li>
+<li><strong>The subtle part: this code runs <em>before</em> the world it's building exists.</strong> When <code>Reset_Handler</code> starts, <code>.data</code> still holds garbage and <code>.bss</code> isn't zeroed yet — so it must not read or write any global that lives there, or it'd be trusting values it's in the middle of setting up. Notice it only ever touches linker symbols (constants) and <em>local</em> variables. Those locals live on the <strong>stack</strong>, which already works because entry 0 of the vector table set <code>SP</code> for us before this function was even entered. The stack is the one piece of the C runtime that's ready for free.</li>
+<li><strong>What we're skipping.</strong> A production startup does two more things in before <code>main</code>: <code>SystemInit()</code> (clock and FPU setup) and <code>__libc_init_array()</code> (C++ static constructors and anything in <code>.init_array</code>). We don't need clocks to run this example, and we aren't linking a C library, so we go straight to <code>main</code>.</li>
+</ul>
+<p>Every symbol <code>Reset_Handler</code> leans on — <code>_sidata</code>, <code>_sdata</code>, <code>_edata</code>, <code>_sbss</code>, <code>_ebss</code>, plus <code>_estack</code> from the vector table — is handed to us by the <strong>linker script</strong>.</p>
+<h2 id="linkerld"><code>linker.ld</code>.<a class="headerlink" href="#linkerld" title="Permanent link">&para;</a></h2>
+<p>The startup code kept deferring to "symbols the linker script hands us". Here's the script that defines them — and it's short. A linker script does just two things: it declares the chip's memory regions, and it says which section goes where. (For the anatomy of sections and what the linker does with them, see the linker step in <a href="../../programming/c-cpp/how_does_a_machine_know_c/">How does a machine know C?</a>.)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/* linker.ld — minimal layout for an STM32U575 (Cortex-M33). */
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>ENTRY(Reset_Handler)
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>MEMORY
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>{
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    FLASH (rx)  : ORIGIN = 0x08000000, LENGTH = 2048K
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    RAM   (rwx) : ORIGIN = 0x20000000, LENGTH = 192K   /* SRAM1 */
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>}
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>/* Top of RAM. The stack grows downward, so this is the initial SP —
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>   exactly the _estack the vector table put in entry 0. */
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>_estack = ORIGIN(RAM) + LENGTH(RAM);
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>SECTIONS
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>{
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>    /* Vector table, pinned to the very start of flash (0x08000000). */
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    .isr_vector :
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    {
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>        KEEP(*(.isr_vector))
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>    } &gt; FLASH
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>    /* Code and read-only data: executed/read in place, straight from flash. */
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>    .text :
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>    {
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>        *(.text*)
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>        *(.rodata*)
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>        . = ALIGN(4);
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>    } &gt; FLASH
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>    /* Initialized data: lives in RAM at run time, but its initial image is
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>       stored in flash and copied across by Reset_Handler. */
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>    .data :
+<a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a>    {
+<a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>        . = ALIGN(4);
+<a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a>        _sdata = .;
+<a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a>        *(.data*)
+<a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a>        . = ALIGN(4);
+<a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a>        _edata = .;
+<a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a>    } &gt; RAM AT&gt; FLASH
+<a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a>
+<a id="__codelineno-4-42" name="__codelineno-4-42" href="#__codelineno-4-42"></a>    _sidata = LOADADDR(.data);
+<a id="__codelineno-4-43" name="__codelineno-4-43" href="#__codelineno-4-43"></a>
+<a id="__codelineno-4-44" name="__codelineno-4-44" href="#__codelineno-4-44"></a>    /* Zero-initialized data: takes up RAM only, nothing stored in flash. */
+<a id="__codelineno-4-45" name="__codelineno-4-45" href="#__codelineno-4-45"></a>    .bss (NOLOAD) :
+<a id="__codelineno-4-46" name="__codelineno-4-46" href="#__codelineno-4-46"></a>    {
+<a id="__codelineno-4-47" name="__codelineno-4-47" href="#__codelineno-4-47"></a>        . = ALIGN(4);
+<a id="__codelineno-4-48" name="__codelineno-4-48" href="#__codelineno-4-48"></a>        _sbss = .;
+<a id="__codelineno-4-49" name="__codelineno-4-49" href="#__codelineno-4-49"></a>        *(.bss*)
+<a id="__codelineno-4-50" name="__codelineno-4-50" href="#__codelineno-4-50"></a>        *(COMMON)
+<a id="__codelineno-4-51" name="__codelineno-4-51" href="#__codelineno-4-51"></a>        . = ALIGN(4);
+<a id="__codelineno-4-52" name="__codelineno-4-52" href="#__codelineno-4-52"></a>        _ebss = .;
+<a id="__codelineno-4-53" name="__codelineno-4-53" href="#__codelineno-4-53"></a>    } &gt; RAM
+<a id="__codelineno-4-54" name="__codelineno-4-54" href="#__codelineno-4-54"></a>}
+</code></pre></div>
+<p>Reading it top to bottom:</p>
+<ul>
+<li><strong><code>MEMORY</code></strong> is where the two addresses from the intro finally become concrete: flash at <code>0x08000000</code>, RAM at <code>0x20000000</code>. The <code>(rx)</code>/<code>(rwx)</code> flags are just descriptive attributes. (I kept <code>RAM</code> at SRAM1's 192 KB; the U575 actually has several SRAM banks, but this is plenty — the exact size only matters for where <code>_estack</code> lands.)</li>
+<li><strong><code>_estack = ORIGIN(RAM) + LENGTH(RAM)</code></strong> is the top of RAM, and the circle closes here: the linker computes it, the vector table stores it in entry 0, and the hardware loads it into <code>SP</code> at reset. The stack grows <em>down</em> from this address.</li>
+<li><strong><code>ENTRY(Reset_Handler)</code></strong> names the program's entry point in the ELF header. On real silicon it's redundant — the chip boots through the vector table, not the ELF entry point — but debuggers and simulators use it to know where execution begins, and it keeps the linker from warning that it <em>"cannot find entry symbol"</em>.</li>
+<li><strong><code>.isr_vector</code> first, with <code>KEEP</code>.</strong> Placing it first in <code>&gt; FLASH</code> pins it to <code>0x08000000</code>, exactly where the CPU looks on reset. <code>KEEP</code> stops <code>--gc-sections</code> from discarding it — the same worry as the <code>used</code> attribute back in the vector table, belt-and-suspenders since nothing ever references it.</li>
+<li><strong><code>.text</code>/<code>.rodata</code> → flash.</strong> Code and constants are read in place from non-volatile flash; they never need copying to RAM.</li>
+<li><strong><code>.data</code> → <code>&gt; RAM AT&gt; FLASH</code> — the entire LMA/VMA trick in one line.</strong> <code>&gt; RAM</code> sets the <em>run-time</em> addresses (<code>_sdata</code>..<code>_edata</code>, in RAM — the VMA). <code>AT&gt; FLASH</code> sets the <em>load</em> address (where the bytes actually sit in the image — in flash, right after <code>.text</code> — the LMA). Then <code>_sidata = LOADADDR(.data)</code> captures that flash address. Those three symbols are precisely what <code>Reset_Handler</code>'s copy loop reads: the split we coded by hand is <em>declared</em> right here.</li>
+<li><strong><code>.bss (NOLOAD)</code>.</strong> <code>NOLOAD</code> tells the linker to reserve the RAM range but store nothing in the image — the literal meaning of "a block of zeros costs nothing in flash". <code>_sbss</code>/<code>_ebss</code> bound the range <code>Reset_Handler</code> zeroes; <code>*(COMMON)</code> sweeps up any tentative definitions.</li>
+<li><strong>The <code>ALIGN(4)</code>s</strong> keep every boundary word-aligned, so <code>Reset_Handler</code>'s word-at-a-time copy and zero loops never trip over a misaligned start or end.</li>
+</ul>
+<p>And that's all three files. Let's go to the cool part: <strong>build it, and look inside the binary</strong>.</p>
+<h2 id="building-it-and-looking-inside">Building it, and looking inside.<a class="headerlink" href="#building-it-and-looking-inside" title="Permanent link">&para;</a></h2>
+<p>The three files are in the repo (see the box below). Building them is one compiler call plus one <code>objcopy</code> — no build system in sight:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>arm-none-eabi-gcc -mcpu=cortex-m33 -mthumb -nostdlib -ffreestanding -O0 -g \
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    -T linker.ld startup.c main.c -o firmware.elf
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>arm-none-eabi-objcopy -O binary firmware.elf firmware.bin
+</code></pre></div>
+<p><code>-nostdlib</code> tells GCC not to pull in the C runtime or standard library — we supply our own startup, which is the whole point — <code>-ffreestanding</code> says there's no hosted OS underneath, and <code>-T linker.ld</code> hands over our memory map. <code>objcopy</code> then flattens the ELF into the raw image a flasher would write to <code>0x08000000</code>: a whole 136 bytes.</p>
+<p>Lets take a look ath the firmware.bin generated file.<strong>The two words the hardware reads at reset</strong> are the first eight bytes of the flat image (<code>od -A x -t x4 -N 8 firmware.bin</code>, shown as 32-bit words):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>000000 20030000 08000009
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>000008
+</code></pre></div>
+<p>Exactly what we drew:</p>
+<ul>
+<li><code>0x20030000</code> — the initial stack pointer: <code>0x20000000</code> (base of RAM) + <code>0x30000</code> (192 KB) = the top of RAM, straight from <code>_estack</code>. The hardware loads it into <code>SP</code>.</li>
+<li><code>0x08000009</code> — the reset vector. <code>Reset_Handler</code> lives at <code>0x08000008</code> (right after the 8-byte table) and the low bit is set — <code>…8 | 1 = …9</code> — the <strong>Thumb bit</strong>, there for free because we listed a function pointer. The hardware loads it into <code>PC</code> and execution begins. The entire "how does the CPU start running our code?" question, answered in eight bytes.</li>
+</ul>
+<p><strong><code>.data</code> really does live at two addresses.</strong> The section headers (<code>arm-none-eabi-objdump -h firmware.elf</code>, debug sections and per-section flag lines trimmed):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Idx Name          Size      VMA       LMA       File off  Algn
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  0 .isr_vector   00000008  08000000  08000000  00001000  2**2
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  1 .text         0000007c  08000008  08000008  00001008  2**2
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  2 .data         00000004  20000000  08000084  00002000  2**2
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  3 .bss          00000004  20000004  08000088  00002004  2**2
+</code></pre></div>
+<p>Look at <code>.data</code>: its <strong>VMA is <code>0x20000000</code></strong> (its run-time home in RAM) while its <strong>LMA is <code>0x08000084</code></strong> (where its initial bytes are stored, in flash, right after <code>.text</code>). Same four bytes, two addresses — the entire reason <code>Reset_Handler</code> needs a copy loop. In the full listing <code>.bss</code> carries only the <code>ALLOC</code> flag, no <code>CONTENTS</code>/<code>LOAD</code>: it takes up RAM but nothing in the file, exactly what <code>NOLOAD</code> promised.</p>
+<p><strong>Every symbol the startup leaned on, now a concrete address</strong> (<code>arm-none-eabi-nm -n firmware.elf</code>, sorted by address):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>08000000 R vector_table
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>08000008 T Reset_Handler
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>08000064 T main
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>08000084 A _sidata
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>20000000 D _sdata
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>20000000 D counter
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>20000004 D _edata
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>20000004 B _sbss
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>20000004 B flag
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>20000008 B _ebss
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>20030000 R _estack
+</code></pre></div>
+<p>Read top to bottom, it's the whole note on one screen. <code>vector_table</code> sits at <code>0x08000000</code>, so the CPU finds it on reset. <code>counter</code> shares an address with <code>_sdata</code> (<code>0x20000000</code>) — it <em>is</em> the first thing in <code>.data</code> — and its initial <code>7</code> waits at <code>_sidata</code> (<code>0x08000084</code>) out in flash for the copy loop to fetch. <code>flag</code> sits at <code>_sbss</code> (<code>0x20000004</code>), inside the range the zero loop clears. <code>_estack</code> is <code>0x20030000</code> — the very word we read out of the first eight bytes. Nothing is hidden: every name the hand-written startup referenced is just an address the linker filled in.</p>
+<p>So by the time <code>Reset_Handler</code> falls into <code>main</code>, <code>counter</code> holds <code>7</code> and <code>flag</code> holds <code>0</code> — not by magic, but because the handful of lines in <code>startup.c</code> and the memory map in <code>linker.ld</code> put them there.</p>
+<div class="admonition note">
+<p class="admonition-title">Grab the code</p>
+<p>The complete, buildable example is in the repo at
+<a href="https://github.com/jbenedictocenteno/jbenedictocenteno/tree/main/examples/embedded-systems/how_does_an_mcu_boot"><code>examples/embedded-systems/how_does_an_mcu_boot/</code></a>:
+<code>main.c</code>, <code>startup.c</code>, <code>linker.ld</code>, and a <code>build.sh</code> with the commands above.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Jorge Benedicto Centeno &ndash; content licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Emoji by <a href="https://github.com/twitter/twemoji">Twemoji</a> (CC BY 4.0); icons from Material Design Icons (Apache&nbsp;2.0) and Octicons (MIT).
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.indexes", "navigation.instant", "navigation.instant.progress", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
