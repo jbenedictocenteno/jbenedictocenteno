@@ -1,14 +1,12 @@
 <div class="hero" markdown>
 
-# Hi, I'm Jorge :wave:
-
-Electronic engineer specialized in embedded systems. This is where I keep my tech notes and a small portfolio of projects.
+A public collection of tech notes — research, things I'm figuring out, and design notes for the projects I build — shared here in case they're useful to someone. It also gathers a small portfolio of projects.
 
 </div>
 
 <div class="grid cards" markdown>
 
--   :material-notebook-outline:{ .lg .middle } __Notes__
+-   :material-notebook-outline:{ .lg .middle } __Notes__        
 
     ---
 
@@ -33,3 +31,9 @@ Electronic engineer specialized in embedded systems. This is where I keep my tec
     [:octicons-arrow-right-24: Read more](about.md)
 
 </div>
+
+## License
+
+Copyright © 2026 Jorge Benedicto Centeno.
+
+The notes and written content in this repository are licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/): you're free to share and adapt them, including commercially, as long as you give appropriate credit. See [LICENSE](LICENSE) for the full text.

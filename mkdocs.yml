@@ -1,5 +1,11 @@
 site_name: Personal Notes
 site_description: Personal notes and projects
+copyright: >
+  Copyright &copy; 2026 Jorge Benedicto Centeno &ndash;
+  content licensed under
+  <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+  Emoji by <a href="https://github.com/twitter/twemoji">Twemoji</a> (CC BY 4.0);
+  icons from Material Design Icons (Apache&nbsp;2.0) and Octicons (MIT).
 theme:
   name: material
   logo: assets/logo.png
