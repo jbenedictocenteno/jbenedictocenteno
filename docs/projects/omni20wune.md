@@ -2,7 +2,7 @@
 
 A battery-powered IoT device that reads water meters and reports their readings over NB-IoT.
 
-- **Company:** a DATAKORUM S.L. device ([www.datakorum.es](https://www.datakorum.es)).
+- **Company:** a DATAKORUM S.L. device ([www.datakorum.com](https://www.datakorum.com/)).
 - **My role:** hardware and firmware.
 - **Microcontroller:** STM32U575, an ultra-low-power Arm Cortex-M33.
 - **Connectivity:** Quectel BC660K, NB-IoT.

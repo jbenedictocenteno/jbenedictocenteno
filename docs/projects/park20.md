@@ -2,7 +2,7 @@
 
 A battery-powered IoT sensor that detects whether a vehicle is parked in a space, and reports it over NB-IoT.
 
-- **Company:** a DATAKORUM S.L. device ([www.datakorum.es](https://www.datakorum.es)).
+- **Company:** a DATAKORUM S.L. device ([www.datakorum.com](https://www.datakorum.com/)).
 - **My role:** hardware and firmware.
 - **Microcontroller:** STM32U575, an ultra-low-power Arm Cortex-M33.
 - **Sensor:** Acconeer A111, a 60 GHz pulsed coherent radar.

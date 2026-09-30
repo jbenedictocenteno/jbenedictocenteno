@@ -32,5 +32,3 @@ flowchart TD
 - **The flash:** two kodeOS slots that update each other, a rescue image, the apps region, and a mailbox any host can write with a single `esptool` call. Arduino sketches arrive that way.
 
 **Two firmwares, one product.** The ESP32-P4 has no radio, so Wi-Fi and BLE live on an ESP32-C5 running firmware of our own, reached over SDIO through ESP-Hosted. The TCP/IP stack runs on the P4, so the network code is the same code it would be on a chip with a radio. The C5 also serves the infrared transceiver. [What is ESP-Hosted and how does it work?](../notes/embedded-systems/what_is_esp_hosted_and_how_does_work.md) explains the mechanism.
-
-**A production test in one command.** `test component=all` on the console checks every part of the board in turn, each check with a time budget. The things no chip can judge, such as the colour of the LED, the panel and the buttons, are answered by the operator on the board's own buttons.
