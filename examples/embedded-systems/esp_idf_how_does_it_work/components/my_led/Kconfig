@@ -1,0 +1,26 @@
+# A component's Kconfig adds a menu to `idf.py menuconfig`.
+#
+# Everything here becomes:
+#   - a line in     sdkconfig                  (CONFIG_MY_LED_GPIO=27)
+#   - a #define in  build/config/sdkconfig.h   (#define CONFIG_MY_LED_GPIO 27)
+#   - a variable in build/config/sdkconfig.cmake
+#
+# The CONFIG_ prefix is added by the config generator; here we write MY_LED_GPIO.
+
+menu "my_led"
+
+    config MY_LED_GPIO
+        int "LED GPIO number"
+        range 0 56
+        default 27
+        help
+            GPIO the LED is wired to. my_led.c reads this straight out of
+            sdkconfig.h, so changing it here changes the compiled code.
+
+    config MY_LED_ACTIVE_LOW
+        bool "LED is active low"
+        default n
+        help
+            Set if the LED lights up when the pin is driven low.
+
+endmenu

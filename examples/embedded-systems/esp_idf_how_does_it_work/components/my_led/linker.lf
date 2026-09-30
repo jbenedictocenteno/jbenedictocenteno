@@ -1,0 +1,15 @@
+# A linker fragment. ldgen reads every .lf in the build and generates
+# build/esp-idf/esp_system/ld/sections.ld from them.
+#
+# archive: which static library this rule applies to (libmy_led.a)
+# entries: <object file>:<symbol> (<scheme>)
+#
+# "noflash" is a built-in scheme meaning: put this object's text in IRAM and
+# its rodata in DRAM, instead of leaving them in flash. We apply it to a single
+# *symbol*, so only my_led_toggle_fast() moves to IRAM — the rest of my_led.c
+# stays in flash.
+
+[mapping:my_led]
+archive: libmy_led.a
+entries:
+    my_led:my_led_toggle_fast (noflash)

@@ -1,0 +1,24 @@
+# Defaults for the note's example project.
+#
+# sdkconfig.defaults is the *checked-in* file. sdkconfig is generated from it
+# on the first build (and then edited by `idf.py menuconfig`), which is why
+# sdkconfig itself is gitignored.
+
+# Use our own partition table instead of the built-in single-app one.
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+
+# The board this was written against has 16 MB of flash.
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+
+# The board is ESP32-P4 silicon revision v1.3. ESP-IDF 6 builds for rev >= v3.1
+# by default, which is a different die, and esptool refuses to flash an image
+# whose header asks for a revision the chip does not have. These two options
+# lower the minimum written into the image header. Drop them if your P4 is v3+.
+CONFIG_ESP32P4_SELECTS_REV_LESS_V3=y
+CONFIG_ESP32P4_REV_MIN_100=y
+
+# Our own component's option (declared in components/my_led/Kconfig).
+# Set here so the note can follow one value all the way from this file to a
+# #define in build/config/sdkconfig.h and into the compiled code.
+CONFIG_MY_LED_GPIO=27

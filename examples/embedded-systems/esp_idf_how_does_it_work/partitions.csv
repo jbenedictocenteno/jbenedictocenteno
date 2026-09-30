@@ -1,0 +1,10 @@
+# Custom partition table for the example.
+#
+# Offsets are left blank on purpose: gen_esp32part.py packs each partition
+# right after the previous one, starting at 0x9000 (the first free sector
+# after the partition table itself, which lives at 0x8000).
+#
+# Name,     Type, SubType, Offset,  Size, Flags
+nvs,        data, nvs,     ,        24K,
+phy_init,   data, phy,     ,        4K,
+factory,    app,  factory, 0x10000, 2M,

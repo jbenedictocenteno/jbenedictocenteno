@@ -1,6 +1,4 @@
-# How does an MCU gets to `main()`?
-
-<!-- WIP — draft in progress, do not publish yet -->
+# How does an MCU get to `main()`?
 
 In [How does a machine know C?](../programming/c-cpp/how_does_a_machine_know_c.md) we followed a `.c` file all the way down to the `.bin` that gets flashed, and watched the linker hand out final addresses: `.text`/`.rodata` in flash, `.data`/`.bss` in RAM. The linker only *decides where things live* — it doesn't actually put anything there. When the chip powers on, RAM is just noise: nobody has copied the initial values of our global variables into `.data`, and nobody has zeroed `.bss`. And there's a more basic question still unanswered: how does the CPU even start running code? A freshly reset CPU doesn't know what `main` is any more than it knew what C was.
 
