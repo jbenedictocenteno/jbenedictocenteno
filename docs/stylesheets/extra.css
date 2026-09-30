@@ -79,3 +79,4 @@
 .md-typeset .grid.cards > ul > li:nth-child(1) { --card-color: #6366f1; } /* indigo — Notes */
 .md-typeset .grid.cards > ul > li:nth-child(2) { --card-color: #10b981; } /* emerald — Projects */
 .md-typeset .grid.cards > ul > li:nth-child(3) { --card-color: #ec4899; } /* pink — About */
+.md-typeset .grid.cards > ul > li:nth-child(4) { --card-color: #f59e0b; } /* amber — fourth project */
