@@ -1,0 +1,2355 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Personal notes and projects">
+      
+      
+      
+      
+        <link rel="prev" href="../what_does_the_fcc_ask_of_an_iot_device/">
+      
+      
+        <link rel="next" href="../what_rules_does_an_iot_device_have_to_pass/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>What does the RED ask of an IoT device? - Personal Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#what-does-the-red-ask-of-an-iot-device" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Personal Notes" class="md-header__button md-logo" aria-label="Personal Notes" data-md-component="logo">
+      
+  <img src="../../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Personal Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              What does the RED ask of an IoT device?
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../projects/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Projects
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Personal Notes" class="md-nav__button md-logo" aria-label="Personal Notes" data-md-component="logo">
+      
+  <img src="../../../assets/logo.png" alt="logo">
+
+    </a>
+    Personal Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../cybersecurity/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cybersecurity
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cybersecurity
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cybersecurity/how_do_signatures_prove_identity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How do signatures and certificates prove who you are?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cybersecurity/how_does_tls_work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does TLS work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cybersecurity/what_is_an_rsa_key/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is an RSA key?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../embedded-systems/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Embedded Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embedded-systems/esp_idf_how_does_it_work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does ESP-IDF work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embedded-systems/how_does_an_mcu_boot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does an MCU get to main()?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embedded-systems/i2c_explained/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does I²C actually work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embedded-systems/what_is_esp_bmgr_and_how_does_work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is the Espressif board manager and how does it work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embedded-systems/what_is_esp_hosted_and_how_does_work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is ESP-Hosted and how does it work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../programming/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Programming
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Programming
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../programming/c-cpp/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/Cpp
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    C/Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../programming/c-cpp/how_does_a_machine_know_c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does a machine know C?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Regulations
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Regulations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_do_you_build_the_rules_into_a_device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How do you build the rules into a device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../what_does_the_cra_ask_of_an_iot_device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What does the CRA ask of an IoT device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../what_does_the_fcc_ask_of_an_iot_device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What does the FCC ask of an IoT device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What does the RED ask of an IoT device?
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What does the RED ask of an IoT device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#three-requirements-and-a-few-extras" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Three requirements, and a few extras.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-you-prove-it-harmonised-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How you prove it: harmonised standards.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-each-band-allows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What each band allows.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-ghz-the-line-at-10-dbm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 GHz: the line at 10 dBm.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#below-1-ghz-the-duty-cycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Below 1 GHz: the duty cycle.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-ghz-indoors-and-away-from-radar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 GHz: indoors, and away from radar.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#safety-and-exposure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Safety and exposure.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-the-three-extra-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security: the three extra requirements.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#who-checks-you-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who checks: you do.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modules-no-shortcut-on-paper-a-big-one-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modules: no shortcut on paper, a big one in practice.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-limits-and-the-usual-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The limits and the usual answers.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#easy-to-get-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Easy to get wrong.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related.
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../what_rules_does_an_iot_device_have_to_pass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What rules does an IoT device have to pass before you can sell it?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../projects/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projects
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/kodeos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kodeOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/kode_sdk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kode SDK
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/park20/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PARK20
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/omni20wune/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OMNI20WUNE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#three-requirements-and-a-few-extras" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Three requirements, and a few extras.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-you-prove-it-harmonised-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How you prove it: harmonised standards.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-each-band-allows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What each band allows.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-ghz-the-line-at-10-dbm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 GHz: the line at 10 dBm.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#below-1-ghz-the-duty-cycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Below 1 GHz: the duty cycle.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-ghz-indoors-and-away-from-radar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 GHz: indoors, and away from radar.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#safety-and-exposure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Safety and exposure.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-the-three-extra-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security: the three extra requirements.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#who-checks-you-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who checks: you do.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modules-no-shortcut-on-paper-a-big-one-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modules: no shortcut on paper, a big one in practice.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-limits-and-the-usual-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The limits and the usual answers.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#easy-to-get-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Easy to get wrong.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related.
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="what-does-the-red-ask-of-an-iot-device">What does the RED ask of an IoT device?<a class="headerlink" href="#what-does-the-red-ask-of-an-iot-device" title="Permanent link">&para;</a></h1>
+<h2 id="introduction">Introduction.<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>The <strong>Radio Equipment Directive</strong> is the European law for anything that transmits or receives radio on purpose. Its number is 2014/53/EU and everybody calls it the RED. If your product has Wi-Fi, Bluetooth, LoRa, NFC or any other radio, and you want to sell it in the European Union, this is the rule that stands between the prototype and the CE mark.</p>
+<p>The first thing to understand is how different the European system is from the American one. Before you sell, no office looks at your product and no number is issued. The whole process is in your hands: the tests, a declaration that says the product complies, and the CE mark. So is the responsibility. That sounds easy, and it is easy to do badly. Authorities buy products in shops and test them, and a product that fails can be pulled from the whole market.</p>
+<p>The device of this note is the same sensor as in the other notes of this section. It runs on a battery, it has a Wi-Fi and Bluetooth LE module at 2.4 GHz, and sometimes it carries a LoRa radio at 868 MHz.</p>
+<div class="admonition note">
+<p class="admonition-title">Versions</p>
+<p>This note describes the rules as they stand in <strong>October 2026</strong>. The radio
+limits change slowly, but the list of official standards changes every few
+months, and the security part of the RED has an end date. I am an engineer,
+not a lawyer. Use the note as a map, and check the
+<a href="https://eur-lex.europa.eu/eli/dir/2014/53/oj">directive</a> and your test lab
+before you decide anything that costs money.</p>
+</div>
+<h2 id="three-requirements-and-a-few-extras">Three requirements, and a few extras.<a class="headerlink" href="#three-requirements-and-a-few-extras" title="Permanent link">&para;</a></h2>
+<p>The whole directive hangs from one article, Article 3. It asks for three things from every radio product.</p>
+<ol>
+<li><strong>Health and safety.</strong> The product must not hurt anybody. That covers electrical safety, the battery, and the radio energy that a body absorbs.</li>
+<li><strong>Electromagnetic compatibility.</strong> The product must not disturb other equipment, and it must keep working when other equipment disturbs it.</li>
+<li><strong>Good use of the spectrum.</strong> The radio must stay inside its band and its power, and must not cause harmful interference.</li>
+</ol>
+<p>Article 3 then has a list of <strong>extra requirements</strong>. They sleep until the Commission switches one of them on for a class of products. Three switches matter to an IoT device.</p>
+<table>
+<thead>
+<tr>
+<th>Switched on</th>
+<th>For</th>
+<th>Since</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>security: protect the network, protect personal data, prevent fraud</td>
+<td>radio products that can reach the internet</td>
+<td>1 August 2025</td>
+</tr>
+<tr>
+<td>a common charger: USB-C</td>
+<td>phones, tablets, cameras, headphones, earbuds, handheld consoles, portable speakers, e-readers, keyboards, mice and navigation devices</td>
+<td>28 December 2024</td>
+</tr>
+<tr>
+<td>the same common charger</td>
+<td>laptops</td>
+<td>28 April 2026</td>
+</tr>
+</tbody>
+</table>
+<p>The sensor is not in the charger list, and neither is a smartwatch. The security row is another story, and it has its own section below.</p>
+<h2 id="how-you-prove-it-harmonised-standards">How you prove it: harmonised standards.<a class="headerlink" href="#how-you-prove-it-harmonised-standards" title="Permanent link">&para;</a></h2>
+<p>The directive never gives a number. It says "no harmful interference" and stops there. The numbers live in <strong>harmonised standards</strong>, the technical documents that ETSI and other bodies write and the Commission publishes in the Official Journal.</p>
+<p>A harmonised standard gives you something valuable, called presumption of conformity. If your product passes the standard, the law presumes that it meets the requirement. You are allowed to prove compliance some other way, but then a notified body has to agree with you, and that costs time and money.</p>
+<p>So in practice the standards are the rules. This is the short list for an IoT device.</p>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Standard</th>
+<th>What it covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>spectrum</td>
+<td>EN 300 328</td>
+<td>2.4 GHz: Wi-Fi, Bluetooth, Zigbee, Thread</td>
+</tr>
+<tr>
+<td>spectrum</td>
+<td>EN 301 893</td>
+<td>5 GHz Wi-Fi</td>
+</tr>
+<tr>
+<td>spectrum</td>
+<td>EN 303 687</td>
+<td>6 GHz Wi-Fi</td>
+</tr>
+<tr>
+<td>spectrum</td>
+<td>EN 300 220</td>
+<td>short range devices below 1 GHz: LoRa and others</td>
+</tr>
+<tr>
+<td>spectrum</td>
+<td>EN 300 330</td>
+<td>NFC at 13.56 MHz, RFID at 125 kHz</td>
+</tr>
+<tr>
+<td>compatibility</td>
+<td>EN 301 489</td>
+<td>emissions and immunity of radio products</td>
+</tr>
+<tr>
+<td>safety</td>
+<td>EN 62368-1</td>
+<td>electrical safety</td>
+</tr>
+<tr>
+<td>safety</td>
+<td>EN 62479, EN 50566 and others</td>
+<td>exposure to radio energy</td>
+</tr>
+<tr>
+<td>security</td>
+<td>EN 18031</td>
+<td>the three security requirements</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-each-band-allows">What each band allows.<a class="headerlink" href="#what-each-band-allows" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Band</th>
+<th>Used by</th>
+<th>Main limits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2400 to 2483.5 MHz</td>
+<td>Wi-Fi, Bluetooth, Zigbee, Thread</td>
+<td>100 mW (20 dBm) e.i.r.p.</td>
+</tr>
+<tr>
+<td>5150 to 5350 MHz</td>
+<td>Wi-Fi</td>
+<td>200 mW (23 dBm) e.i.r.p.; mostly for indoor use, and the upper half indoors only</td>
+</tr>
+<tr>
+<td>5470 to 5725 MHz</td>
+<td>Wi-Fi</td>
+<td>1 W (30 dBm) e.i.r.p., with radar detection and power control</td>
+</tr>
+<tr>
+<td>5945 to 6425 MHz</td>
+<td>Wi-Fi 6E</td>
+<td>200 mW indoors only; 25 mW (14 dBm) for portable devices</td>
+</tr>
+<tr>
+<td>863 to 870 MHz</td>
+<td>LoRa and other sub-GHz radios</td>
+<td>25 mW e.r.p. in most of it, with a duty cycle</td>
+</tr>
+<tr>
+<td>13.56 MHz</td>
+<td>NFC</td>
+<td>42 dBµA/m at 10 m; 60 dBµA/m for NFC and RFID readers</td>
+</tr>
+<tr>
+<td>119 to 135 kHz</td>
+<td>RFID</td>
+<td>66 dBµA/m at 10 m at the bottom of the band, less above it</td>
+</tr>
+</tbody>
+</table>
+<p>Two details of this table decide most designs.</p>
+<p><strong>The limit is e.i.r.p.</strong> That is the power that leaves the antenna, with the gain of the antenna included. A radio chip that delivers 20 dBm into an antenna with 3 dBi of gain radiates 23 dBm, and that is over the limit at 2.4 GHz. So the transmit power in your firmware is the limit minus the gain of your antenna. A better antenna forces you to turn the transmitter down.</p>
+<p><strong>The receiver is tested too.</strong> The RED checks that your receiver keeps working when a strong signal appears just outside the band. This test is called blocking. A cheap receiver with no filter in front can fail it, even if the transmitter is perfect.</p>
+<h2 id="24-ghz-the-line-at-10-dbm">2.4 GHz: the line at 10 dBm.<a class="headerlink" href="#24-ghz-the-line-at-10-dbm" title="Permanent link">&para;</a></h2>
+<p>EN 300 328 draws a line at <strong>10 dBm e.i.r.p.</strong>, and the two sides of it are different worlds.</p>
+<p>Below 10 dBm, the standard leaves you alone. There is no rule about sharing the channel. This is where most Bluetooth LE, Zigbee and Thread devices live, and it is one more reason to keep their power modest.</p>
+<p>Go above 10 dBm and the standard expects your radio to be a good neighbour. It can do that in one of two ways.</p>
+<ul>
+<li><strong>Adaptive.</strong> Before each transmission the radio checks whether somebody else is using the channel, and if so it waits. Wi-Fi has worked like this from its first version, so a Wi-Fi module gives it to you with no effort.</li>
+<li><strong>Not adaptive.</strong> A radio that never listens is still allowed, as long as it does not hog the channel. The measure is simple. Take the power as a fraction of 100 mW, multiply it by the fraction of time you are on air, and keep the product under 10 %. A transmitter at the full 100 mW may therefore be on air one tenth of the time.</li>
+</ul>
+<p>Power density is the other thing to watch. Unless your radio hops, it may not put more than 10 dBm into any single megahertz. That is bad news for a narrow signal: a carrier that is 1 MHz wide is already at the limit with 10 dBm, and raising it to 20 dBm is not an option.</p>
+<h2 id="below-1-ghz-the-duty-cycle">Below 1 GHz: the duty cycle.<a class="headerlink" href="#below-1-ghz-the-duty-cycle" title="Permanent link">&para;</a></h2>
+<p>The main European band below 1 GHz is only 7 MHz wide, from 863 to 870 MHz, and thousands of products want to use it. The solution was to ration time. Each device may talk for <strong>a small part of every hour</strong> and no more, and if you build anything with LoRa this is the rule you will think about most.</p>
+<table>
+<thead>
+<tr>
+<th>Sub-band</th>
+<th>Maximum power (e.r.p.)</th>
+<th>Duty cycle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>863 to 865 MHz</td>
+<td>25 mW</td>
+<td>0.1 %</td>
+</tr>
+<tr>
+<td>865 to 868 MHz</td>
+<td>25 mW</td>
+<td>1 %</td>
+</tr>
+<tr>
+<td>868.0 to 868.6 MHz</td>
+<td>25 mW</td>
+<td>1 %</td>
+</tr>
+<tr>
+<td>868.7 to 869.2 MHz</td>
+<td>25 mW</td>
+<td>0.1 %</td>
+</tr>
+<tr>
+<td>869.4 to 869.65 MHz</td>
+<td>500 mW</td>
+<td>10 %</td>
+</tr>
+<tr>
+<td>869.7 to 870 MHz</td>
+<td>25 mW</td>
+<td>1 %</td>
+</tr>
+</tbody>
+</table>
+<p>Percentages like these are hard to picture until you turn them into seconds. One hour has 3600 seconds, so 1 % of it is <strong>36 seconds of transmission</strong>. The 0.1 % sub-bands give you 3.6 seconds in an hour, and the generous one at 10 % gives you six minutes.</p>
+<p>Now put a real message in it. A LoRaWAN reading of 10 bytes at the slowest data rate stays on air for about 1.5 seconds. With 36 seconds per hour, that is 24 messages per hour and not one more. Send them faster and the device breaks the law, however well the firmware works.</p>
+<p>If you know LoRaWAN, you can now see why its European plan looks the way it does. The three channels that every device must support are 868.1, 868.3 and 868.5 MHz, all of them inside the 1 % sub-band. And the second receive window of every device listens on 869.525 MHz. That frequency was not picked at random: it is in the only sub-band where a transmitter may use 500 mW and 10 % of the time.</p>
+<p>The standard does offer a way out of the duty cycle. It is called polite spectrum access, and it means that the radio listens first and moves to another channel when the one it wanted is busy. Few sub-GHz products bother with it, and LoRaWAN is not one of them.</p>
+<p>So how do real products live inside 36 seconds per hour? With four habits, and most products need all of them.</p>
+<ul>
+<li>The firmware keeps an <strong>airtime budget</strong> per sub-band and refuses to send when the budget is spent.</li>
+<li>The device uses the fastest data rate that the link allows, because a faster message is a shorter message.</li>
+<li>The traffic is spread over several sub-bands, since each one has its own budget.</li>
+<li>The application is designed for it from the start: fewer messages, smaller messages, and no retries in a tight loop.</li>
+</ul>
+<h2 id="5-ghz-indoors-and-away-from-radar">5 GHz: indoors, and away from radar.<a class="headerlink" href="#5-ghz-indoors-and-away-from-radar" title="Permanent link">&para;</a></h2>
+<p>Wi-Fi at 5 GHz is a guest in somebody else's band. Weather radar and military radar were there first, and the conditions are written to protect them. Part of the band is for indoor use only. In two sub-bands the network has to detect radar and move away from it. In most networks the access point does that work, and a client device follows it.</p>
+<p>For the firmware of a client, the rule comes down to one thing. It has to know which country it is in, and that answer cannot come from a menu that the user controls.</p>
+<h2 id="safety-and-exposure">Safety and exposure.<a class="headerlink" href="#safety-and-exposure" title="Permanent link">&para;</a></h2>
+<p>Two checks sit under the safety requirement.</p>
+<p>The first is plain electrical safety: the battery, the charger input, the temperature of the case. EN 62368-1 covers it.</p>
+<p>The second is the radio energy that the body absorbs, the <strong>SAR</strong>. The European limit is 2 W/kg, averaged over ten grams of tissue, for the head and the trunk. For the limbs it is 4 W/kg.</p>
+<p>There is an exemption that most small devices use. A transmitter whose average power is 20 mW or less is treated as compliant without a measurement. A Bluetooth LE device at a few milliwatts is far inside it. A Wi-Fi device at 100 mW that is worn on the body is not, and it needs an evaluation.</p>
+<p>Compatibility has a second half that surprises people who come from the American rules. Europe tests <strong>immunity</strong>. At the lab somebody will zap your product with static discharges, bathe it in strong radio fields and inject noise into its cables. Through all of that it has to keep working, or at least come back by itself. A device that resets every time a hand touches its USB connector does not pass.</p>
+<h2 id="security-the-three-extra-requirements">Security: the three extra requirements.<a class="headerlink" href="#security-the-three-extra-requirements" title="Permanent link">&para;</a></h2>
+<p>On 1 August 2025 the RED grew a security chapter. From that day, a radio product that can reach the internet must meet three more requirements, which come from a text called Delegated Regulation (EU) 2022/30.</p>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Applies to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>do not harm the network or misuse its resources</td>
+<td>any radio product that can reach the internet, directly or through other equipment</td>
+</tr>
+<tr>
+<td>protect personal data and privacy</td>
+<td>the same products when they handle personal data, and also toys, childcare products and wearables</td>
+</tr>
+<tr>
+<td>protect against fraud</td>
+<td>products that can move money or virtual currency</td>
+</tr>
+</tbody>
+</table>
+<p>Read "directly or through other equipment" slowly. A sensor that reaches the internet through a gateway or through a phone is the grey case. The text does not settle it, and the safe choice is to assume that the sensor is in.</p>
+<p>The standard for these requirements is <strong>EN 18031</strong>, in three parts, one for each row of the table. Put in plain words, it asks for this:</p>
+<ul>
+<li>access to the device is limited to whoever is authorised;</li>
+<li>there is no universal default password, and guessing a password by brute force is hard;</li>
+<li>updates are authenticated and checked for integrity before they are installed;</li>
+<li>secrets are stored protected;</li>
+<li>communication is protected;</li>
+<li>each device has its own keys, and they are protected;</li>
+<li>the cryptography is current good practice.</li>
+</ul>
+<p>None of that is exotic. It is the same list that a careful team already follows. The trap is somewhere else.</p>
+<p><strong>The trap: the standard was published with restrictions.</strong> In three situations, passing EN 18031 does not give you the presumption of conformity, and you need a notified body.</p>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>the user can skip setting a password</td>
+<td>a notified body, unless you remove that path</td>
+</tr>
+<tr>
+<td>a toy or a childcare product without parental access control</td>
+<td>a notified body</td>
+</tr>
+<tr>
+<td>a product that moves money</td>
+<td>a notified body, always, for the update requirements</td>
+</tr>
+</tbody>
+</table>
+<p>The first row is the one that catches IoT devices. A setup screen with a "skip" button under the password field is enough. The fix is cheap if you do it early: the device ships with a unique secret printed on its label, or the setup does not finish until the user has set one.</p>
+<p>This part of the RED has an end date. On <strong>11 December 2027</strong> it is repealed, and the Cyber Resilience Act takes over with a longer list of requirements. A product that you place on the market before that date stays under the RED rules. <a href="../what_does_the_cra_ask_of_an_iot_device/">What does the CRA ask of an IoT device?</a> explains what comes next.</p>
+<h2 id="who-checks-you-do">Who checks: you do.<a class="headerlink" href="#who-checks-you-do" title="Permanent link">&para;</a></h2>
+<p>The procedure depends on one question. Did you apply the harmonised standards in full?</p>
+<ul>
+<li><strong>Yes.</strong> You assess the product yourself. No third party is needed.</li>
+<li><strong>No, or only in part, or no standard exists.</strong> For the spectrum and the security requirements, a notified body has to examine the product.</li>
+</ul>
+<p>Either way, the paperwork is yours, and you keep it for ten years.</p>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>What goes in it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>technical file</td>
+<td>a description with photos, the firmware versions that affect compliance, the design drawings, the list of standards, the test reports</td>
+</tr>
+<tr>
+<td>EU declaration of conformity</td>
+<td>who you are, what the product is, which laws and standards it meets, and your signature</td>
+</tr>
+<tr>
+<td>the manual</td>
+<td>the frequency bands, the maximum radio power in each one, and the safety information</td>
+</tr>
+<tr>
+<td>the product and the box</td>
+<td>the CE mark, a type or serial number, your name and postal address, and a pictogram if some country restricts its use</td>
+</tr>
+</tbody>
+</table>
+<p>If somebody else imports the product into the EU, the importer adds its own name and address, and has to check that you did your part.</p>
+<h2 id="modules-no-shortcut-on-paper-a-big-one-in-practice">Modules: no shortcut on paper, a big one in practice.<a class="headerlink" href="#modules-no-shortcut-on-paper-a-big-one-in-practice" title="Permanent link">&para;</a></h2>
+<p>In the United States a certified radio module carries its approval into your product. Europe has nothing like that. People in the trade repeat one formula: <strong>CE + CE ≠ CE</strong>. Put CE-marked parts together and what comes out is a new product with no mark at all, and its manufacturer is you.</p>
+<p>That does not make a module useless. It changes what the module gives you.</p>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Can you reuse the tests of the module?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>spectrum</td>
+<td>yes, if you use the module the way it was tested, with the same antenna and power, and its maker gives you the reports</td>
+</tr>
+<tr>
+<td>compatibility</td>
+<td>no; the final product is tested, with the radio working</td>
+</tr>
+<tr>
+<td>safety and exposure</td>
+<td>no; they depend on your enclosure, your battery and how the product is used</td>
+</tr>
+<tr>
+<td>security</td>
+<td>no; it is assessed on the final product</td>
+</tr>
+</tbody>
+</table>
+<p>So when you choose a module, ask for its RED test reports and not only for its declaration. And keep its antenna. A different antenna changes the radiated power and the pattern, and the reports stop describing your product.</p>
+<h2 id="the-limits-and-the-usual-answers">The limits and the usual answers.<a class="headerlink" href="#the-limits-and-the-usual-answers" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>What stops you</th>
+<th>The usual answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100 mW e.i.r.p. at 2.4 GHz, antenna gain included</td>
+<td>transmit power set to the limit minus the antenna gain, in a table per region</td>
+</tr>
+<tr>
+<td>the sharing rules above 10 dBm</td>
+<td>stay at 10 dBm or less for simple radios, or use a stack that listens before it talks</td>
+</tr>
+<tr>
+<td>the duty cycle at 868 MHz</td>
+<td>an airtime budget in the firmware, faster data rates, fewer and smaller messages</td>
+</tr>
+<tr>
+<td>the receiver blocking test</td>
+<td>a filter in front of the receiver, and a radio chip with a decent receiver</td>
+</tr>
+<tr>
+<td>the immunity tests</td>
+<td>protection on every connector, and a firmware that recovers by itself</td>
+</tr>
+<tr>
+<td>exposure on a device worn on the body</td>
+<td>20 mW of average power or less, or a SAR evaluation</td>
+</tr>
+<tr>
+<td>a password that the user can skip</td>
+<td>a unique secret per device, or a setup that cannot finish without one</td>
+</tr>
+<tr>
+<td>an antenna that is not the one of the module</td>
+<td>keep the antenna of the module, or test the radio again</td>
+</tr>
+<tr>
+<td>5 GHz indoor and radar rules</td>
+<td>the country fixed at the factory, never chosen by the user</td>
+</tr>
+</tbody>
+</table>
+<h2 id="easy-to-get-wrong">Easy to get wrong.<a class="headerlink" href="#easy-to-get-wrong" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>"The module has a CE mark, so my product has one."</strong> CE + CE ≠ CE. You are the manufacturer of a new product.</li>
+<li><strong>"Nobody checks, so it does not matter."</strong> Nobody checks before you sell. Authorities check afterwards, and they can remove the product from every shop in the EU.</li>
+<li><strong>"My radio chip is set to 20 dBm, so I am at the limit."</strong> The limit includes the antenna gain. With a 3 dBi antenna you are 3 dB over.</li>
+<li><strong>"The duty cycle is a LoRaWAN rule."</strong> It is the rule of the band. It applies to any protocol that transmits there.</li>
+<li><strong>"Security is a 2027 problem."</strong> The security requirements of the RED have applied since 1 August 2025.</li>
+<li><strong>"I passed EN 18031, so I do not need a notified body."</strong> Not if your product falls in one of the three restrictions.</li>
+<li><strong>"The FCC report covers Europe."</strong> Europe measures radiated power, tests the receiver and tests immunity. The American report has none of the three.</li>
+</ul>
+<h2 id="related">Related.<a class="headerlink" href="#related" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../what_rules_does_an_iot_device_have_to_pass/">What rules does an IoT device have to pass before you can sell it?</a> — the map of all three sets of rules</li>
+<li><a href="../what_does_the_cra_ask_of_an_iot_device/">What does the CRA ask of an IoT device?</a> — the security rules that replace this part of the RED in 2027</li>
+<li><a href="../what_does_the_fcc_ask_of_an_iot_device/">What does the FCC ask of an IoT device?</a> — the radio rules of the United States</li>
+<li><a href="../how_do_you_build_the_rules_into_a_device/">How do you build the rules into a device?</a> — the mechanisms that answer these rules, on real chips</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Reference</p>
+<p>The <a href="https://eur-lex.europa.eu/eli/dir/2014/53/oj">directive</a> is short, and
+Article 3 is the part to read. The security requirements are in
+<a href="https://eur-lex.europa.eu/eli/reg_del/2022/30/oj">Delegated Regulation (EU) 2022/30</a>,
+and their end date is in
+<a href="https://eur-lex.europa.eu/eli/reg_del/2026/339/oj">Delegated Regulation (EU) 2026/339</a>.
+The ETSI standards are free to download from
+<a href="https://www.etsi.org/standards">etsi.org</a>; the limits of this note come
+from EN 300 328 V2.2.2, EN 301 893 V2.2.1, EN 300 220-2 V3.3.1 and
+EN 300 330 V2.1.1. The Commission keeps the
+<a href="https://single-market-economy.ec.europa.eu/sectors/electrical-and-electronic-engineering-industries-eei/radio-equipment-directive-red_en">list of harmonised standards</a>
+on its page for the directive.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Jorge Benedicto Centeno &ndash; content licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Emoji by <a href="https://github.com/twitter/twemoji">Twemoji</a> (CC BY 4.0); icons from Material Design Icons (Apache&nbsp;2.0) and Octicons (MIT).
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.indexes", "navigation.instant", "navigation.instant.progress", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

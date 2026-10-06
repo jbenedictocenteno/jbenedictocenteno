@@ -1,0 +1,3028 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Personal notes and projects">
+      
+      
+      
+      
+        <link rel="prev" href="../i2c_explained/">
+      
+      
+        <link rel="next" href="../what_is_esp_hosted_and_how_does_work/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>What is the Espressif board manager and how does it work? - Personal Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#what-is-the-espressif-board-manager-and-how-does-it-work" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Personal Notes" class="md-header__button md-logo" aria-label="Personal Notes" data-md-component="logo">
+      
+  <img src="../../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Personal Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              What is the Espressif board manager and how does it work?
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../projects/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Projects
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Personal Notes" class="md-nav__button md-logo" aria-label="Personal Notes" data-md-component="logo">
+      
+  <img src="../../../assets/logo.png" alt="logo">
+
+    </a>
+    Personal Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../cybersecurity/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cybersecurity
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cybersecurity
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cybersecurity/how_do_signatures_prove_identity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How do signatures and certificates prove who you are?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cybersecurity/how_does_tls_work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does TLS work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cybersecurity/what_is_an_rsa_key/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is an RSA key?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Embedded Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../esp_idf_how_does_it_work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does ESP-IDF work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_does_an_mcu_boot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does an MCU get to main()?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i2c_explained/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does I²C actually work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is the Espressif board manager and how does it work?
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is the Espressif board manager and how does it work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#normally-how-do-you-define-the-pins-ports-and-interfaces-in-an-embedded-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Normally how do you define the pins, ports and interfaces in an embedded system?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-the-sdkconfig-file-actually-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How does the sdkconfig file actually work?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How does the sdkconfig file actually work?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#it-writes-a-defaults-file-not-your-sdkconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        It writes a defaults file, not your sdkconfig.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#it-injects-that-file-into-sdkconfig_defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        It injects that file into SDKCONFIG_DEFAULTS.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-idfpy-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How does idf.py work?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-you-add-esp_bmgr-to-idfpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do you add esp_bmgr to idf.py?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How do you add esp_bmgr to idf.py?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-boards-are-scanned-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where boards are scanned from.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-you-define-your-board-inside-the-esp_bmgr-and-what-it-actually-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do you define your board inside the esp_bmgr and what it actually does?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How do you define your board inside the esp_bmgr and what it actually does?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#board_infoyaml-what-this-board-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        board_info.yaml — what this board is.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#board_peripheralsyaml-the-buses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        board_peripherals.yaml — the buses.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#board_devicesyaml-the-chips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        board_devices.yaml — the chips.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-conventions-inside-the-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The conventions inside the YAML.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-generator-actually-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the generator actually does.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-generated-c-looks-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the generated C looks like.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#escape-hatches-when-yaml-isnt-enough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escape hatches: when YAML isn't enough.
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Escape hatches: when YAML isn&#39;t enough.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#but-didnt-i-already-say-which-panel-it-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        But didn't I already say which panel it is?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#amend-changing-a-board-that-isnt-yours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amend: changing a board that isn't yours.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-devices-hardware-bmgr-has-never-heard-of" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        custom devices: hardware BMGR has never heard of.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#and-at-run-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        And at run time.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-the-regular-workflow-using-idfpy-esp_bmgr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's the regular workflow using idf.py + esp_bmgr?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#so-what-is-esp_bmgr-then" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        So what is esp_bmgr, then?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../what_is_esp_hosted_and_how_does_work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is ESP-Hosted and how does it work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../programming/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Programming
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Programming
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../programming/c-cpp/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/Cpp
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    C/Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../programming/c-cpp/how_does_a_machine_know_c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does a machine know C?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../regulations/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Regulations
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Regulations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../regulations/how_do_you_build_the_rules_into_a_device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How do you build the rules into a device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../regulations/what_does_the_cra_ask_of_an_iot_device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What does the CRA ask of an IoT device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../regulations/what_does_the_fcc_ask_of_an_iot_device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What does the FCC ask of an IoT device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../regulations/what_does_the_red_ask_of_an_iot_device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What does the RED ask of an IoT device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../regulations/what_rules_does_an_iot_device_have_to_pass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What rules does an IoT device have to pass before you can sell it?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../projects/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projects
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/kodeos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kodeOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/kode_sdk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kode SDK
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/park20/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PARK20
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/omni20wune/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OMNI20WUNE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#normally-how-do-you-define-the-pins-ports-and-interfaces-in-an-embedded-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Normally how do you define the pins, ports and interfaces in an embedded system?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-the-sdkconfig-file-actually-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How does the sdkconfig file actually work?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How does the sdkconfig file actually work?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#it-writes-a-defaults-file-not-your-sdkconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        It writes a defaults file, not your sdkconfig.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#it-injects-that-file-into-sdkconfig_defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        It injects that file into SDKCONFIG_DEFAULTS.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-idfpy-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How does idf.py work?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-you-add-esp_bmgr-to-idfpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do you add esp_bmgr to idf.py?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How do you add esp_bmgr to idf.py?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-boards-are-scanned-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where boards are scanned from.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-you-define-your-board-inside-the-esp_bmgr-and-what-it-actually-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do you define your board inside the esp_bmgr and what it actually does?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How do you define your board inside the esp_bmgr and what it actually does?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#board_infoyaml-what-this-board-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        board_info.yaml — what this board is.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#board_peripheralsyaml-the-buses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        board_peripherals.yaml — the buses.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#board_devicesyaml-the-chips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        board_devices.yaml — the chips.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-conventions-inside-the-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The conventions inside the YAML.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-generator-actually-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the generator actually does.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-generated-c-looks-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the generated C looks like.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#escape-hatches-when-yaml-isnt-enough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escape hatches: when YAML isn't enough.
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Escape hatches: when YAML isn&#39;t enough.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#but-didnt-i-already-say-which-panel-it-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        But didn't I already say which panel it is?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#amend-changing-a-board-that-isnt-yours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amend: changing a board that isn't yours.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-devices-hardware-bmgr-has-never-heard-of" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        custom devices: hardware BMGR has never heard of.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#and-at-run-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        And at run time.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-the-regular-workflow-using-idfpy-esp_bmgr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's the regular workflow using idf.py + esp_bmgr?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#so-what-is-esp_bmgr-then" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        So what is esp_bmgr, then?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="what-is-the-espressif-board-manager-and-how-does-it-work">What is the Espressif board manager and how does it work?<a class="headerlink" href="#what-is-the-espressif-board-manager-and-how-does-it-work" title="Permanent link">&para;</a></h1>
+<p>In <a href="../esp_idf_how_does_it_work/">How does ESP-IDF work?</a> we took a project apart and found that almost nothing was magic: components are folders, <code>sdkconfig.h</code> is a generated header, the linker script is written by <code>ldgen</code>, and <code>app_main</code> is called by a FreeRTOS task in <code>app_startup.c</code>.</p>
+<p>But there's one thing that note never answered, because ESP-IDF itself doesn't answer it: <strong>where does the number <code>27</code> come from?</strong> Our <code>my_led</code> component blinked GPIO 27 because a <code>Kconfig</code> option said so, and that option said so because I looked at a schematic once and typed a number. Change the board and every one of those numbers is wrong. There is nothing in ESP-IDF that knows what <em>your</em> board is.</p>
+<p>That gap is what <strong>ESP Board Manager</strong> — <code>esp_board_manager</code>, <code>esp-bmgr</code>, or just <strong>BMGR</strong> — is trying to close. This note is about what it actually does: what you write, what a Python script turns it into, when that script runs relative to CMake, what the generated C looks like, and what happens at run time between <code>esp_board_manager_init()</code> and your first <code>esp_board_manager_get_device_handle()</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Versions</p>
+<p>Written against <strong><code>esp_board_manager</code> v0.7.0</strong> (August 2026) and the
+<a href="https://docs.espressif.com/projects/esp-board-manager/en/latest/index.html">ESP Board Manager Guide</a>.
+BMGR is young and moves fast — the component was at v0.5.x a few months ago and
+board definitions have already been moved out of it once. Check the
+<a href="https://github.com/espressif/esp-board-manager/blob/main/esp_board_manager/README.md">README</a>
+for the ESP-IDF minimum it wants (currently the <code>release/v5.4</code> and <code>release/v5.5</code>
+branches, plus <code>master</code>).</p>
+</div>
+<h2 id="introduction">Introduction.<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>BMGR is built around one sentence, and everything else follows from it: <strong>the board is not part of your application</strong>.</p>
+<p>Concretely, three things ship together:</p>
+<ul>
+<li><strong>A description format.</strong> Three YAML files per board that say what silicon is on it, which buses are wired to which pins, and which chips hang off those buses.</li>
+<li><strong>A code generator.</strong> A Python script that reads those YAML files and writes an ordinary ESP-IDF component full of <code>const</code> C structures — plus a Kconfig file, an <code>sdkconfig</code> defaults file, and a component manifest.</li>
+<li><strong>A tiny runtime.</strong> A few hundred lines of C that walk those generated structures in order, call each driver's <code>init</code>, and hand your application a handle when you ask for one by name.</li>
+</ul>
+<p>Nothing there is exotic. It's the <a href="../esp_idf_how_does_it_work/">Kconfig → <code>sdkconfig.h</code></a> trick from the ESP-IDF note applied one level up: <em>description outside the code, generator in the middle, plain C at the end.</em></p>
+<p>Here's the shape of the whole thing, and it's worth keeping this picture in your head for the rest of the note:</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph board ["The board description (you write this once)"]
+        BI["board_info.yaml&lt;br/&gt;name, chip, version"]
+        BP["board_peripherals.yaml&lt;br/&gt;i2c, spi, i2s, gpio..."]
+        BD["board_devices.yaml&lt;br/&gt;codec, lcd, button..."]
+        SD["sdkconfig.defaults.board&lt;br/&gt;(optional)"]
+        SC["setup_device.c&lt;br/&gt;(optional)"]
+    end
+    subgraph gen ["idf.py bmgr -b &lt;board&gt;"]
+        SCAN["scan board dirs"] --&gt; PARSE["parse + validate&lt;br/&gt;(SoC caps, IO conflicts)"]
+        PARSE --&gt; EMIT["emit generated component"]
+    end
+    subgraph out ["components/gen_bmgr_codes/ (a real component)"]
+        CFG["gen_board_periph_config.c&lt;br/&gt;gen_board_device_config.c"]
+        HND["gen_board_periph_handles.c&lt;br/&gt;gen_board_device_handles.c"]
+        DEF["board_manager.defaults&lt;br/&gt;Kconfig.projbuild&lt;br/&gt;idf_component.yml"]
+    end
+    BI --&gt; SCAN
+    BP --&gt; SCAN
+    BD --&gt; SCAN
+    SD --&gt; SCAN
+    SC --&gt; SCAN
+    EMIT --&gt; CFG
+    EMIT --&gt; HND
+    EMIT --&gt; DEF
+    DEF --&gt; BUILD["idf.py build&lt;br/&gt;(sdkconfig, dependencies)"]
+    CFG --&gt; BUILD
+    HND --&gt; BUILD
+    BUILD --&gt; RT["esp_board_manager_init()&lt;br/&gt;peripherals, then devices"]
+    RT --&gt; APP["your app:&lt;br/&gt;get_device_handle('audio_dac')"]</code></pre>
+<p>Two details in that diagram matter more than they look, and both are covered later:</p>
+<ul>
+<li><code>components/gen_bmgr_codes/</code> is <strong>not a cache</strong>. It is a real component that is compiled into your binary. If it's missing or half-written, you get link errors, not a helpful message.</li>
+<li>The generator runs <strong>before</strong> CMake, not during it. That's why <code>idf.py bmgr</code> is a separate command you have to remember to run.</li>
+</ul>
+<h2 id="normally-how-do-you-define-the-pins-ports-and-interfaces-in-an-embedded-system">Normally how do you define the pins, ports and interfaces in an embedded system?<a class="headerlink" href="#normally-how-do-you-define-the-pins-ports-and-interfaces-in-an-embedded-system" title="Permanent link">&para;</a></h2>
+<p>Before looking at what BMGR does, it's worth being precise about the problem, because "where do I put my pin numbers" has about five standard answers and each one fails in a different way.</p>
+<p><strong>Level 0 — literals in the code.</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">gpio_set_level</span><span class="p">(</span><span class="mi">27</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">i2c_master_bus_config_t</span><span class="w"> </span><span class="n">cfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">.</span><span class="n">sda_io_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">17</span><span class="p">,</span><span class="w"> </span><span class="p">.</span><span class="n">scl_io_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">18</span><span class="w"> </span><span class="p">};</span>
+</code></pre></div>
+<p>Works on exactly one board, and you find every place it broke by grepping for numbers.</p>
+<p><strong>Level 1 — a <code>board.h</code> full of macros.</strong> The classic:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="cp">#if defined(BOARD_REV_A)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="cp">#define LED_GPIO        27</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="cp">#define I2C_SDA_GPIO    17</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="cp">#elif defined(BOARD_REV_B)</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="cp">#define LED_GPIO        21</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="cp">#define I2C_SDA_GPIO     8</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="cp">#endif</span>
+</code></pre></div>
+<p>Better, and it survives one board revision. It stops scaling the moment two boards differ not in <em>which pin</em> but in <em>which parts exist</em>: rev B has a touch controller, rev A doesn't. Now the <code>#ifdef</code> isn't around a number, it's around a call, and it spreads into your application.</p>
+<p><strong>Level 2 — Kconfig.</strong> Turn the numbers into <code>CONFIG_*</code> symbols so they live in <code>sdkconfig</code> instead of a header. This is what we did with <code>CONFIG_MY_LED_GPIO</code> in the ESP-IDF note, and it's genuinely better: the value is data, <code>menuconfig</code> can validate a range, and the build system knows about it. But Kconfig only stores <em>scalars</em>. "An ILI9341 on SPI2, MOSI on 11, SCLK on 12, 16-bit colour, 240×320, backlight on LEDC channel 0 through a PNP transistor" is not a scalar. You end up with thirty flat symbols and no structure, and <em>someone still has to write the C that reads them and calls the driver in the right order</em>.</p>
+<p><strong>Level 3 — a BSP component.</strong> Espressif's own <a href="https://github.com/espressif/esp-bsp"><code>esp-bsp</code></a> does this: one component per board, exposing <code>bsp_display_start()</code>, <code>bsp_audio_init()</code>, and so on. This is a real improvement — the board description and the init code live together, outside your app. The catch is that it's <em>code</em>, so every board is a fresh pile of hand-written C, each BSP invents its own function names, and adapting your own board means writing a BSP from scratch by copying one that's close.</p>
+<p><strong>Level 4 — a machine-readable description.</strong> This is what Linux and Zephyr do with <strong>devicetree</strong>: the hardware is a data file (<code>.dts</code>), a compiler (<code>dtc</code>, or Zephyr's <code>gen_defines.py</code>) turns it into something the code can read, and drivers bind themselves to nodes by <code>compatible</code> string. The application stops knowing pin numbers at all; it asks for "the display" and gets whatever the description says the display is.</p>
+<p>BMGR is level 4, with a deliberately smaller ambition. The comparison is worth making because if you've met devicetree, three quarters of BMGR is already familiar:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Devicetree (Zephyr)</th>
+<th>ESP Board Manager</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Source format</td>
+<td><code>.dts</code> / <code>.dtsi</code>, custom syntax</td>
+<td>plain YAML, three files</td>
+</tr>
+<tr>
+<td>Schema</td>
+<td><code>.yaml</code> bindings, per-compatible</td>
+<td><code>periph_&lt;type&gt;.yml</code> / <code>dev_&lt;type&gt;.yaml</code> in the component</td>
+</tr>
+<tr>
+<td>Compiler</td>
+<td><code>dtc</code> + Python, runs inside CMake</td>
+<td><code>gen_bmgr_config_codes.py</code>, run by hand via <code>idf.py bmgr</code></td>
+</tr>
+<tr>
+<td>Output</td>
+<td>macros in <code>devicetree_generated.h</code></td>
+<td>a whole C component in <code>components/gen_bmgr_codes/</code></td>
+</tr>
+<tr>
+<td>Binding to drivers</td>
+<td><code>compatible</code> string, <code>DEVICE_DT_DEFINE</code></td>
+<td><code>type</code> + <code>sub_type</code>, a generated table of <code>init</code>/<code>deinit</code> pointers</td>
+</tr>
+<tr>
+<td>Init order</td>
+<td>priority levels, resolved at build</td>
+<td>declaration order in YAML + <code>depends_on</code>, resolved at run time</td>
+</tr>
+</tbody>
+</table>
+<p>The one structural difference worth internalising: <strong>devicetree is compiled into your build, BMGR is generated beside it.</strong> Zephyr can't build without running the devicetree step; ESP-IDF happily builds a stale or missing <code>gen_bmgr_codes</code> and only complains at link time.</p>
+<h2 id="how-does-the-sdkconfig-file-actually-work">How does the sdkconfig file actually work?<a class="headerlink" href="#how-does-the-sdkconfig-file-actually-work" title="Permanent link">&para;</a></h2>
+<p>Recap in one paragraph, because <a href="../esp_idf_how_does_it_work/">the ESP-IDF note</a> covers the mechanism: every component may ship a <code>Kconfig</code> file; ESP-IDF's build collects them all into one menu; your answers land in a plain text <code>sdkconfig</code> at the project root; and from that file the build generates <code>build/config/sdkconfig.h</code> (for C), <code>sdkconfig.cmake</code> (for CMake) and friends. <code>sdkconfig</code> is generated on first build from <code>sdkconfig.defaults</code>, and after that it's yours — which is why <code>sdkconfig.defaults</code> is checked in and <code>sdkconfig</code> is gitignored.</p>
+<p>BMGR hooks into that chain in two places, and both are worth understanding because most "why is my board misbehaving" questions live here.</p>
+<h3 id="it-writes-a-defaults-file-not-your-sdkconfig">It writes a defaults file, not your sdkconfig.<a class="headerlink" href="#it-writes-a-defaults-file-not-your-sdkconfig" title="Permanent link">&para;</a></h3>
+<p>Generation produces <code>components/gen_bmgr_codes/board_manager.defaults</code>. It's an ordinary <code>sdkconfig.defaults</code>-shaped file and it contains three kinds of line:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># 1. the target, taken from `chip:` in board_info.yaml</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nv">CONFIG_IDF_TARGET</span><span class="o">=</span><span class="s2">"esp32s3"</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># 2. board identity</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nv">CONFIG_ESP_BOARD_ESP32_S3_KORVO_2_3</span><span class="o">=</span>y
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nv">CONFIG_ESP_BOARD_NAME</span><span class="o">=</span><span class="s2">"esp32_s3_korvo_2_3"</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="c1"># 3. capability symbols, derived from what the YAML declares</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="nv">CONFIG_ESP_BOARD_PERIPH_I2C_SUPPORT</span><span class="o">=</span>y
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="nv">CONFIG_ESP_BOARD_PERIPH_I2S_SUPPORT</span><span class="o">=</span>y
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="nv">CONFIG_ESP_BOARD_DEV_AUDIO_CODEC_SUPPORT</span><span class="o">=</span>y
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="nv">CONFIG_ESP_BOARD_DEV_DISPLAY_LCD_SUPPORT</span><span class="o">=</span>y
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="nv">CONFIG_ESP_BOARD_DEV_DISPLAY_LCD_SUB_SPI_SUPPORT</span><span class="o">=</span>y
+</code></pre></div>
+<p>Group 1 is why <strong>you never run <code>idf.py set-target</code> on a BMGR project</strong> — the board already knows its chip. Group 3 is how BMGR keeps the binary small: every peripheral and device implementation inside the component is wrapped in <code>#if CONFIG_ESP_BOARD_*_SUPPORT</code>, so a board that declares no camera compiles no camera code. Those symbols are <em>derived from your YAML</em>, which is why the docs are blunt about it: don't hand-write <code>CONFIG_ESP_BOARD_*</code> in your project's <code>sdkconfig.defaults</code>. You're not configuring the board there, you're lying to the generator.</p>
+<h3 id="it-injects-that-file-into-sdkconfig_defaults">It injects that file into <code>SDKCONFIG_DEFAULTS</code>.<a class="headerlink" href="#it-injects-that-file-into-sdkconfig_defaults" title="Permanent link">&para;</a></h3>
+<p>ESP-IDF reads a <code>;</code>-separated list of defaults files from the <code>SDKCONFIG_DEFAULTS</code> variable, later entries winning. BMGR uses an <code>idf.py</code> global callback (more on those <a href="#how-does-idfpy-work">below</a>) to assemble that list before CMake starts:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>project sdkconfig.defaults          (lowest)
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>components/gen_bmgr_codes/board_manager.defaults
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>$SDKCONFIG_DEFAULTS  (environment)
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>-D SDKCONFIG_DEFAULTS=...           (highest)
+</code></pre></div>
+<p>Read that order twice, because the consequence is counter-intuitive: <strong>the board beats your project.</strong> If your <code>sdkconfig.defaults</code> sets a symbol the board also sets, the board's value wins and BMGR prints a non-blocking warning. The reasoning is that <code>sdkconfig.defaults</code> is for cross-board policy (log level, compiler optimisation) while board-specific things (PSRAM mode, flash size, partition table) belong to the board — in its <code>sdkconfig.defaults.board</code>, or in an <a href="#escape-hatches-when-yaml-isnt-enough">amend</a> if you need to override someone else's board without forking it.</p>
+<p>Two more behaviours that will bite at some point:</p>
+<ul>
+<li>All of this applies <strong>only when the project has no <code>sdkconfig</code> yet</strong>. Once <code>sdkconfig</code> exists it is the source of truth, and BMGR falls back to <em>checking</em> it against <code>board_manager.defaults</code> and warning about mismatches. Set <code>ESP_BOARD_MANAGER_SKIP_SDKCONFIG_CHECK=1</code> to silence that.</li>
+<li>When you <strong>switch boards</strong>, the generator backs up and deletes your <code>sdkconfig</code>, leaving the copy at <code>components/gen_bmgr_codes/sdkconfig.bmgr_board.old</code>. It has to: the old file pins <code>CONFIG_IDF_TARGET</code> to the old chip. Losing a hand-tuned <code>sdkconfig</code> to a board switch is a rite of passage; the backup is right there.</li>
+</ul>
+<p>When two sections of the merge set the same symbol, BMGR keeps the last one and rewrites the earlier line as a comment:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># BMGR_CONFIG_OVERRIDE by board_amend: CONFIG_SPIRAM_SPEED_80M=y</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nv">CONFIG_SPIRAM_SPEED_120M</span><span class="o">=</span>y
+</code></pre></div>
+<p>Which means <code>board_manager.defaults</code> is also a log of who overrode what. It's the first file to open when a setting isn't what you expected.</p>
+<h2 id="how-does-idfpy-work">How does idf.py work?<a class="headerlink" href="#how-does-idfpy-work" title="Permanent link">&para;</a></h2>
+<p><code>idf.py</code> is a Python program that runs other programs. That's the whole idea, and the ESP-IDF note showed it printing the exact <code>esptool.py</code> command line it was about to run. What matters here is one layer up: <strong><code>idf.py</code> is built out of <em>actions</em>, and actions are extensible.</strong></p>
+<p>An action is a subcommand — <code>build</code>, <code>flash</code>, <code>monitor</code>, <code>menuconfig</code>, <code>set-target</code>. Each is a Python function with a click-style option list. ESP-IDF finds extra actions in two ways:</p>
+<ul>
+<li><strong><code>IDF_EXTRA_ACTIONS_PATH</code></strong> — a directory containing an <code>idf_ext.py</code>. Anything that file exports becomes a first-class <code>idf.py</code> subcommand. This is the mechanism on ESP-IDF before v6.0.</li>
+<li><strong>Component discovery</strong> — on ESP-IDF v6.0+, a component that ships an <code>idf_ext.py</code> is picked up because the project depends on it.</li>
+</ul>
+<p><code>esp_board_manager</code> ships exactly that file, and it declares two things:</p>
+<ol>
+<li>The <strong><code>bmgr</code> action</strong> (with <code>gen-bmgr-config</code> kept as a legacy alias), which is the front-end to <code>gen_bmgr_config_codes.py</code>.</li>
+<li>A <strong>global callback</strong>, which is the more interesting half. Global callbacks run <em>before any action</em>, and they can modify the arguments and environment the rest of <code>idf.py</code> will see. That's the hook BMGR uses to prepend <code>board_manager.defaults</code> to <code>SDKCONFIG_DEFAULTS</code>, which is why the board's defaults reach CMake even though you typed plain <code>idf.py build</code>.</li>
+</ol>
+<p>So there are two entirely different moments in play, and confusing them is the single most common BMGR mistake:</p>
+<table>
+<thead>
+<tr>
+<th>When</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>idf.py bmgr -b &lt;board&gt;</code></td>
+<td>YAML is parsed and validated; <code>components/gen_bmgr_codes/</code> is written. <strong>Only when you run it.</strong></td>
+</tr>
+<tr>
+<td><code>idf.py build</code> (any action)</td>
+<td>Global callback wires <code>board_manager.defaults</code> into <code>SDKCONFIG_DEFAULTS</code>; CMake then compiles <code>gen_bmgr_codes</code> like any other component.</td>
+</tr>
+</tbody>
+</table>
+<p>The generator is <strong>not</strong> wired into CMake's dependency graph. Change a pin in <code>board_devices.yaml</code>, run <code>idf.py build</code>, and you will happily flash the old configuration. Re-run <code>idf.py bmgr -b &lt;board&gt;</code> after every board YAML edit — that's the discipline the tool asks of you in exchange for not slowing down every build.</p>
+<h2 id="how-do-you-add-esp_bmgr-to-idfpy">How do you add esp_bmgr to idf.py?<a class="headerlink" href="#how-do-you-add-esp_bmgr-to-idfpy" title="Permanent link">&para;</a></h2>
+<p>Two independent pieces, and it's worth knowing which does what, because the failure modes look identical from the outside.</p>
+<p><strong>1. The component</strong> — this is what gets compiled into your firmware. Declare it like any other dependency, in <code>main/idf_component.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">dependencies</span><span class="p">:</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">espressif/esp_board_manager</span><span class="p">:</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">"*"</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">require</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">public</span>
+</code></pre></div>
+<p>or from the command line, <code>idf.py add-dependency esp_board_manager</code>. <code>require: public</code> matters: it puts BMGR's headers on the include path of everything that depends on <code>main</code>, not just <code>main</code> itself — the <code>REQUIRES</code>/<code>PRIV_REQUIRES</code> distinction from the <a href="../esp_idf_how_does_it_work/#what-is-a-component">components section</a> of the ESP-IDF note. The component manager downloads it to <code>managed_components/espressif__esp_board_manager/</code> on the next <code>idf.py menuconfig</code>, <code>set-target</code> or <code>build</code>.</p>
+<p>Developing your own copy? Point at it instead:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">dependencies</span><span class="p">:</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">espressif/esp_board_manager</span><span class="p">:</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">override_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/esp_board_manager</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">"*"</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">require</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">public</span>
+</code></pre></div>
+<p><strong>2. The <code>idf.py</code> plumbing</strong> — this is host-side only, and it exists purely so <code>idf.py bmgr</code> is a command that resolves. The supported way is a small pip package installed into the ESP-IDF Python environment:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>.<span class="w"> </span><span class="nv">$IDF_PATH</span>/export.sh
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>pip<span class="w"> </span>install<span class="w"> </span>esp-bmgr-assist<span class="w">          </span><span class="c1"># once per IDF environment</span>
+</code></pre></div>
+<p><code>esp-bmgr-assist</code> hooks the <code>idf.py</code> startup, finds <code>esp_board_manager</code> in the current project (managed <em>or</em> <code>override_path</code>), and sets <code>IDF_EXTRA_ACTIONS_PATH</code> for you. Install it once and every project sharing that environment gets <code>idf.py bmgr</code>.</p>
+<p>If you'd rather not install anything, set the variable yourself:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># component downloaded from the registry</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">IDF_EXTRA_ACTIONS_PATH</span><span class="o">=</span><span class="nv">$PWD</span>/managed_components/espressif__esp_board_manager
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># or a local checkout</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="nb">export</span><span class="w"> </span><span class="nv">IDF_EXTRA_ACTIONS_PATH</span><span class="o">=</span>/path/to/esp_board_manager
+</code></pre></div>
+<p>Then check it took:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>idf.py<span class="w"> </span>bmgr<span class="w"> </span>-l<span class="w">          </span><span class="c1"># list every board the scanner can see</span>
+</code></pre></div>
+<p>That command is the real installation test. If it prints a board list, both halves are wired up. If <code>bmgr</code> isn't a known action, it's the host half (step 2). If it <em>is</em> known but finds no boards, it's the component half (step 1) or your scan paths.</p>
+<h3 id="where-boards-are-scanned-from">Where boards are scanned from.<a class="headerlink" href="#where-boards-are-scanned-from" title="Permanent link">&para;</a></h3>
+<p><code>idf.py bmgr -l</code> looks in several places, and when the same board name appears twice, the earlier one wins:</p>
+<ol>
+<li>Your project's <code>components/</code> directory.</li>
+<li><code>managed_components/</code> — including the board packs that come down as dependencies.</li>
+<li>Board components named in <code>main/idf_component.yml</code> (registry or <code>override_path</code>/<code>path</code>).</li>
+<li>Anything passed with <code>-c/--customer-path</code> (semicolon-separated for several roots; later paths take precedence).</li>
+</ol>
+<p>Since v0.5.12 the boards themselves no longer live inside <code>esp_board_manager</code>. They're separate components: <a href="https://components.espressif.com/components/espressif/esp_boards"><code>espressif/esp_boards</code></a> for the officially sold dev kits (pulled in by default), plus <code>espressif/esp_friends_boards</code> and <code>espressif/m5stack_boards</code> for the rest. Your own board is just another one of these — a folder in <code>components/</code>, or eventually a component you publish.</p>
+<h2 id="how-do-you-define-your-board-inside-the-esp_bmgr-and-what-it-actually-does">How do you define your board inside the esp_bmgr and what it actually does?<a class="headerlink" href="#how-do-you-define-your-board-inside-the-esp_bmgr-and-what-it-actually-does" title="Permanent link">&para;</a></h2>
+<p>Now the centre of the thing. A board is <strong>a directory with three YAML files</strong>; the scanner uses the presence of all three as its definition of "this is a board". The directory name is the board name, and it must match the <code>board:</code> field. Letters, digits and underscores only — a hyphen makes your board invisible, silently.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>my_board/
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>|- board_info.yaml           required   what this board is
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>|- board_peripherals.yaml    required   buses and pins
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>|- board_devices.yaml        required   chips hanging off those buses
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>|- sdkconfig.defaults.board  optional   board-level CONFIG_*
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>|- setup_device.c            optional   C that YAML can't express
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>|- Kconfig.projbuild         optional   board-specific menu entries
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>|- packages/                 optional   board-local components
+</code></pre></div>
+<p>Let's write one. I'll build a small ESP32-P4 board — the same chip as <a href="../esp_idf_how_does_it_work/">the ESP-IDF note</a> — with an I²C bus, an LED, and a button, because that's enough to hit every concept without a page of LCD timings.</p>
+<h3 id="board_infoyaml-what-this-board-is"><code>board_info.yaml</code> — what this board is.<a class="headerlink" href="#board_infoyaml-what-this-board-is" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kode_p4_demo</span><span class="w">        </span><span class="c1"># must equal the directory name</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nt">chip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">esp32p4</span><span class="w">              </span><span class="c1"># becomes CONFIG_IDF_TARGET</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">"1.0.0"</span><span class="w">           </span><span class="c1"># YAML schema version, NOT your hardware revision</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"P4</span><span class="nv"> </span><span class="s">demo</span><span class="nv"> </span><span class="s">board:</span><span class="nv"> </span><span class="s">I2C</span><span class="nv"> </span><span class="s">sensor</span><span class="nv"> </span><span class="s">bus,</span><span class="nv"> </span><span class="s">status</span><span class="nv"> </span><span class="s">LED,</span><span class="nv"> </span><span class="s">boot</span><span class="nv"> </span><span class="s">button"</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="nt">manufacturer</span><span class="p">:</span><span class="w"> </span><span class="s">"Kode"</span>
+</code></pre></div>
+<p>Only <code>board</code> and <code>chip</code> are required. The one field people misread is <code>version</code>: it identifies the <em>YAML parsing contract</em> (currently <code>1.0.0</code>), not your PCB revision and not the BMGR release. Put your hardware revision in <code>description</code>.</p>
+<p>Everything here is metadata — it ends up in <code>gen_board_info.c</code> as a <code>const esp_board_info_t</code> and gets printed by <code>esp_board_manager_print_board_info()</code>. Nothing in it changes how a device is initialised, with the single exception of <code>chip</code>, which drives the target and the SoC capability checks.</p>
+<h3 id="board_peripheralsyaml-the-buses"><code>board_peripherals.yaml</code> — the buses.<a class="headerlink" href="#board_peripheralsyaml-the-buses" title="Permanent link">&para;</a></h3>
+<p>A peripheral is a <em>controller inside the SoC</em>: an I²C port, an SPI host, an I²S interface, one GPIO. Not the thing on the other end of the wire.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">peripherals</span><span class="p">:</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">i2c_main</span><span class="w">           </span><span class="c1"># names MUST start with the type</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">i2c</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="nt">config</span><span class="p">:</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-1</span><span class="w">               </span><span class="c1"># -1 = let the driver pick a free port</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">      </span><span class="nt">clk_source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">I2C_CLK_SRC_DEFAULT</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">      </span><span class="nt">pins</span><span class="p">:</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">        </span><span class="nt">sda</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7</span><span class="w">               </span><span class="c1"># [IO] from the schematic</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">        </span><span class="nt">scl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span><span class="w">               </span><span class="c1"># [IO] from the schematic</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">      </span><span class="nt">enable_internal_pullup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">      </span><span class="nt">glitch_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="w">      </span><span class="nt">intr_priority</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpio_led</span><span class="w">           </span><span class="c1"># type-prefixed again</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpio</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="w">    </span><span class="nt">config</span><span class="p">:</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="w">      </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">27</span><span class="w">                </span><span class="c1"># [IO]</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">"GPIO_MODE_OUTPUT"</span>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="w">      </span><span class="nt">default_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpio_boot_btn</span>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpio</span>
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="w">    </span><span class="nt">config</span><span class="p">:</span>
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="w">      </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">35</span><span class="w">                </span><span class="c1"># [IO]</span>
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">"GPIO_MODE_INPUT"</span>
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="w">      </span><span class="nt">pull_up</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a><span class="w">      </span><span class="nt">intr_type</span><span class="p">:</span><span class="w"> </span><span class="s">"GPIO_INTR_ANYEDGE"</span>
+</code></pre></div>
+<p>Four rules are doing the work here:</p>
+<ul>
+<li><strong><code>name</code> must be prefixed with <code>type</code>.</strong> <code>i2c_main</code>, <code>gpio_led</code>, <code>spi_lcd</code>. Devices refer to peripherals by this string, and a typo is a run-time "peripheral not found", not a compile error. The runtime also parses a trailing number out of the name into the descriptor's <code>id</code> field.</li>
+<li><strong><code>type</code> picks the parser.</strong> <code>type: i2c</code> means the fields under <code>config:</code> are validated against <code>peripherals/periph_i2c/periph_i2c.yml</code> inside the component. That file is the actual reference — it lists every field, its default, and its legal values, in comments. When the docs and your intuition disagree, open the <code>periph_*.yml</code>.</li>
+<li><strong><code>role</code> is required for types that have modes</strong> — <code>master</code>/<code>slave</code> for I²C and SPI, <code>tx</code>/<code>rx</code> for UART and RMT, <code>oneshot</code>/<code>continuous</code> for ADC. I²S additionally needs <code>format</code> (<code>std-out</code>, <code>tdm-in</code>, <code>pdm-out</code>).</li>
+<li><strong>Enum fields take the ESP-IDF enum name, spelled exactly.</strong> <code>GPIO_MODE_OUTPUT</code>, not <code>1</code>, not <code>"output"</code>. The generator copies that string straight into C, so a typo becomes a compiler error — which is the point: it fails at build time, in a file you can read, instead of at run time.</li>
+</ul>
+<p>About that I²C block: <code>enable_internal_pullup: true</code> is convenient and, on a real bus, usually wrong. The SoC's internal pull-ups are tens of kΩ; <a href="../i2c_explained/">I²C</a> generally wants a few kΩ on the board. Treat it as a bring-up crutch, not a design.</p>
+<h3 id="board_devicesyaml-the-chips"><code>board_devices.yaml</code> — the chips.<a class="headerlink" href="#board_devicesyaml-the-chips" title="Permanent link">&para;</a></h3>
+<p>A device is <em>the functional thing</em>: the codec, the display, the button, the SD card. It references the peripherals it needs by name.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">status_led</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpio_ctrl</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">    </span><span class="nt">config</span><span class="p">:</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">      </span><span class="c1"># nothing chip-specific: the pin lives in the peripheral</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="nt">peripherals</span><span class="p">:</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpio_led</span><span class="w">         </span><span class="c1"># must match board_peripherals.yaml exactly</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">button_boot</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">button</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="w">    </span><span class="nt">sub_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpio</span><span class="w">             </span><span class="c1"># gpio | adc_single | adc_multi | custom</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="w">    </span><span class="nt">config</span><span class="p">:</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="w">      </span><span class="nt">active_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">          </span><span class="c1"># [TO_BE_CONFIRMED] check the schematic</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="w">      </span><span class="nt">long_press_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2000</span>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="w">      </span><span class="nt">short_press_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="w">      </span><span class="nt">events_cfg</span><span class="p">:</span>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="w">        </span><span class="nt">press_down</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="w">        </span><span class="nt">press_up</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="w">        </span><span class="nt">single_click</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="w">        </span><span class="nt">double_click</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="w">        </span><span class="nt">long_press_start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a><span class="w">        </span><span class="nt">long_press_up</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="w">    </span><span class="nt">peripherals</span><span class="p">:</span>
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpio_boot_btn</span>
+<a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="w">    </span><span class="nt">dependencies</span><span class="p">:</span>
+<a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="w">      </span><span class="nt">espressif/button</span><span class="p">:</span><span class="w"> </span><span class="s">"4.1.4"</span><span class="w">    </span><span class="c1"># pulled into the build for us</span>
+</code></pre></div>
+<p>And the fields you'll reach for as boards get real:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Instance name. Unique, lowercase, <strong>not</strong> required to be type-prefixed. This is the string your application passes to <code>get_device_handle()</code>, so name it for its function: <code>audio_dac</code>, <code>display_main</code>, <code>button_boot</code>.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>Picks the driver implementation and the config schema in <code>devices/dev_&lt;type&gt;/</code>.</td>
+</tr>
+<tr>
+<td><code>sub_type</code></td>
+<td>The variant within a type — <code>display_lcd</code> splits into <code>spi</code>/<code>i80</code>/<code>dsi</code>/<code>parlio</code>/<code>rgb</code>/<code>rgb_3wire_spi</code>.</td>
+</tr>
+<tr>
+<td><code>chip</code></td>
+<td>The <em>external</em> part number (<code>ili9341</code>, <code>es8311</code>), not the SoC. Only for devices that need to identify a specific part.</td>
+</tr>
+<tr>
+<td><code>peripherals</code></td>
+<td>The buses this device sits on. Entries may carry device-side extras, like <code>addr: 0x18</code> for an I²C part — read by the device parser, and <strong>not</strong> written back into the peripheral's own config.</td>
+</tr>
+<tr>
+<td><code>dependencies</code></td>
+<td>Extra ESP-IDF components this device's driver needs. Copied into the generated <code>idf_component.yml</code>, so the component manager downloads them. This is how a board pulls <code>esp_lcd_ili9341</code> into your build without you knowing the name.</td>
+</tr>
+<tr>
+<td><code>init_skip</code></td>
+<td><code>true</code> means "declared but don't start it automatically".</td>
+</tr>
+<tr>
+<td><code>depends_on</code></td>
+<td>Other <strong>devices</strong> that must be initialised first. Recursive, and it beats declaration order.</td>
+</tr>
+<tr>
+<td><code>power_ctrl_device</code></td>
+<td>A <code>power_ctrl</code> device that must power this one up before <code>init</code> and down after <code>deinit</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><code>depends_on</code> versus <code>power_ctrl_device</code> is the distinction worth learning early. Both guarantee ordering; only <code>power_ctrl_device</code> also <em>does</em> something — it triggers the power-on and power-off actions, and it gives you <code>esp_board_device_power_ctrl("display_main", false)</code> at run time so you can cut power to a panel without tearing down the driver. Use <code>depends_on</code> for "must exist first", <code>power_ctrl_device</code> for "must have power first".</p>
+<h3 id="the-conventions-inside-the-yaml">The conventions inside the YAML.<a class="headerlink" href="#the-conventions-inside-the-yaml" title="Permanent link">&para;</a></h3>
+<p>BMGR adds four small dialects on top of plain YAML, and the reference blocks you copy from the docs are full of them:</p>
+<ul>
+<li><strong><code>[IO]</code></strong> in a comment means <em>this is a physical pin, get it from the schematic</em>. The template value is almost always <code>-1</code>, and shipping a board with <code>-1</code> still in it is the number one adaptation bug.</li>
+<li><strong><code>[TO_BE_CONFIRMED]</code></strong> means <em>this is a plausible default that is probably wrong for your part</em>: I²C addresses, panel resolutions, voltage thresholds, active levels. Datasheet, not vibes.</li>
+<li><strong><code>${BOARD_PATH}</code></strong> expands to the board's own directory. Use it when depending on a component vendored under <code>packages/</code>, because the generated <code>idf_component.yml</code> lives somewhere else and relative paths will resolve from the wrong place:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">dependencies</span><span class="p">:</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span><span class="nt">kode/my_sensor_driver</span><span class="p">:</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">"*"</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="nt">override_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${BOARD_PATH}/packages/my_sensor_driver</span>
+</code></pre></div>
+<p>Only that exact spelling is substituted — <code>$BOARD_PATH</code> and <code>{{BOARD_PATH}}</code> pass through untouched and break at generation time.</p>
+<ul>
+<li><strong>Anchors and merge keys</strong> are plain YAML and BMGR doesn't get in the way, which is the tidy way to declare two SPI hosts that differ in three pins:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spi_lcd</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spi</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;spi_master_default</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="nt">mosi_io_num</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">11</span><span class="w">        </span><span class="c1"># [IO]</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">    </span><span class="nt">miso_io_num</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-1</span><span class="w">        </span><span class="c1"># write-only panel</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">    </span><span class="nt">sclk_io_num</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">12</span><span class="w">        </span><span class="c1"># [IO]</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">    </span><span class="nt">max_transfer_sz</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">32768</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spi_touch</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spi</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">  </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">    </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*spi_master_default</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="w">    </span><span class="nt">mosi_io_num</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">35</span><span class="w">        </span><span class="c1"># [IO]</span>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="w">    </span><span class="nt">sclk_io_num</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">36</span><span class="w">        </span><span class="c1"># [IO]</span>
+</code></pre></div>
+<h3 id="what-the-generator-actually-does">What the generator actually does.<a class="headerlink" href="#what-the-generator-actually-does" title="Permanent link">&para;</a></h3>
+<p>Run it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>idf.py<span class="w"> </span>bmgr<span class="w"> </span>-b<span class="w"> </span>kode_p4_demo
+</code></pre></div>
+<p>and the script executes nine steps, in this order:</p>
+<ol>
+<li><strong>Scan</strong> every board directory it can reach (defaults, <code>-c</code> paths, components).</li>
+<li><strong>Select</strong> the board from <code>-b &lt;name|index&gt;</code>, or from <code>sdkconfig</code> if you don't pass one.</li>
+<li><strong>Locate</strong> that board's <code>board_info.yaml</code>, <code>board_peripherals.yaml</code>, <code>board_devices.yaml</code>, and the optional <code>sdkconfig.defaults.board</code> / <code>Kconfig.projbuild</code>.</li>
+<li><strong>Parse peripherals</strong> against each <code>periph_&lt;type&gt;.yml</code> and emit their config structs and handle tables.</li>
+<li><strong>Parse devices</strong>, resolve their <code>peripherals</code> references and <code>dependencies</code>, and emit theirs.</li>
+<li><strong>Validate</strong> — SoC capabilities (does this chip <em>have</em> two I²C ports?), hardware limits, GPIO range, and IO conflicts (are two peripherals claiming pin 27?).</li>
+<li><strong>Generate Kconfig</strong> — static capability symbols in <code>gen_codes/Kconfig.in</code>, current-board symbols in <code>components/gen_bmgr_codes/Kconfig.projbuild</code>, with the board's own <code>Kconfig.projbuild</code> appended.</li>
+<li><strong>Generate <code>board_manager.defaults</code></strong>, merged and de-duplicated as described earlier.</li>
+<li><strong>Write the component</strong> — sources, <code>CMakeLists.txt</code>, <code>idf_component.yml</code>, and <code>gen_board_metadata.yaml</code>.</li>
+</ol>
+<p>Step 6 is the one that earns its keep. Pin conflicts and "this chip only has one I²C" are exactly the mistakes a schematic-to-firmware transcription produces, and they normally show up as a device that silently doesn't work. Here they're a generation-time error with a file and a field name. When the check is wrong — a capability BMGR hasn't modelled yet — there's an escape hatch, and it's deliberately awkward to type:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>idf.py<span class="w"> </span>bmgr<span class="w"> </span>-b<span class="w"> </span>kode_p4_demo<span class="w"> </span>--skip-soc-capability-check
+</code></pre></div>
+<p>The output lands in <code>components/gen_bmgr_codes/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>What's in it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gen_board_periph_config.c</code></td>
+<td>one <code>const</code> config struct per peripheral</td>
+</tr>
+<tr>
+<td><code>gen_board_periph_handles.c</code></td>
+<td>the peripheral descriptor list and <code>init</code>/<code>deinit</code> function table</td>
+</tr>
+<tr>
+<td><code>gen_board_device_config.c</code></td>
+<td>one <code>const</code> config struct per device</td>
+</tr>
+<tr>
+<td><code>gen_board_device_handles.c</code></td>
+<td>the device descriptor list, handle list, and function table</td>
+</tr>
+<tr>
+<td><code>gen_board_info.c</code></td>
+<td>the <code>esp_board_info_t</code> from <code>board_info.yaml</code></td>
+</tr>
+<tr>
+<td><code>gen_board_device_custom.h</code></td>
+<td>structs for <code>type: custom</code> devices</td>
+</tr>
+<tr>
+<td><code>board_manager.defaults</code></td>
+<td>board <code>CONFIG_*</code> and capability symbols</td>
+</tr>
+<tr>
+<td><code>Kconfig.projbuild</code></td>
+<td>this board's menu entries</td>
+</tr>
+<tr>
+<td><code>idf_component.yml</code></td>
+<td>every component named in any device's <code>dependencies</code></td>
+</tr>
+<tr>
+<td><code>gen_board_metadata.yaml</code></td>
+<td>a machine-readable summary — devices, peripherals, dependencies, occupied IO</td>
+</tr>
+</tbody>
+</table>
+<p>That last file is the one to read when you want to know what BMGR <em>thinks</em> your board is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kode_p4_demo</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="nt">chip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">esp32p4</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">  </span><span class="nt">button_boot</span><span class="p">:</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">button</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">    </span><span class="nt">sub_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpio</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">    </span><span class="nt">peripherals</span><span class="p">:</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpio_boot_btn</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">    </span><span class="nt">dependencies</span><span class="p">:</span>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">      </span><span class="nt">espressif/button</span><span class="p">:</span><span class="w"> </span><span class="s">'4.1.4'</span>
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="nt">peripherals</span><span class="p">:</span>
+<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="w">  </span><span class="nt">i2c_main</span><span class="p">:</span>
+<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">i2c</span>
+<a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="w">    </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master</span>
+<a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="w">    </span><span class="nt">io</span><span class="p">:</span>
+<a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="w">      </span><span class="nt">sda</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7</span>
+<a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="w">      </span><span class="nt">scl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+</code></pre></div>
+<h3 id="what-the-generated-c-looks-like">What the generated C looks like.<a class="headerlink" href="#what-the-generated-c-looks-like" title="Permanent link">&para;</a></h3>
+<p>The shape is the same for peripherals and devices: a <strong>descriptor</strong> that is <code>const</code> (so it lives in flash), holding a pointer to a <code>const</code> config blob, plus a <strong>handle</strong> in RAM that holds the live pointer and a reference count. Both are singly-linked lists built at compile time, which is why the component's pitch mentions a low RAM footprint — the configuration never gets copied into RAM.</p>
+<p>Here are the two structures, verbatim from <code>include/esp_board_device.h</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">esp_board_device_desc</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">esp_board_device_desc</span><span class="w">  </span><span class="o">*</span><span class="n">next</span><span class="p">;</span><span class="w">               </span><span class="cm">/*!&lt; Pointer to next device descriptor */</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w">                          </span><span class="o">*</span><span class="n">name</span><span class="p">;</span><span class="w">               </span><span class="cm">/*!&lt; Device name */</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w">                          </span><span class="o">*</span><span class="n">chip</span><span class="p">;</span><span class="w">               </span><span class="cm">/*!&lt; Device chip type */</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w">                          </span><span class="o">*</span><span class="n">type</span><span class="p">;</span><span class="w">               </span><span class="cm">/*!&lt; Device type */</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w">                          </span><span class="o">*</span><span class="n">sub_type</span><span class="p">;</span><span class="w">           </span><span class="cm">/*!&lt; Device sub-type */</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w">                          </span><span class="o">*</span><span class="n">cfg</span><span class="p">;</span><span class="w">                </span><span class="cm">/*!&lt; Device configuration data */</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">    </span><span class="kt">uint16_t</span><span class="w">                             </span><span class="n">cfg_size</span><span class="p">;</span><span class="w">           </span><span class="cm">/*!&lt; Size of configuration data */</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w">                              </span><span class="n">init_skip</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">      </span><span class="cm">/*!&lt; Skip initialization when manager initializes all devices */</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w">                          </span><span class="o">*</span><span class="n">power_ctrl_device</span><span class="p">;</span><span class="w">  </span><span class="cm">/*!&lt; Power control device name for this device */</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="w">                  </span><span class="o">*</span><span class="n">depends_on</span><span class="p">;</span><span class="w">         </span><span class="cm">/*!&lt; Array of device names this device depends on */</span>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w">                              </span><span class="n">depends_on_num</span><span class="p">;</span><span class="w">     </span><span class="cm">/*!&lt; Number of dependencies */</span>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="p">}</span><span class="w"> </span><span class="n">esp_board_device_desc_t</span><span class="p">;</span>
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">esp_board_device_handle</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">esp_board_device_handle</span><span class="w"> </span><span class="o">*</span><span class="n">next</span><span class="p">;</span><span class="w">           </span><span class="cm">/*!&lt; Pointer to next device handle */</span>
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w">                     </span><span class="o">*</span><span class="n">name</span><span class="p">;</span><span class="w">           </span><span class="cm">/*!&lt; Device name */</span>
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w">                     </span><span class="o">*</span><span class="n">chip</span><span class="p">;</span><span class="w">           </span><span class="cm">/*!&lt; Device chip type */</span>
+<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w">                     </span><span class="o">*</span><span class="n">type</span><span class="p">;</span><span class="w">           </span><span class="cm">/*!&lt; Device type */</span>
+<a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a><span class="w">    </span><span class="kt">void</span><span class="w">                           </span><span class="o">*</span><span class="n">device_handle</span><span class="p">;</span><span class="w">  </span><span class="cm">/*!&lt; Device-specific handle */</span>
+<a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w">                         </span><span class="n">ref_count</span><span class="p">;</span><span class="w">      </span><span class="cm">/*!&lt; Reference count */</span>
+<a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a><span class="w">    </span><span class="n">esp_board_device_init_func</span><span class="w">      </span><span class="n">init</span><span class="p">;</span><span class="w">           </span><span class="cm">/*!&lt; Device initialization function */</span>
+<a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a><span class="w">    </span><span class="n">esp_board_device_deinit_func</span><span class="w">    </span><span class="n">deinit</span><span class="p">;</span><span class="w">         </span><span class="cm">/*!&lt; Device deinitialization function */</span>
+<a id="__codelineno-19-24" name="__codelineno-19-24" href="#__codelineno-19-24"></a><span class="p">}</span><span class="w"> </span><span class="n">esp_board_device_handle_t</span><span class="p">;</span>
+</code></pre></div>
+<p>Line them up with the YAML and the mapping is exact: <code>name</code>, <code>type</code>, <code>sub_type</code>, <code>chip</code>, <code>init_skip</code>, <code>depends_on</code>, <code>power_ctrl_device</code> are all fields you typed. <code>cfg</code> points at the struct the generator built from your <code>config:</code> block, and <code>cfg_size</code> is <code>sizeof</code> it — which is how a generic runtime can hand a driver a config it knows nothing about:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">typedef</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">esp_board_device_init_func</span><span class="p">)(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">cfg</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cfg_size</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">**</span><span class="n">device_handle</span><span class="p">);</span>
+</code></pre></div>
+<p>That signature <em>is</em> the abstraction. The runtime doesn't know what a codec config contains. It knows a pointer, a size, and where to put the handle that comes back. Everything type-specific lives on the two ends: the YAML parser that built the struct, and the <code>dev_&lt;type&gt;</code> implementation that casts it back.</p>
+<p>So, conceptually, what step 5 writes is a table of exactly this shape (the real generated file has longer names and more <code>#if</code> guards, but nothing you can't follow):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="cm">/* gen_board_device_config.c — one const config per device */</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="k">const</span><span class="w"> </span><span class="n">dev_button_config_t</span><span class="w"> </span><span class="n">button_boot_cfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">    </span><span class="p">.</span><span class="n">active_level</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">    </span><span class="p">.</span><span class="n">long_press_time</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">2000</span><span class="p">,</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">    </span><span class="p">.</span><span class="n">short_press_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">    </span><span class="cm">/* ... */</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="p">};</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="cm">/* gen_board_device_handles.c — the descriptor list, in YAML order */</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="k">const</span><span class="w"> </span><span class="n">esp_board_device_desc_t</span><span class="w"> </span><span class="n">g_dev_button_boot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="w">    </span><span class="p">.</span><span class="n">next</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">g_dev_status_led</span><span class="p">,</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="w">    </span><span class="p">.</span><span class="n">name</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s">"button_boot"</span><span class="p">,</span>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="w">    </span><span class="p">.</span><span class="n">type</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s">"button"</span><span class="p">,</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="w">    </span><span class="p">.</span><span class="n">sub_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"gpio"</span><span class="p">,</span>
+<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a><span class="w">    </span><span class="p">.</span><span class="n">cfg</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">button_boot_cfg</span><span class="p">,</span>
+<a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a><span class="w">    </span><span class="p">.</span><span class="n">cfg_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">button_boot_cfg</span><span class="p">),</span>
+<a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a><span class="p">};</span>
+</code></pre></div>
+<p>Which explains the error message everybody meets once. If <code>gen_bmgr_codes</code> is missing, incomplete, or excluded from the build, those symbols don't exist and the link fails:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>undefined reference to `g_esp_board_devices'
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>undefined reference to `g_esp_board_device_handles'
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>undefined reference to `g_esp_board_peripherals'
+</code></pre></div>
+<p>Two causes, both mundane. Either you never ran <code>idf.py bmgr -b &lt;board&gt;</code> (or it failed halfway and left <code>.c</code> files without a <code>CMakeLists.txt</code>, so ESP-IDF never registered the folder as a component), or your project trims its build — <code>idf_build_set_property(MINIMAL_BUILD ON)</code> or <code>set(COMPONENTS main)</code> — and <code>gen_bmgr_codes</code> isn't in scope. Nothing subtle: the table simply isn't in the binary.</p>
+<h3 id="escape-hatches-when-yaml-isnt-enough">Escape hatches: when YAML isn't enough.<a class="headerlink" href="#escape-hatches-when-yaml-isnt-enough" title="Permanent link">&para;</a></h3>
+<p>YAML describes buses, pins and parameters. It cannot call a constructor. And for an LCD, that last line is the one that matters:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">esp_lcd_new_panel_ili9341</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="n">cfg</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">panel</span><span class="p">);</span><span class="w">   </span><span class="cm">/* ILI9341 */</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">esp_lcd_new_panel_st7789</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="n">cfg</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">panel</span><span class="p">);</span><span class="w">    </span><span class="cm">/* ST7789  */</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="n">esp_lcd_new_panel_gc9a01</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="n">cfg</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">panel</span><span class="p">);</span><span class="w">    </span><span class="cm">/* GC9A01  */</span>
+</code></pre></div>
+<p>BMGR does the generic nine tenths — configure the SPI bus, create the <code>panel_io</code>, wire up the backlight — and then has to instantiate <em>your</em> controller. So the board supplies that call, conventionally in <code>setup_device.c</code> (BMGR compiles every C/C++/asm file it finds in the board directory).</p>
+<h4 id="but-didnt-i-already-say-which-panel-it-is">But didn't I already say which panel it is?<a class="headerlink" href="#but-didnt-i-already-say-which-panel-it-is" title="Permanent link">&para;</a></h4>
+<p>You did, and this is the part that confused me for an afternoon, so it's worth being explicit. A board that declares an LCD names the part <strong>three times</strong>, and BMGR joins none of them for you:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">display_main</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">display_lcd</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">  </span><span class="nt">sub_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spi</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">  </span><span class="nt">chip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ili9341</span><span class="w">                      </span><span class="c1"># 1. the intent, as a string</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">  </span><span class="nt">dependencies</span><span class="p">:</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">    </span><span class="nt">espressif/esp_lcd_ili9341</span><span class="p">:</span><span class="w"> </span><span class="s">"*"</span><span class="w">   </span><span class="c1"># 2. the component, so it gets downloaded</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="cm">/* 3. the call, in setup_device.c */</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="k">return</span><span class="w"> </span><span class="n">esp_lcd_new_panel_ili9341</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="n">cfg</span><span class="p">,</span><span class="w"> </span><span class="n">ret_panel</span><span class="p">);</span>
+</code></pre></div>
+<p><strong><code>chip:</code> is a string and stays a string.</strong> It ends up as the <code>const char *chip</code> field of the <code>esp_board_device_desc_t</code> we looked at earlier — used to identify the part, print it in <code>esp_board_manager_print()</code>, and populate <code>gen_board_metadata.yaml</code>. It is never turned into a function name.</p>
+<p><strong><code>dependencies:</code> isn't the call either.</strong> The docs are blunt about it: <em>"<code>dependencies</code> only adds the chip-driver component to the build; it does not generate these functions."</em> Downloading a driver is not the same as calling it.</p>
+<p>Why not do it automatically? Because generating that line means maintaining a table of <code>"ili9341"</code> → header name → constructor signature for every controller in the ecosystem, and those signatures aren't uniform: some panels ship inside <code>esp_lcd</code>, others as separate registry components, some need a <code>vendor_config</code> carrying a driver-specific init-command list, and RGB panels are built a different way entirely. That table would be a permanent, always-slightly-stale registry of other people's components.</p>
+<p>Read the table below backwards and the rule comes out clean: <strong>you write a factory exactly where the ecosystem has N different constructors for one device type.</strong> LCDs, touch controllers and IO expanders are in that situation. Audio codecs aren't in the table — <code>esp_codec_dev</code> already unifies them, so BMGR can make the call itself. Nor are buttons or GPIO: one API covers every board.</p>
+<table>
+<thead>
+<tr>
+<th>Device / sub-type</th>
+<th>Function you write</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_lcd/spi</code>, <code>/i80</code>, <code>/parlio</code>, <code>/rgb_3wire_spi</code></td>
+<td><code>lcd_panel_factory_entry_t</code></td>
+</tr>
+<tr>
+<td><code>display_lcd/dsi</code></td>
+<td><code>lcd_dsi_panel_factory_entry_t</code></td>
+</tr>
+<tr>
+<td><code>lcd_touch/i2c</code></td>
+<td><code>lcd_touch_factory_entry_t</code></td>
+</tr>
+<tr>
+<td><code>gpio_expander</code></td>
+<td><code>io_expander_factory_entry_t</code></td>
+</tr>
+<tr>
+<td><code>button/custom</code>, <code>power_ctrl/custom</code></td>
+<td><code>DEVICE_EXTRA_FUNC_REGISTER</code></td>
+</tr>
+<tr>
+<td><code>custom</code></td>
+<td><code>CUSTOM_DEVICE_IMPLEMENT</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">That <code>_t</code> is not a typo, and it is not a type</p>
+<p><code>lcd_panel_factory_entry_t</code> looks like a typedef and reads like a typedef. It
+isn't. It is the <strong>literal name of the function you must define</strong>, with external
+linkage — <code>static</code> will not do. BMGR's <code>dev_display_lcd</code> code calls that symbol;
+the symbol doesn't exist inside BMGR; your board provides it or the link fails.
+Read the table as <em>"declare <code>display_lcd</code>/<code>spi</code> and you owe the build a function
+called <code>lcd_panel_factory_entry_t</code>"</em>.</p>
+</div>
+<p>And the trap that falls out of all this: <strong>nothing checks that the three agree.</strong> Write <code>chip: ili9341</code>, depend on <code>esp_lcd_ili9341</code>, and have your factory call <code>esp_lcd_new_panel_st7789</code> — it compiles, it links, it boots, and <code>esp_board_manager_print()</code> will cheerfully report an ILI9341. Consistency is a convention here, not something the generator enforces. When you write a new board by copying a close one, the stale name in <code>chip:</code> is exactly what survives the edit.</p>
+<p>The idiom Espressif's own boards use is worth copying wholesale:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="cm">/* setup_device.c */</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="cp">#if __has_include(&lt;esp_lcd_ili9341.h&gt;)</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"esp_lcd_ili9341.h"</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="n">__attribute__</span><span class="p">((</span><span class="n">weak</span><span class="p">))</span><span class="w"> </span><span class="n">esp_err_t</span><span class="w"> </span><span class="n">lcd_panel_factory_entry_t</span><span class="p">(</span><span class="n">esp_lcd_panel_io_handle_t</span><span class="w"> </span><span class="n">io</span><span class="p">,</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="w">                                                          </span><span class="k">const</span><span class="w"> </span><span class="n">esp_lcd_panel_dev_config_t</span><span class="w"> </span><span class="o">*</span><span class="n">cfg</span><span class="p">,</span>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="w">                                                          </span><span class="n">esp_lcd_panel_handle_t</span><span class="w"> </span><span class="o">*</span><span class="n">ret_panel</span><span class="p">)</span>
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="p">{</span>
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">esp_lcd_new_panel_ili9341</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="n">cfg</span><span class="p">,</span><span class="w"> </span><span class="n">ret_panel</span><span class="p">);</span>
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="p">}</span>
+<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a><span class="cp">#endif  </span><span class="cm">/* __has_include(&lt;esp_lcd_ili9341.h&gt;) */</span>
+</code></pre></div>
+<p>Two tricks stacked, and both exist so somebody else can replace your panel without editing your board.</p>
+<p><strong><code>__attribute__((weak))</code></strong> makes your version the default-if-nobody-objects. A downstream project that defines a function with the same name, without <code>weak</code>, wins at link time and yours is dropped. No fork, no patch.</p>
+<p><strong><code>__has_include</code></strong> covers the mess that follows. Say that project wants an ST7789: it provides its own strong factory (fine, yours is discarded) <em>and</em> removes the <code>esp_lcd_ili9341</code> dependency, because nothing uses it any more. Your <code>setup_device.c</code> is still compiled — BMGR compiles everything in the board directory — and its <code>#include "esp_lcd_ili9341.h"</code> now points at a header that isn't in the build. A compile error, from code nobody wants. With the guard, the header's absence makes the whole block vanish instead.</p>
+<p>Together they make your implementation <em>replaceable and disposable</em>, which is the property the next section depends on.</p>
+<h4 id="amend-changing-a-board-that-isnt-yours">Amend: changing a board that isn't yours.<a class="headerlink" href="#amend-changing-a-board-that-isnt-yours" title="Permanent link">&para;</a></h4>
+<p><strong>This one is almost entirely about boards you didn't write.</strong> You picked up a board definition from someone else — an Espressif dev kit out of <code>esp_boards</code>, a partner board, a colleague's — it already exists and it is already correct, and you need to change <em>one thing</em>. That's the whole use case.</p>
+<p>Take a concrete version of it. You're on an <code>esp32_s3_korvo_2_3</code>, which lives in <code>managed_components/</code> because it came down as a dependency. Your unit has a different touch controller, or you've bolted a gas sensor onto the I²C bus, or you want PSRAM at 120 MHz. Two obvious moves, both bad:</p>
+<ul>
+<li><strong>Edit the files in <code>managed_components/</code>.</strong> They're regenerated on the next download. Your change evaporates, usually on somebody else's machine.</li>
+<li><strong>Copy the whole board into <code>components/</code> and edit it.</strong> Now it's yours: four hundred lines of YAML to maintain, and you're disconnected from every fix Espressif makes upstream.</li>
+</ul>
+<p>An <strong>amend</strong> is the third option: leave the original untouched and put a small directory beside it that says <em>"that board, plus this"</em>. It's the same idea as a devicetree overlay versus editing the board's <code>.dts</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>my_amend/
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>|- board_amend.yaml          required   the manifest
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>|- tweak.yaml                a fragment of devices/peripherals
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>|- extra_setup.c             optional   C that overrides the board's
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>|- sdkconfig.defaults.board  optional
+</code></pre></div>
+<p>The manifest is almost insultingly simple:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">"1.0"</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Add</span><span class="nv"> </span><span class="s">external</span><span class="nv"> </span><span class="s">sensor</span><span class="nv"> </span><span class="s">power</span><span class="nv"> </span><span class="s">control"</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="nt">apply</span><span class="p">:</span><span class="w">                        </span><span class="c1"># ordered list; later entries win</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tweak.yaml</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">extra_setup.c</span>
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sdkconfig.defaults.board</span>
+</code></pre></div>
+<p>And the fragment carries only the delta:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># tweak.yaml</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="nt">peripherals</span><span class="p">:</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpio_sensor_power</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpio</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="w">    </span><span class="nt">config</span><span class="p">:</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="w">      </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w">                  </span><span class="c1"># [IO]</span>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GPIO_MODE_OUTPUT</span>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sensor_power</span>
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">power_ctrl</span>
+<a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a><span class="w">    </span><span class="nt">sub_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpio</span>
+<a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a><span class="w">    </span><span class="nt">peripherals</span><span class="p">:</span>
+<a id="__codelineno-29-14" name="__codelineno-29-14" href="#__codelineno-29-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpio_sensor_power</span>
+<a id="__codelineno-29-15" name="__codelineno-29-15" href="#__codelineno-29-15"></a><span class="w">        </span><span class="nt">active_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</code></pre></div>
+<p>Apply it with <code>-a</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>idf.py<span class="w"> </span>bmgr<span class="w"> </span>-b<span class="w"> </span>esp32_s3_korvo_2_3<span class="w"> </span>-a<span class="w"> </span>path/to/my_amend
+</code></pre></div>
+<p><strong>How the merge works.</strong> A <code>name</code> that already exists in the base board is merged field by field, with <code>config</code> merged deeply; a <code>name</code> that doesn't exist is appended to the list. So moving one pin is a fragment with a <code>name</code> and a pin in it — you don't restate the block. That's what keeps an amend genuinely small.</p>
+<p><strong>And this is where the previous two tricks pay off.</strong> The <code>.c</code> files listed in <code>apply:</code> are compiled into the generated component, and that component is linked with <code>WHOLE_ARCHIVE</code>. Which means a strong symbol from your amend beats the base board's <code>weak</code> one. That's the whole reason boards mark their factories <code>weak</code> and wrap them in <code>__has_include</code>: so you can swap the panel from a five-line <code>.c</code> in an overlay directory, without touching a file you don't own. Weak symbols and amend are one mechanism seen from its two ends.</p>
+<p><strong>Why an explicit <code>apply:</code> list</strong> instead of "everything in the folder"? Two reasons, and the second is the interesting one. First, the order of that list <em>is</em> the override order, so the merge is deterministic. Second, the entries can point outside the amend directory:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="nt">apply</span><span class="p">:</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">../sensors/gas_sensor/gas_sensor.yaml</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">../sensors/gas_sensor/gas_sensor.c</span>
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">extra_periph.yaml</span><span class="w">        </span><span class="c1"># this board's own tweak</span>
+</code></pre></div>
+<p>Keep a shared directory of feature modules — the gas sensor, the LTE modem, the test jig — and every board composes the ones it needs by reference. Adapting a new board turns into picking fragments rather than retyping YAML. (Files sitting in the directory but <em>not</em> listed are ignored, with an INFO log; directories aren't accepted, so subdirectory files need their full relative path.)</p>
+<p><strong>Two conveniences worth knowing.</strong> If the amend directory lives <em>inside</em> the board directory, you pass just the subdirectory name — which is how Espressif ships screen variants of one motherboard:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>idf.py<span class="w"> </span>bmgr<span class="w"> </span>-b<span class="w"> </span>esp32_s3_lcd_ev_board<span class="w"> </span>-a<span class="w"> </span>sub_board_800_480_lcd
+</code></pre></div>
+<p>And <strong>auto-amend</strong> removes the <code>-a</code> entirely. A directory on the scan paths that is named after the selected board, contains a <code>board_amend.yaml</code>, and isn't itself a complete board, is applied automatically:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>board_overlays/                     # point -c here
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>|- esp32_s3_box_3/board_amend.yaml
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>|- esp32_p4_function_ev_board/board_amend.yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>idf.py<span class="w"> </span>bmgr<span class="w"> </span>-b<span class="w"> </span>esp32_s3_box_3<span class="w">             </span>-c<span class="w"> </span>board_overlays
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>idf.py<span class="w"> </span>bmgr<span class="w"> </span>-b<span class="w"> </span>esp32_p4_function_ev_board<span class="w"> </span>-c<span class="w"> </span>board_overlays
+</code></pre></div>
+<p>Same command, only <code>-b</code> changes; BMGR matches the overlay by name, and a board with no overlay just builds the base without complaining. That's the property you want when a CI script loops over a list of boards. Explicit <code>-a</code> still wins over auto-amend, discovery recurses three levels below each scan root, and <code>ESP_BOARD_MANAGER_DISABLE_AUTO_AMEND=1</code> turns it off.</p>
+<p>For your own hardware the same mechanism does variants: <code>kode_p4</code> as the base board, then <code>rev_b</code>, <code>no_display</code> and <code>factory_test</code> as amends, instead of three near-identical copies drifting apart.</p>
+<h4 id="custom-devices-hardware-bmgr-has-never-heard-of">custom devices: hardware BMGR has never heard of.<a class="headerlink" href="#custom-devices-hardware-bmgr-has-never-heard-of" title="Permanent link">&para;</a></h4>
+<p>Different problem, and it doesn't belong with amend — amend <em>replaces</em> something that already exists, <code>type: custom</code> is for hardware that has no built-in type at all. A PMIC, an odd sensor, an FPGA hanging off SPI.</p>
+<p>There's no generic driver to patch here, so you write the whole <code>init</code> and <code>deinit</code> and register the pair:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="n">CUSTOM_DEVICE_IMPLEMENT</span><span class="p">(</span><span class="n">axp2101_power_manager</span><span class="p">,</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">                        </span><span class="n">cores3_power_manager_init</span><span class="p">,</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">                        </span><span class="n">cores3_power_manager_deinit</span><span class="p">);</span>
+</code></pre></div>
+<p>In exchange, the generator expands your <code>config:</code> block into a real struct in <code>gen_board_device_custom.h</code> and your part joins the model: a name, a typed configuration, a place in the init order, <code>depends_on</code>, a reference-counted handle — everything a built-in device gets. The escape hatch takes you out of the catalogue, not out of the framework.</p>
+<h3 id="and-at-run-time">And at run time.<a class="headerlink" href="#and-at-run-time" title="Permanent link">&para;</a></h3>
+<p>Everything above happens on your computer. On the chip, it comes down to <code>esp_board_manager_init()</code>, and the rules it follows are short enough to list:</p>
+<ul>
+<li><strong>Peripherals first, then devices.</strong> Always, no exception. Buses before the chips on them.</li>
+<li><strong>YAML declaration order</strong> is the traversal order within each group. So if a panel needs its regulator up first, put the regulator earlier in <code>board_devices.yaml</code> — or use <code>depends_on</code> and stop thinking about it.</li>
+<li><strong><code>depends_on</code> is recursive and wins over order.</strong> Initialising a device initialises its dependencies first, wherever they sit in the file.</li>
+<li><strong>Reference counting everywhere.</strong> Both devices and peripherals carry a <code>ref_count</code>. Initialising something that's already up increments the count instead of creating a second instance; it's only really torn down when the count hits zero. That's how two devices can share one I²C bus without either of them owning it.</li>
+<li><strong><code>init_skip: true</code></strong> means the device is described but not started. You bring it up later with <code>esp_board_manager_init_device_by_name()</code>, or it comes up as somebody else's dependency.</li>
+<li><strong><code>power_ctrl_device</code></strong> fires power-on before <code>init</code> and power-off after <code>deinit</code>.</li>
+</ul>
+<p>The application side is deliberately dull:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"esp_board_manager_includes.h"</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="kt">void</span><span class="w"> </span><span class="nf">app_main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="p">{</span>
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="w">    </span><span class="n">ESP_ERROR_CHECK</span><span class="p">(</span><span class="n">esp_board_manager_init</span><span class="p">());</span>
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a>
+<a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="w">    </span><span class="n">esp_board_manager_print_board_info</span><span class="p">();</span><span class="w">   </span><span class="cm">/* name, chip, version, manufacturer */</span>
+<a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="w">    </span><span class="n">esp_board_manager_print</span><span class="p">();</span><span class="w">              </span><span class="cm">/* every periph and device, with ref counts */</span>
+<a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a>
+<a id="__codelineno-36-10" name="__codelineno-36-10" href="#__codelineno-36-10"></a><span class="w">    </span><span class="cm">/* Optional hardware: ask before you take, and skip the noisy error log. */</span>
+<a id="__codelineno-36-11" name="__codelineno-36-11" href="#__codelineno-36-11"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">esp_board_manager_check_name</span><span class="p">(</span><span class="s">"lcd_touch"</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-36-12" name="__codelineno-36-12" href="#__codelineno-36-12"></a><span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">touch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<a id="__codelineno-36-13" name="__codelineno-36-13" href="#__codelineno-36-13"></a><span class="w">        </span><span class="n">ESP_ERROR_CHECK</span><span class="p">(</span><span class="n">esp_board_manager_get_device_handle</span><span class="p">(</span><span class="s">"lcd_touch"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">touch</span><span class="p">));</span>
+<a id="__codelineno-36-14" name="__codelineno-36-14" href="#__codelineno-36-14"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-36-15" name="__codelineno-36-15" href="#__codelineno-36-15"></a>
+<a id="__codelineno-36-16" name="__codelineno-36-16" href="#__codelineno-36-16"></a><span class="w">    </span><span class="n">dev_audio_codec_config_t</span><span class="w"> </span><span class="o">*</span><span class="n">codec_cfg</span><span class="p">;</span>
+<a id="__codelineno-36-17" name="__codelineno-36-17" href="#__codelineno-36-17"></a><span class="w">    </span><span class="n">ESP_ERROR_CHECK</span><span class="p">(</span><span class="n">esp_board_manager_get_device_config</span><span class="p">(</span><span class="s">"audio_dac"</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">**</span><span class="p">)</span><span class="o">&amp;</span><span class="n">codec_cfg</span><span class="p">));</span>
+<a id="__codelineno-36-18" name="__codelineno-36-18" href="#__codelineno-36-18"></a><span class="p">}</span>
+</code></pre></div>
+<p>The strings are the whole interface. <code>"audio_dac"</code> is the <code>name:</code> you wrote in <code>board_devices.yaml</code>, and your application knows nothing else about the board — not the pin, not the part number, not the bus. Port to a different board by pointing <code>idf.py bmgr</code> at a different directory, provided that board names its devices the same way. (Which is the catch, and it's the same catch devicetree has: shared vocabulary is a convention, not something the tool enforces.)</p>
+<p>One asymmetry worth remembering, because it's easy to trip over. At the manager level, <code>get_device_handle()</code> and <code>get_periph_handle()</code> only return handles for things already initialised — they never start anything. One level down, <code>esp_board_periph_get_handle()</code> <em>will</em> initialise a peripheral on demand. Same-sounding names, different contracts.</p>
+<p>The rest of the runtime API is small and mostly does what you'd guess:</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Use it for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>esp_board_manager_init_device_by_name()</code></td>
+<td>starting an <code>init_skip</code> device, or lazy init</td>
+</tr>
+<tr>
+<td><code>esp_board_manager_deinit_device_by_name()</code></td>
+<td>selective teardown</td>
+</tr>
+<tr>
+<td><code>esp_board_device_callback_register()</code></td>
+<td>button events, touch interrupts</td>
+</tr>
+<tr>
+<td><code>esp_board_device_power_ctrl()</code></td>
+<td>toggling a device's power at run time</td>
+</tr>
+<tr>
+<td><code>esp_board_device_override_config()</code> / <code>restore_config()</code></td>
+<td>patching a generated config in RAM (deinit + init to apply it)</td>
+</tr>
+<tr>
+<td><code>esp_board_device_iterate_name_by_type()</code></td>
+<td>"give me every button on this board"</td>
+</tr>
+<tr>
+<td><code>esp_board_manager_register_device_handle()</code></td>
+<td>handing the manager a device you built yourself</td>
+</tr>
+<tr>
+<td><code>esp_board_device_get_i2c_effective_addr()</code></td>
+<td>reading the address a device actually answered on, when it probes several</td>
+</tr>
+</tbody>
+</table>
+<p><code>override_config()</code> is the interesting one: it stores a shallow copy in RAM and hands <em>that</em> to future <code>init</code> calls. Shallow — pointers inside your config aren't deep-copied, so whatever they point at has to outlive the override. Handy for a factory-test build that wants one pin different, without touching the board.</p>
+<h2 id="whats-the-regular-workflow-using-idfpy-esp_bmgr">What's the regular workflow using idf.py + esp_bmgr?<a class="headerlink" href="#whats-the-regular-workflow-using-idfpy-esp_bmgr" title="Permanent link">&para;</a></h2>
+<p>Day to day, it's four commands and one habit.</p>
+<p><strong>First time on a project:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>.<span class="w"> </span><span class="nv">$IDF_PATH</span>/export.sh
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>pip<span class="w"> </span>install<span class="w"> </span>esp-bmgr-assist<span class="w">                </span><span class="c1"># once per IDF environment</span>
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>idf.py<span class="w"> </span>add-dependency<span class="w"> </span>esp_board_manager<span class="w">    </span><span class="c1"># or edit main/idf_component.yml</span>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>idf.py<span class="w"> </span>reconfigure<span class="w">                         </span><span class="c1"># downloads the component</span>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>idf.py<span class="w"> </span>bmgr<span class="w"> </span>-l<span class="w">                             </span><span class="c1"># do I see boards?</span>
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a>idf.py<span class="w"> </span>bmgr<span class="w"> </span>-b<span class="w"> </span>kode_p4_demo<span class="w">                </span><span class="c1"># generate</span>
+<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a>idf.py<span class="w"> </span>build<span class="w"> </span>flash<span class="w"> </span>monitor<span class="w">                 </span><span class="c1"># no set-target: the board said esp32p4</span>
+</code></pre></div>
+<p><strong>After editing any board YAML</strong> — and this is the habit:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>idf.py<span class="w"> </span>bmgr<span class="w"> </span>-b<span class="w"> </span>kode_p4_demo<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>idf.py<span class="w"> </span>build
+</code></pre></div>
+<p>Nothing re-runs the generator for you. Getting this wrong doesn't produce an error, it produces yesterday's pin map, which is a considerably worse failure mode. If you're going to add one alias to your shell, make it this one.</p>
+<p><strong>Switching boards:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>idf.py<span class="w"> </span>bmgr<span class="w"> </span>-x<span class="w">                  </span><span class="c1"># clean generated files</span>
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>idf.py<span class="w"> </span>bmgr<span class="w"> </span>-b<span class="w"> </span>other_board<span class="w">      </span><span class="c1"># regenerate</span>
+</code></pre></div>
+<p><code>-x</code> deletes the generated <code>.c</code>/<code>.h</code>, resets the generated <code>CMakeLists.txt</code> and <code>idf_component.yml</code>, and removes <code>board_manager.defaults</code>. Strictly, <code>-b &lt;other_board&gt;</code> alone handles the switch — it backs up your <code>sdkconfig</code> and cleans the old board's symbols — but <code>-x</code> first is the version that always works, and it's also what clears a stale <code>gen_bmgr_codes</code> that would otherwise fail to resolve its dependencies.</p>
+<p><strong>Creating a new board:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>idf.py<span class="w"> </span>bmgr<span class="w"> </span>-n<span class="w"> </span>my_new_board<span class="w">                   </span><span class="c1"># annotated skeleton in components/</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>idf.py<span class="w"> </span>bmgr<span class="w"> </span>-n<span class="w"> </span>path/to/boards/my_new_board<span class="w">    </span><span class="c1"># or somewhere specific</span>
+</code></pre></div>
+<p>There's also a <a href="https://board-manager.espressif.com">web configurator</a> that exports the three YAML files from a browser, and the shortest path of all for a board close to an existing one: copy that board's directory and edit the pins.</p>
+<p><strong>Options worth knowing:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>What it's for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-l</code></td>
+<td>list boards — your installation smoke test</td>
+</tr>
+<tr>
+<td><code>-b &lt;name\|index&gt;</code></td>
+<td>select by name or by the index <code>-l</code> printed</td>
+</tr>
+<tr>
+<td><code>-c &lt;path[;path]&gt;</code></td>
+<td>extra board roots; later paths win</td>
+</tr>
+<tr>
+<td><code>-a &lt;dir&gt;</code></td>
+<td>apply an amend overlay</td>
+</tr>
+<tr>
+<td><code>-n &lt;name\|path&gt;</code></td>
+<td>scaffold a new board</td>
+</tr>
+<tr>
+<td><code>-x</code></td>
+<td>clean the generated component</td>
+</tr>
+<tr>
+<td><code>--kconfig-only</code></td>
+<td>regenerate only Kconfig (fast, for menu work)</td>
+</tr>
+<tr>
+<td><code>--skip-sdkconfig-check</code></td>
+<td>keep an existing <code>sdkconfig</code> that disagrees with the board</td>
+</tr>
+<tr>
+<td><code>--skip-soc-capability-check</code></td>
+<td>you're sure the validator is wrong</td>
+</tr>
+<tr>
+<td><code>--log-level DEBUG</code></td>
+<td>when generation does something you don't believe</td>
+</tr>
+</tbody>
+</table>
+<p>The same script runs standalone, which is what you want in CI where <code>idf.py</code> extensions may not be set up:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>python<span class="w"> </span>gen_bmgr_config_codes.py<span class="w"> </span>-b<span class="w"> </span>kode_p4_demo<span class="w"> </span>-c<span class="w"> </span>./boards
+</code></pre></div>
+<p><strong>Should <code>components/gen_bmgr_codes/</code> be in git?</strong> It's generated, it's board-specific, and it's rewritten on every board switch — so no, gitignore it, and make <code>idf.py bmgr -b $BOARD</code> a step in your build script. Commit the board directory instead; that's the source.</p>
+<h2 id="so-what-is-esp_bmgr-then">So what is esp_bmgr, then?<a class="headerlink" href="#so-what-is-esp_bmgr-then" title="Permanent link">&para;</a></h2>
+<p>Three things, and now with names attached:</p>
+<ul>
+<li><strong>A description format</strong> — three YAML files that say what your board is, validated against per-type schemas that live in the component itself (<code>periph_i2c.yml</code>, <code>dev_button.yaml</code>), with pins and unconfirmed values flagged as <code>[IO]</code> and <code>[TO_BE_CONFIRMED]</code> so an unadapted board is visibly unadapted.</li>
+<li><strong>A generator</strong> — a Python script you run by hand through <code>idf.py bmgr</code>, which parses that description, checks it against what the SoC can actually do, and writes an ordinary ESP-IDF component: <code>const</code> structs in flash, a linked list of descriptors, a Kconfig file and a defaults file.</li>
+<li><strong>A runtime</strong> — a few hundred lines that walk those lists in a defined order, honour <code>depends_on</code>, <code>init_skip</code> and <code>power_ctrl_device</code>, count references so two devices can share a bus, and answer <code>get_device_handle("audio_dac")</code>.</li>
+</ul>
+<p>The parts that felt like magic all turned out to be bookkeeping again. <code>CONFIG_IDF_TARGET</code> is set because <code>board_info.yaml</code> said <code>chip:</code>. The codec's driver got downloaded because a <code>dependencies:</code> block was copied into a generated <code>idf_component.yml</code>. <code>app_main</code> obtains an LCD handle without knowing a single pin because a <code>void *cfg, int cfg_size</code> pair lets a generic list call a specific driver.</p>
+<p>What BMGR is really doing is moving one boundary. In the <a href="../esp_idf_how_does_it_work/">ESP-IDF note</a> the boundary between "code you write" and "code that's given to you" sat at the driver API: you called <code>gpio_set_level(27, 1)</code> and everything below was ESP-IDF's. BMGR pushes it up one floor. Now the pin number isn't yours either — it belongs to a description that can be swapped, shared, and version-controlled separately from the application that uses it.</p>
+<p>That's the same bet devicetree made, and it comes with the same bill. You get portability across boards, board definitions you can publish and reuse, and validation that catches pin conflicts before they become a scope session. You pay with a generation step that isn't in the build graph, a generated component that must be present at link time, a <code>sdkconfig</code> precedence chain with four levels, and a fast-moving YAML schema. For a one-board hobby project, <code>#define LED_GPIO 27</code> is still the right answer. For a product with three hardware revisions and a firmware team, that macro is the thing that eventually costs you a week.</p>
+<div class="admonition note">
+<p class="admonition-title">Where to look next</p>
+<ul>
+<li><a href="https://docs.espressif.com/projects/esp-board-manager/en/latest/index.html">ESP Board Manager Guide</a> — the official docs; the <em>Design Principles</em> chapter is the closest thing to this note.</li>
+<li><a href="https://github.com/espressif/esp-board-manager"><code>espressif/esp-board-manager</code></a> — the source. The <code>periph_*.yml</code> and <code>dev_*.yaml</code> files under <code>esp_board_manager/peripherals/</code> and <code>.../devices/</code> are the real field reference, comments and all.</li>
+<li><a href="https://components.espressif.com/components/espressif/esp_boards"><code>espressif/esp_boards</code></a> — dozens of finished board definitions to read. <code>esp32_s3_korvo_2_3</code> is a good one: audio codec, LCD, touch, ADC button group, and a <code>setup_device.c</code> that shows the weak-symbol idiom in situ.</li>
+<li><a href="https://board-manager.espressif.com">Board Manager web configurator</a> — click a board together and export the YAML.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Jorge Benedicto Centeno &ndash; content licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Emoji by <a href="https://github.com/twitter/twemoji">Twemoji</a> (CC BY 4.0); icons from Material Design Icons (Apache&nbsp;2.0) and Octicons (MIT).
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.indexes", "navigation.instant", "navigation.instant.progress", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

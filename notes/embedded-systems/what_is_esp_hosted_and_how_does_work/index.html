@@ -1,0 +1,2283 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Personal notes and projects">
+      
+      
+      
+      
+        <link rel="prev" href="../what_is_esp_bmgr_and_how_does_work/">
+      
+      
+        <link rel="next" href="../../programming/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>What is ESP-Hosted and how does it work? - Personal Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#what-is-esp-hosted-and-how-does-it-work" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Personal Notes" class="md-header__button md-logo" aria-label="Personal Notes" data-md-component="logo">
+      
+  <img src="../../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Personal Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              What is ESP-Hosted and how does it work?
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../projects/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Projects
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Personal Notes" class="md-nav__button md-logo" aria-label="Personal Notes" data-md-component="logo">
+      
+  <img src="../../../assets/logo.png" alt="logo">
+
+    </a>
+    Personal Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../cybersecurity/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cybersecurity
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cybersecurity
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cybersecurity/how_do_signatures_prove_identity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How do signatures and certificates prove who you are?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cybersecurity/how_does_tls_work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does TLS work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cybersecurity/what_is_an_rsa_key/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is an RSA key?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Embedded Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../esp_idf_how_does_it_work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does ESP-IDF work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_does_an_mcu_boot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does an MCU get to main()?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i2c_explained/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does I²C actually work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../what_is_esp_bmgr_and_how_does_work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is the Espressif board manager and how does it work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is ESP-Hosted and how does it work?
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is ESP-Hosted and how does it work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-doesnt-the-esp32-p4-have-a-radio-in-the-first-place" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why doesn't the ESP32-P4 have a radio in the first place?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-esp_wifi_remote-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How does esp_wifi_remote work?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-the-rpc-layer-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How does the RPC layer work?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-transport-six-wires-doing-all-the-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The transport: six wires doing all the work.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-runs-on-the-esp32-c5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What runs on the ESP32-C5?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-you-program-the-kode-dots-c5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do you program the kode dot's C5?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-you-update-the-c5-remotely" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do you update the C5 remotely?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-the-regular-workflow-on-a-real-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's the regular workflow on a real project?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beyond-plain-wi-fi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beyond plain Wi-Fi.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#so-what-is-esp-hosted-then" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        So what is ESP-Hosted, then?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../programming/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Programming
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Programming
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../programming/c-cpp/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/Cpp
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    C/Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../programming/c-cpp/how_does_a_machine_know_c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does a machine know C?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../regulations/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Regulations
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Regulations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../regulations/how_do_you_build_the_rules_into_a_device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How do you build the rules into a device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../regulations/what_does_the_cra_ask_of_an_iot_device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What does the CRA ask of an IoT device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../regulations/what_does_the_fcc_ask_of_an_iot_device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What does the FCC ask of an IoT device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../regulations/what_does_the_red_ask_of_an_iot_device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What does the RED ask of an IoT device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../regulations/what_rules_does_an_iot_device_have_to_pass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What rules does an IoT device have to pass before you can sell it?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../projects/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projects
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/kodeos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kodeOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/kode_sdk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kode SDK
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/park20/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PARK20
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/omni20wune/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OMNI20WUNE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-doesnt-the-esp32-p4-have-a-radio-in-the-first-place" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why doesn't the ESP32-P4 have a radio in the first place?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-esp_wifi_remote-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How does esp_wifi_remote work?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-the-rpc-layer-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How does the RPC layer work?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-transport-six-wires-doing-all-the-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The transport: six wires doing all the work.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-runs-on-the-esp32-c5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What runs on the ESP32-C5?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-you-program-the-kode-dots-c5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do you program the kode dot's C5?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-you-update-the-c5-remotely" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do you update the C5 remotely?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-the-regular-workflow-on-a-real-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's the regular workflow on a real project?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beyond-plain-wi-fi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beyond plain Wi-Fi.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#so-what-is-esp-hosted-then" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        So what is ESP-Hosted, then?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="what-is-esp-hosted-and-how-does-it-work">What is ESP-Hosted and how does it work?<a class="headerlink" href="#what-is-esp-hosted-and-how-does-it-work" title="Permanent link">&para;</a></h1>
+<p>In <a href="../what_is_esp_bmgr_and_how_does_work/">What is the Espressif board manager and how does it work?</a> we built a board around an <strong>ESP32-P4</strong>, and if you went looking for the Wi-Fi section of that chip's datasheet you already know the punchline: there isn't one. The P4 is Espressif's big application chip — dual-core RISC-V at 400 MHz, MIPI-DSI, MIPI-CSI, a 2D pixel engine, enough pins to feel like a small FPGA — and it has <strong>no radio at all</strong>. No Wi-Fi, no Bluetooth, nothing.</p>
+<p>That is not an oversight, it's a product decision, and on the <strong>kode dot</strong> it stops being abstract: the P4 is the chip running kodeOS — the display, LVGL, the apps, the whole user-facing machine — and sitting next to it on the board is an <strong>ESP32-C5</strong>, there for exactly one job: dual-band Wi-Fi 6. Which creates a very concrete engineering question: <em>how does the application on the P4 talk to the radio on the C5?</em></p>
+<p><strong>ESP-Hosted</strong> is Espressif's answer, and this note is about what it actually does on a board like ours: what runs on each chip, how a call like <code>esp_wifi_connect()</code> crosses a ribbon of six PCB traces and comes back with an IP address, what <code>esp_wifi_remote</code> is and why kodeOS compiles unchanged — and then the two questions every product team hits after the demo works: <strong>how does the C5 get its firmware in the first place</strong>, and <strong>how do we update it once the device is in someone's hands</strong>. Both get their own sections, because the C5 is not a modem, it's a second ESP-IDF project you own.</p>
+<div class="admonition note">
+<p class="admonition-title">Versions</p>
+<p>Written against the <strong><code>esp_hosted</code> component v3.0.6</strong> and <strong><code>esp_wifi_remote</code> v1.6.4</strong>
+(August 2026), with sources at
+<a href="https://github.com/espressif/esp-hosted-mcu"><code>espressif/esp-hosted-mcu</code></a>.
+ESP-Hosted moves fast: the 2.x → 3.x jump restructured the examples (each one now
+ships its co-processor firmware in a <code>cp/</code> subdirectory) and unified the docs with
+the Linux-host flavour. An <strong>ESP32-C5 co-processor needs ESP-IDF v5.5 or newer</strong>;
+a C6 gets away with v5.3.2. Check the
+<a href="https://components.espressif.com/components/espressif/esp_hosted">registry page</a>
+for what's current before trusting any number in this note.</p>
+<p>One more disclaimer: the kode dot's own pin assignment stays out of this
+note. Where a pin number appears below, it is either fixed by the C5's
+silicon or taken from Espressif's public reference board.</p>
+</div>
+<h2 id="introduction">Introduction.<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>ESP-Hosted is built around one sentence, and everything else follows from it: <strong>the Wi-Fi API your application calls and the Wi-Fi hardware that executes it do not have to be on the same chip.</strong></p>
+<p>Concretely, three things ship together:</p>
+<ul>
+<li><strong>A thin API shim</strong> — <a href="https://components.espressif.com/components/espressif/esp_wifi_remote"><code>esp_wifi_remote</code></a>, a component that provides the entire <code>esp_wifi_*</code> API on chips that don't have it. Your application keeps calling <code>esp_wifi_init()</code>, <code>esp_wifi_scan_start()</code>, <code>esp_wifi_connect()</code>; nothing in your code knows the radio is elsewhere.</li>
+<li><strong>An RPC layer</strong> — every one of those calls is serialized (protobuf), given a header, and shipped to the co-processor, which deserializes it, calls the <em>real</em> <code>esp_wifi_*</code> function from its own ESP-IDF, and ships the return value back. Wi-Fi events make the same trip in the opposite direction.</li>
+<li><strong>A transport</strong> — the physical bus carrying all of it: SDIO, SPI (full-duplex or dual/quad half-duplex), or UART, plus a couple of side-band GPIOs for reset and handshake.</li>
+</ul>
+<p>And one decision that shapes the whole system more than any of those parts: <strong>the TCP/IP stack runs on the host.</strong> The C5 does not terminate TCP connections for you the way an old AT-command modem did. It hands raw 802.3 frames to the P4, and lwIP, mbedTLS, your sockets, your MQTT client — all of it runs on the P4, exactly as it would on a chip with a built-in radio. The cut is at layer 2.</p>
+<p>Here's the shape of the whole thing, and it's worth keeping this picture in your head for the rest of the note:</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph host ["ESP32-P4 (host — kodeOS lives here)"]
+        APP["your app&lt;br/&gt;sockets, MQTT, TLS..."]
+        NETIF["esp_netif + lwIP&lt;br/&gt;(TCP/IP stack, on the host!)"]
+        WR["esp_wifi_remote&lt;br/&gt;esp_wifi_* with the same prototypes"]
+        RPCH["esp_hosted RPC&lt;br/&gt;protobuf serialize"]
+        TRH["transport driver&lt;br/&gt;SDIO / SPI / UART"]
+    end
+    subgraph slave ["ESP32-C5 (co-processor — esp-hosted slave firmware)"]
+        TRS["transport driver"]
+        RPCS["RPC server&lt;br/&gt;deserialize, call the real API"]
+        WIFI["esp_wifi (the real one)&lt;br/&gt;Wi-Fi MAC + baseband + RF"]
+    end
+    APP --&gt;|"esp_wifi_connect()"| WR
+    APP --&gt; NETIF
+    NETIF --&gt;|"ethernet frames (data path)"| TRH
+    WR --&gt;|"control path"| RPCH --&gt; TRH
+    TRH &lt;--&gt;|"6 wires + reset"| TRS
+    TRS --&gt; RPCS --&gt; WIFI
+    TRS --&gt;|"frames to/from the air"| WIFI</code></pre>
+<p>Two details in that diagram matter more than they look, and both get their own section below:</p>
+<ul>
+<li>There are <strong>two parallel paths</strong> over the same bus. The <em>control path</em> carries serialized API calls and events; the <em>data path</em> carries network frames with no transformation at all beyond a small encapsulation header. Your throughput is decided by the data path; your latency on <code>esp_wifi_scan_start()</code> by the control path.</li>
+<li>The co-processor runs <strong>firmware you build</strong> (or at least version-manage). Half of all ESP-Hosted grief is a host and a slave speaking slightly different dialects because one side got updated and the other didn't.</li>
+</ul>
+<h2 id="why-doesnt-the-esp32-p4-have-a-radio-in-the-first-place">Why doesn't the ESP32-P4 have a radio in the first place?<a class="headerlink" href="#why-doesnt-the-esp32-p4-have-a-radio-in-the-first-place" title="Permanent link">&para;</a></h2>
+<p>Worth a short detour, because the answer explains why ESP-Hosted exists at all and why it's suddenly everywhere.</p>
+<p>A radio is expensive in ways that have nothing to do with silicon area. The RF front-end constrains the process node and the packaging; the radio needs regulatory certification (FCC, CE, and friends) in every market, per product; and the Wi-Fi MAC drags a real-time firmware blob along with it that fights your application for CPU and RAM. Chips like the P4 — big CPU, big pin count, multimedia — sell into products that already have those problems solved elsewhere, or that want to pick their radio independently of their compute.</p>
+<p>So Espressif split the roles. The P4 computes; a small sidecar chip does wireless; and which sidecar is a per-product choice:</p>
+<table>
+<thead>
+<tr>
+<th>Co-processor</th>
+<th>Radio</th>
+<th>Why you'd pick it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ESP32-C6</td>
+<td>Wi-Fi 6 (2.4 GHz), BLE 5, 802.15.4</td>
+<td>The default pairing — it's the chip soldered next to the P4 on Espressif's own <a href="https://github.com/espressif/esp-hosted-mcu/blob/main/docs/esp32_p4_function_ev_board.md">ESP32-P4-Function-EV-Board</a></td>
+</tr>
+<tr>
+<td><strong>ESP32-C5</strong></td>
+<td><strong>Wi-Fi 6 dual-band (2.4 + 5 GHz)</strong>, BLE 5, 802.15.4</td>
+<td>You need 5 GHz: crowded 2.4 GHz environments, more bandwidth, lower latency. <strong>This is the kode dot's chip</strong></td>
+</tr>
+<tr>
+<td>ESP32-C3 / C2</td>
+<td>Wi-Fi 4 (2.4 GHz), BLE</td>
+<td>Cost-driven designs</td>
+</tr>
+</tbody>
+</table>
+<p>The C5 is the interesting one for us: it's Espressif's first dual-band chip, and 5 GHz is the difference between "works in the lab" and "works in a home with two hundred 2.4 GHz devices shouting over each other" — which, for a consumer device like the kode dot, is not a corner case, it's the median living room. Modules pairing a P4 and a C5 in one can are already appearing, so this combination is on its way to being the second reference pairing after P4 + C6.</p>
+<p>And to place ESP-Hosted among its siblings — Espressif ships three different ways to bolt their radio onto a host, and they are <em>not</em> interchangeable:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>ESP-AT</th>
+<th>Wi-Fi over EPPP</th>
+<th>ESP-Hosted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Host API</td>
+<td>AT text commands over UART</td>
+<td>standard <code>esp_wifi</code> (via <code>esp_wifi_remote</code>)</td>
+<td>standard <code>esp_wifi</code> (via <code>esp_wifi_remote</code>)</td>
+</tr>
+<tr>
+<td>Where does TCP/IP run?</td>
+<td>on the slave</td>
+<td>on the host (PPP netif)</td>
+<td>on the host (L2 frames)</td>
+</tr>
+<tr>
+<td>Transport</td>
+<td>UART</td>
+<td>UART/SPI, PPP framing, optional TLS</td>
+<td>SDIO / SPI / UART</td>
+</tr>
+<tr>
+<td>Rough throughput</td>
+<td>~2 Mbps</td>
+<td>~20 Mbps</td>
+<td><strong>~50+ Mbps</strong></td>
+</tr>
+<tr>
+<td>Bluetooth</td>
+<td>limited AT commands</td>
+<td>no</td>
+<td>yes — HCI over the same bus</td>
+</tr>
+</tbody>
+</table>
+<p>ESP-AT is the "modem" model: fine for sending a sensor reading, hopeless for streaming. EPPP is a clever middle path that reuses PPP so the host only needs a serial port. ESP-Hosted is the full-fat option: the co-processor disappears behind the standard API, and the bus is fast enough that the radio — not the wire — is usually the bottleneck. All three plug into the same <code>esp_wifi_remote</code> front-end as selectable backends, which is a nice piece of layering we'll come back to.</p>
+<h2 id="how-does-esp_wifi_remote-work">How does esp_wifi_remote work?<a class="headerlink" href="#how-does-esp_wifi_remote-work" title="Permanent link">&para;</a></h2>
+<p>This is my favourite part of the design, because the problem it solves is sneaky. Think about what "your application compiles unchanged" actually requires: code that calls <code>esp_wifi_init(&amp;cfg)</code> must link against <em>something</em> named <code>esp_wifi_init</code> with <em>exactly</em> the right prototype — on a chip whose ESP-IDF build doesn't provide it, because there's no Wi-Fi to drive.</p>
+<p><code>esp_wifi_remote</code> provides it. The component is, in its own README's words, a thin interface made of ESP-IDF Wi-Fi APIs backed by remote implementations, and it's built out of three tricks:</p>
+<p><strong>Trick 1 — generated mirrors, not handwritten ones.</strong> The <code>esp_wifi</code> API is large and moves with every ESP-IDF release. So <code>esp_wifi_remote</code> doesn't hand-maintain its copy: the function prototypes are <em>extracted from the real <code>esp_wifi</code> headers</em> and the forwarding shims are generated per ESP-IDF version. When you build for IDF v5.5 you get shims that match v5.5's signatures, structs and enums exactly. The same generation pass mirrors the Kconfig: every <code>CONFIG_ESP_WIFI_*</code> option reappears as <code>CONFIG_WIFI_RMT_*</code>, evaluated against <code>CONFIG_SLAVE_IDF_TARGET</code> instead of <code>CONFIG_IDF_TARGET</code> — because the question "how many static RX buffers?" is now a question about the <em>C5's</em> memory, not the P4's.</p>
+<p><strong>Trick 2 — weak symbols as a plug socket.</strong> Each generated <code>esp_wifi_*</code> shim forwards to a matching <code>esp_wifi_remote_*</code> function, and those are declared <strong>weak and empty</strong>. A backend — ESP-Hosted, EPPP, or the AT bridge — provides the strong definitions. Link <code>esp_hosted</code> into the build and every <code>esp_wifi_remote_*</code> call resolves to "serialize this and put it on the bus". It's the same weak-symbol plug-socket idiom we saw in <a href="../what_is_esp_bmgr_and_how_does_work/#escape-hatches-when-yaml-isnt-enough">the BMGR note</a> with <code>lcd_panel_factory_entry_t</code>, used for the same reason: the component in the middle defines the <em>shape</em> of the hole, somebody else brings the peg.</p>
+<p><strong>Trick 3 — the netif glue comes too.</strong> <code>esp_netif_create_default_wifi_sta()</code>, the event base <code>WIFI_EVENT</code>, the default event handlers that kick lwIP's DHCP client when the station associates — all of that plumbing is reproduced, so the <em>ecosystem around</em> the API works, not just the API. This is the part that makes the standard station example run on a P4 without edits:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cm">/* This is the stock ESP-IDF station example, and on the P4 it is ALSO</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cm"> * the ESP-Hosted example. Nothing here knows the radio is another chip. */</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kt">void</span><span class="w"> </span><span class="nf">app_main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">{</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="n">ESP_ERROR_CHECK</span><span class="p">(</span><span class="n">nvs_flash_init</span><span class="p">());</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="n">ESP_ERROR_CHECK</span><span class="p">(</span><span class="n">esp_netif_init</span><span class="p">());</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="n">ESP_ERROR_CHECK</span><span class="p">(</span><span class="n">esp_event_loop_create_default</span><span class="p">());</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="n">esp_netif_create_default_wifi_sta</span><span class="p">();</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="n">wifi_init_config_t</span><span class="w"> </span><span class="n">cfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WIFI_INIT_CONFIG_DEFAULT</span><span class="p">();</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="n">ESP_ERROR_CHECK</span><span class="p">(</span><span class="n">esp_wifi_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cfg</span><span class="p">));</span><span class="w">      </span><span class="cm">/* transport comes up under here */</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="cm">/* handlers for WIFI_EVENT / IP_EVENT, esp_wifi_set_config(), ... */</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="n">ESP_ERROR_CHECK</span><span class="p">(</span><span class="n">esp_wifi_set_mode</span><span class="p">(</span><span class="n">WIFI_MODE_STA</span><span class="p">));</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="n">ESP_ERROR_CHECK</span><span class="p">(</span><span class="n">esp_wifi_start</span><span class="p">());</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">}</span>
+</code></pre></div>
+<p>The first Wi-Fi call is where ESP-Hosted wakes up: bringing up the transport, resetting the slave through the dedicated GPIO, and running a handshake where the two sides exchange capabilities and versions. From the application's point of view <code>esp_wifi_init()</code> just takes a little longer than it used to.</p>
+<p>One honest caveat: "unchanged" applies to code, not to physics. Every control call now includes a bus round-trip plus a protobuf encode/decode on both ends. For <code>esp_wifi_connect()</code> — dwarfed by the association handshake itself — you will never notice. If you were calling <code>esp_wifi_sta_get_rssi()</code> in a tight loop, you now have a reason not to.</p>
+<h2 id="how-does-the-rpc-layer-work">How does the RPC layer work?<a class="headerlink" href="#how-does-the-rpc-layer-work" title="Permanent link">&para;</a></h2>
+<p>The control path is a classic remote procedure call system, small enough to describe completely.</p>
+<p>On the host, the strong <code>esp_wifi_remote_*</code> implementation takes the call's arguments, packs them into a <strong>protobuf message</strong> (the schema ships in the component; the C code is generated with <code>protobuf-c</code>), wraps it in a small ESP-Hosted header — which interface this belongs to, payload length, sequence number — and queues it on the transport. Then it <em>blocks the calling task</em> on a semaphore, exactly like a syscall.</p>
+<p>On the slave, the RPC server unpacks the message, dispatches to the real ESP-IDF function — literally <code>esp_wifi_set_mode(mode)</code> on the C5 — packs status and out-parameters into a response, and sends it back. The host wakes the blocked task and hands it the return value. Synchronous call in, synchronous call out; the bus in the middle is invisible.</p>
+<p><strong>Events are the reverse flow, without the blocking.</strong> When the C5's Wi-Fi driver posts <code>WIFI_EVENT_STA_DISCONNECTED</code> to <em>its</em> event loop, a hook serializes the event and its payload, ships it over, and the host-side ESP-Hosted re-posts it into the <strong>host's default event loop</strong>. Your <code>esp_event_handler_register(WIFI_EVENT, ...)</code> callbacks fire on the P4 as if the event were local. The whole standard reconnect dance works because the events driving it are faithfully teleported.</p>
+<p>Put together, a connection looks like this:</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant A as app (P4)
+    participant H as esp_hosted (P4)
+    participant B as bus
+    participant S as slave fw (C5)
+    participant W as esp_wifi (C5)
+    A-&gt;&gt;H: esp_wifi_connect()
+    H-&gt;&gt;B: RPC req: connect (protobuf)
+    B-&gt;&gt;S: deliver
+    S-&gt;&gt;W: esp_wifi_connect()
+    W--&gt;&gt;S: ESP_OK
+    S-&gt;&gt;B: RPC resp: ESP_OK
+    B-&gt;&gt;H: deliver
+    H--&gt;&gt;A: ESP_OK (task unblocked)
+    Note over W: association + 4-way handshake&lt;br/&gt;happens on the C5, in the air
+    W-&gt;&gt;S: WIFI_EVENT_STA_CONNECTED
+    S-&gt;&gt;B: event (serialized)
+    B-&gt;&gt;H: deliver
+    H-&gt;&gt;A: posted to default event loop
+    Note over A: DHCP runs on the host's lwIP,&lt;br/&gt;frames crossing the bus as data
+    A-&gt;&gt;A: IP_EVENT_STA_GOT_IP</code></pre>
+<p>Note where <code>IP_EVENT_STA_GOT_IP</code> comes from in that diagram: <strong>nowhere on the C5.</strong> DHCP is lwIP's job and lwIP lives on the P4, so the DISCOVER/OFFER/REQUEST/ACK exchange crosses the bus as <em>data</em>, not as RPC. Which brings us to the data path.</p>
+<p><strong>The data path does almost nothing, on purpose.</strong> Ethernet frames from lwIP get the encapsulation header and go straight onto the bus; frames from the air come off the bus, lose the header, and go straight into lwIP. No protobuf, no copies beyond what the transport needs, no interpretation. ESP-Hosted registers itself as an <code>esp_netif</code> driver on the host — filling the same slot the native Wi-Fi driver glue would — so to lwIP the whole P4+bus+C5 assembly is just a slightly odd network interface card. The header's interface field is what keeps things apart on the shared bus: station traffic, softAP traffic, RPC, a virtual serial channel (used for provisioning-style control), and Bluetooth HCI each ride their own logical channel over the same six wires.</p>
+<h2 id="the-transport-six-wires-doing-all-the-work">The transport: six wires doing all the work.<a class="headerlink" href="#the-transport-six-wires-doing-all-the-work" title="Permanent link">&para;</a></h2>
+<p>Everything so far was software; here's where it touches the PCB. ESP-Hosted supports several transports, and the choice is a real design decision — it fixes your throughput ceiling, your pin budget, and how careful your layout has to be:</p>
+<table>
+<thead>
+<tr>
+<th>Transport</th>
+<th>Duplex</th>
+<th>GPIOs</th>
+<th>UDP throughput (Tx/Rx)</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SDIO 4-bit</td>
+<td>half</td>
+<td>6</td>
+<td><strong>~79 / 68 Mbps</strong></td>
+<td>fastest; PCB-only, no jumper wires</td>
+</tr>
+<tr>
+<td>SDIO 1-bit</td>
+<td>half</td>
+<td>4</td>
+<td>~ half of 4-bit</td>
+<td>easier bring-up, fewer pins</td>
+</tr>
+<tr>
+<td>Quad SPI</td>
+<td>half</td>
+<td>7</td>
+<td>~41 / 42 Mbps</td>
+<td>when the SDIO slave is taken</td>
+</tr>
+<tr>
+<td>Standard SPI</td>
+<td>full</td>
+<td>6</td>
+<td>~24 / 25 Mbps</td>
+<td>the tolerant one; fine on wires</td>
+</tr>
+<tr>
+<td>UART</td>
+<td>full</td>
+<td>2</td>
+<td>~0.7 Mbps</td>
+<td>debug, or genuinely tiny traffic</td>
+</tr>
+</tbody>
+</table>
+<p>The ESP32-C5 supports the ones that matter: <strong>SDIO (1-bit and 4-bit) as a slave, every SPI variant, and UART</strong> — and the kode dot's schematic settles the question: it wires <strong>SDIO 4-bit</strong>, same top-tier option as the P4+C6 reference design, up to 50 MHz. With a display streaming over this link (app downloads, media, OTA images for two chips), that headroom is not a luxury. Here's the wiring as far as silicon dictates it — the P4 side is a board decision that goes into the host's menuconfig, shown here for Espressif's reference board; the C5 side is fixed:</p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>C5 pin (fixed)</th>
+<th>reference EV board (P4 side)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLK</td>
+<td>IO9</td>
+<td>18</td>
+</tr>
+<tr>
+<td>CMD</td>
+<td>IO10</td>
+<td>19</td>
+</tr>
+<tr>
+<td>D0</td>
+<td>IO8</td>
+<td>14</td>
+</tr>
+<tr>
+<td>D1</td>
+<td>IO7</td>
+<td>15</td>
+</tr>
+<tr>
+<td>D2</td>
+<td>IO14</td>
+<td>16</td>
+</tr>
+<tr>
+<td>D3</td>
+<td>IO13</td>
+<td>17</td>
+</tr>
+<tr>
+<td>C5 reset</td>
+<td>EN</td>
+<td>54</td>
+</tr>
+</tbody>
+</table>
+<p>Three things are worth noticing. The C5 column is <strong>not a choice</strong>: IO7–IO10 plus IO13/IO14 are the C5's fixed IO_MUX pins for the SDIO slave — the P4's SDMMC host routes flexibly, the slave doesn't, so the C5 half of menuconfig is really just confirming the datasheet. The board has to carry <strong>pull-ups on CMD and D0–D3</strong> (the docs recommend ~51 kΩ; CLK gets none). And the kode dot adds a pair of dedicated <strong>wake lines</strong>, one in each direction, that aren't part of the SDIO transport at all — they exist for the power-save story, and we'll meet them again <a href="#beyond-plain-wi-fi">below</a>.</p>
+<p>That <strong>reset line</strong> is easy to overlook and load-bearing: the P4 owns the C5's EN pin through one GPIO and yanks it during transport init, so both sides start their handshake from a known state. It's wired — good — and it's also the <em>only</em> boot-control the P4 has over the C5, a fact that decides the whole update story two sections down.</p>
+<p>The electrical rules from the <a href="https://github.com/espressif/esp-hosted-mcu/blob/main/docs/design_consideration.md">design notes</a> are blunt and worth repeating verbatim-ish:</p>
+<ul>
+<li>SDIO lines — CMD and D0–D3 — need <strong>external pull-ups</strong> (51 kΩ recommended), in 1-bit mode too.</li>
+<li><strong>Keep it short</strong>: under ~5 cm for SDIO, ~10 cm for SPI, matched lengths, clock isolated from noisy neighbours. Jumper wires and SDIO do not mix; for breadboard bring-up, use standard SPI.</li>
+<li>Prefer <strong>IO_MUX pins</strong> for the bus — routed through the GPIO matrix you lose timing margin at the top frequencies (we met the same rule with <a href="../i2c_explained/">I²C</a>, just at gentler speeds).</li>
+<li>Bring-up discipline: start the clock at 400 kHz–20 MHz, prove the link, then raise it. A link that works at 5 MHz and dies at 40 MHz is a layout/pull-up problem, not a software one.</li>
+</ul>
+<p>One tuning knob deserves a mention because it trades RAM for speed at the system level: SDIO <strong>streaming mode</strong> (default) coalesces packets and buffers more aggressively — roughly 80 Mbps raw with the default queue depth — while <strong>packet mode</strong> ships packets one at a time in ~3 KB of buffer for about a third of the throughput. On a P4 with PSRAM you'll keep streaming mode; it's the kind of option you're glad exists the day you port the host side to something small.</p>
+<h2 id="what-runs-on-the-esp32-c5">What runs on the ESP32-C5?<a class="headerlink" href="#what-runs-on-the-esp32-c5" title="Permanent link">&para;</a></h2>
+<p>Here's the mental shift ESP-Hosted asks of you, and the single most important thing to take from this note: <strong>the kode dot's C5 is not a modem we buy, it's a firmware we ship.</strong></p>
+<p>The co-processor runs the ESP-Hosted <strong>slave firmware</strong> — itself a normal ESP-IDF application (since 3.x, every example carries it in a <code>cp/</code> subdirectory as a sibling project). Its <code>app_main</code> brings up the transport slave driver, the RPC server, and the Wi-Fi driver, then spends its life forwarding. You configure it with the same <code>menuconfig</code> you use for everything else: which transport, which pins, which Wi-Fi buffer counts. It is boring firmware — deliberately — but it is <em>ours</em>: it goes in the manufacturing plan, in version control, and in the update story, right next to kodeOS itself.</p>
+<p>And one rule governs everything that follows: <strong>host and slave versions must match</strong> — same protobuf schema, same RPC vocabulary, same header layout. The handshake checks versions and complains, but the failure modes of a mismatch range from a clean error to "scan results are silently empty". Pin both sides in the build system and bump them together, the way you'd treat any other protocol pair. On a two-chip product this is not advice, it's the contract: a kodeOS release is really a <em>pair</em> of firmwares, and the pair is what you test.</p>
+<p>The next two sections are the practical consequences: how firmware gets into the C5 the first time, and how it gets replaced when the device is on someone's desk and the only wires attached to it are inside the case.</p>
+<h2 id="how-do-you-program-the-kode-dots-c5">How do you program the kode dot's C5?<a class="headerlink" href="#how-do-you-program-the-kode-dots-c5" title="Permanent link">&para;</a></h2>
+<p>Strip the mystique first: <strong>the C5 flashes exactly like every other ESP chip</strong> — UART bootloader, <code>esptool</code>, done. All the design work is about <em>reaching</em> it, because on the kode dot the C5 has no USB connector of its own; it sits behind the P4 like any other soldered part.</p>
+<p><strong>What gets flashed.</strong> The slave side of the kode dot is an ESP-IDF project like any other:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>kode_dot_c5_fw<span class="w">            </span><span class="c1"># our cp/ project — transport + RPC + Wi-Fi</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>idf.py<span class="w"> </span>set-target<span class="w"> </span>esp32c5
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>idf.py<span class="w"> </span>menuconfig
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1">#   transport: SDIO 4-bit on the C5's fixed slave pins (IO9 CLK, IO10 CMD,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1">#   IO8/7/14/13 = D0/D1/D2/D3) — plus Wi-Fi buffers, band defaults, logging</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>idf.py<span class="w"> </span>build
+</code></pre></div>
+<p>The output is the usual trio — bootloader, partition table, app — plus the partition layout that matters later: <strong>two OTA app slots and an <code>otadata</code> partition</strong>, because remote update (next section) needs somewhere to write the new image while the old one keeps running. The kode dot's C5 is an <strong>ESP32-C5-MINI-1-N4</strong> — 4 MB of flash — which fits two slots of a slave image with room to spare, but decide that partition table <em>now</em>, at the bench-flashing stage; retrofitting dual-slot OTA onto fielded units that shipped with a single factory slot is somewhere between painful and impossible.</p>
+<p><strong>Reaching the bootloader.</strong> On the kode dot the schematic already made the important decisions, so this is short:</p>
+<ol>
+<li>
+<p><strong>Bench and bring-up: four test pads.</strong> The board routes exactly the four signals a flash cycle needs to test pads: <strong>EN, TX, RX and the C5's boot strap</strong>. Pull the strap low, pulse EN, and the C5 is in download mode — a standard <code>esptool</code> target through a USB-UART adapter or a pogo-pin jig:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>esptool.py<span class="w"> </span>--chip<span class="w"> </span>esp32c5<span class="w"> </span>-p<span class="w"> </span>/dev/ttyUSB0<span class="w"> </span>write_flash<span class="w"> </span>@flash_args
+</code></pre></div>
+<p>This is the route for the <em>first</em> firmware ever, the bricked-unit rescue, and half of all transport debugging. Those four test points are the cheapest insurance on the board — same design courtesy the EV board extends with its <code>PROG_C6</code> header, done here with pogo pads instead of a connector.</p>
+</li>
+<li>
+<p><strong>Factory: same pads, on the fixture.</strong> In production the four pads land on the bed-of-nails: the C5 gets its slave image (and the P4 gets kodeOS) as one programming step, versions matched by construction. If the module arrives pre-flashed with a generic hosted slave, treat that as a bootstrap convenience only — reflash to <em>our</em> pinned version anyway, so the factory is not silently shipping whatever Espressif had that month.</p>
+</li>
+<li>
+<p><strong>Everything after the factory: OTA, and only OTA.</strong> Read the schematic closely and note what's <em>not</em> there: the C5's UART and its boot strap go <strong>only</strong> to the test pads — they don't reach the P4. The P4 holds exactly one boot-related line, EN, so it can reset the C5 but can never force it into download mode or talk to its ROM bootloader. There is no passthrough-flashing fallback on this board: once the case is closed, <strong>the hosted OTA of the next section is the only way the C5's firmware changes</strong>. That makes the next section load-bearing rather than nice-to-have — and it's why the staged-image flow and the version-check loop described there aren't optional hygiene, they're the recovery story.</p>
+</li>
+</ol>
+<p>One practical bring-up note that saves an afternoon: flash the C5 <strong>first</strong>, then bring the P4 up with logs on, and confirm both sides print their transport handshake — capabilities, versions — before any Wi-Fi call. A P4 that boots with an unprogrammed C5 next to it just reports a dead transport, which looks alarmingly like a layout problem and is not.</p>
+<h2 id="how-do-you-update-the-c5-remotely">How do you update the C5 remotely?<a class="headerlink" href="#how-do-you-update-the-c5-remotely" title="Permanent link">&para;</a></h2>
+<p>Now the question that decides whether this architecture is production-grade or a demo: the kode dot is in someone's hands, kodeOS updates itself over Wi-Fi — <strong>and the chip that provides that Wi-Fi also needs updating.</strong> Through what? Through the only link it has: the same SDIO bus, driven by the host.</p>
+<p>ESP-Hosted ships this as a first-class API, and the shape is the classic OTA quartet — begin, write chunks, end, activate — except every call is an RPC and the flash being written is on the other chip:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"esp_hosted.h"</span><span class="w">          </span><span class="cm">/* the host API — esp_hosted_slave_ota_*() live here */</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">esp_err_t</span><span class="w"> </span><span class="nf">kode_update_c5</span><span class="p">(</span><span class="n">read_image_fn</span><span class="w"> </span><span class="n">read_chunk</span><span class="p">)</span><span class="w">   </span><span class="cm">/* wherever the bytes come from */</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">{</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="cm">/* 0. is an update even needed? the C5 reports its own version */</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="n">esp_hosted_coprocessor_fwver_t</span><span class="w"> </span><span class="n">ver</span><span class="p">;</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="n">esp_hosted_get_coprocessor_fwversion</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ver</span><span class="p">);</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">newer_than</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ver</span><span class="p">,</span><span class="w"> </span><span class="n">TARGET_C5_VERSION</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">ESP_OK</span><span class="p">;</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="cm">/* 1. slave erases its passive OTA slot, gets ready to receive */</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="n">ESP_ERROR_CHECK</span><span class="p">(</span><span class="n">esp_hosted_slave_ota_begin</span><span class="p">());</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="cm">/* 2. stream the image across the bus in transport-sized chunks (~1.4 KB) */</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">1400</span><span class="p">];</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_chunk</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">)))</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">        </span><span class="n">ESP_ERROR_CHECK</span><span class="p">(</span><span class="n">esp_hosted_slave_ota_write</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">));</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">    </span><span class="cm">/* 3. slave verifies the complete image (checksum, magic, target) */</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">    </span><span class="n">ESP_ERROR_CHECK</span><span class="p">(</span><span class="n">esp_hosted_slave_ota_end</span><span class="p">());</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">    </span><span class="cm">/* 4. flip the boot partition and reboot the C5 */</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">esp_hosted_slave_ota_activate</span><span class="p">();</span><span class="w">          </span><span class="cm">/* link drops, then comes back */</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="p">}</span>
+</code></pre></div>
+<p>Where do the bytes come from? The stock example offers three sources, and they map neatly onto product decisions:</p>
+<table>
+<thead>
+<tr>
+<th>Image source</th>
+<th>How it works</th>
+<th>When it fits the kode dot</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HTTPS, streamed</strong></td>
+<td>host downloads with <code>esp_https_ota</code>-style client, forwards chunks straight to the C5</td>
+<td>smallest flash cost — but the radio is updating itself over itself; a mid-stream Wi-Fi drop aborts the transfer (safely — see below)</td>
+</tr>
+<tr>
+<td><strong>Staged in a host partition</strong></td>
+<td>kodeOS update delivers the C5 image into a dedicated P4-flash partition (e.g. <code>slave_fw</code>); the bus transfer happens later, offline</td>
+<td><strong>the robust one</strong>: download and C5-flash are decoupled, the bus stream can't be interrupted by the network, and a failed activate can be retried from local flash</td>
+</tr>
+<tr>
+<td><strong>Filesystem (LittleFS/SD)</strong></td>
+<td>image is a file the host opens and streams</td>
+<td>dev convenience, factory refurbishing</td>
+</tr>
+</tbody>
+</table>
+<p>Notice the chicken-and-egg that isn't: yes, the new C5 firmware arrives <em>via</em> the C5 — but it's never executed from the stream. It lands in the <strong>passive</strong> OTA slot on the C5's flash while the current firmware keeps the link (and the Wi-Fi) alive; only <code>ota_activate()</code> — after <code>ota_end()</code> has verified the image — flips the boot pointer and reboots. An interrupted download, a power cut mid-stream, a corrupted image: all of them leave the C5 booting the firmware it already had. The unrescuable state is the one you design out with the staged-partition flow — because on the kode dot, remember, the fallback isn't a cable, it's opening the case to reach the test pads.</p>
+<p>How this composes into the kode dot's update story is the part worth writing down for the team:</p>
+<ul>
+<li><strong>One update artifact, two images.</strong> A kodeOS release bundle carries the P4 app <em>and</em> its matching C5 image. The updater applies the P4 side with normal <code>esp_ota</code>, stages the C5 side into <code>slave_fw</code>, and runs the bus transfer on the next quiet moment (charging, idle, screen off — the transfer at SDIO speed is seconds, but why gamble).</li>
+<li><strong>Order matters, briefly.</strong> Between "P4 updated" and "C5 updated" you're running a version pair you must tolerate. Keep the window short (update C5 immediately after the P4 reboot), and lean on the handshake's version check as the tripwire, not as the plan.</li>
+<li><strong>The version check is the idempotency.</strong> <code>esp_hosted_get_coprocessor_fwversion()</code> at every boot, compare against the version pinned in kodeOS, update iff it differs — that one loop heals a failed activate, a factory unit that skipped a step, and a warranty board swap, all with the same code path.</li>
+<li><strong>Sign what you stream.</strong> The hosted OTA validates integrity, not authorship. The C5 image should ride inside kodeOS's signed update bundle so its authenticity is checked by the host before a byte touches the bus — same trust chain, both chips, no second Wi-Fi-facing updater and no second attack surface.</li>
+</ul>
+<h2 id="whats-the-regular-workflow-on-a-real-project">What's the regular workflow on a real project?<a class="headerlink" href="#whats-the-regular-workflow-on-a-real-project" title="Permanent link">&para;</a></h2>
+<p>Day to day it's two projects — host and co-processor — and the host side is three commands longer than a normal Wi-Fi project.</p>
+<p><strong>Host (the P4 application):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>idf.py<span class="w"> </span>set-target<span class="w"> </span>esp32p4
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>idf.py<span class="w"> </span>add-dependency<span class="w"> </span><span class="s2">"espressif/esp_wifi_remote"</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>idf.py<span class="w"> </span>add-dependency<span class="w"> </span><span class="s2">"espressif/esp_hosted"</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>idf.py<span class="w"> </span>menuconfig
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c1">#   Component config → ESP-Hosted config →</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1">#     transport: SDIO, 4-bit — CLK, CMD, D0-D3 on your board's P4 pins</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1">#     slave reset GPIO: the P4 pin wired to the C5's EN</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="c1">#     slave chipset: ESP32-C5        (CONFIG_SLAVE_IDF_TARGET_ESP32C5)</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>idf.py<span class="w"> </span>build<span class="w"> </span>flash<span class="w"> </span>monitor
+</code></pre></div>
+<p>Nothing else in the project changes: your Wi-Fi code is the same code it would be on an ESP32-S3, which is precisely the pitch. The slave-chipset choice matters more than it looks — it's what <code>esp_wifi_remote</code> uses to mirror the right Kconfig options and expose the right capabilities (a C5 slave is what puts <code>wifi_band_mode_t</code> and friends — the 5 GHz surface — within reach).</p>
+<p><strong>Co-processor (the C5):</strong> covered in <a href="#how-do-you-program-the-kode-dots-c5">its own section above</a> — build the <code>cp/</code> project for <code>esp32c5</code> with the matching transport config, flash over the bench UART once, and from then on it's <a href="#how-do-you-update-the-c5-remotely">OTA from the host</a>.</p>
+<p>One more bench tool worth knowing: a <strong>raw-throughput test example</strong> exists specifically to validate the bus with no Wi-Fi involved — packets across the SDIO link and nothing else. On a new kode dot revision, run it before blaming the RF: it cleanly separates "the layout/pull-ups are wrong" from "the radio side is misconfigured", which are otherwise identical from the couch.</p>
+<p>If you're keeping score against <a href="../what_is_esp_bmgr_and_how_does_work/">the BMGR note</a>: the hosted link is bus + pins + an external chip, so on a BMGR board you'd describe the SDIO peripheral and the C5's reset GPIO in <code>board_peripherals.yaml</code> like anything else — but the hosted stack itself is configured through Kconfig, not through the board YAML. Two description systems, one schematic; keep them agreeing.</p>
+<h2 id="beyond-plain-wi-fi">Beyond plain Wi-Fi.<a class="headerlink" href="#beyond-plain-wi-fi" title="Permanent link">&para;</a></h2>
+<p>Four features that come with the architecture, all consequences of "the co-processor is a full chip with your firmware on it" — and the kode dot schematic shows the team already leaning on the fourth:</p>
+<p><strong>Bluetooth over the same wires.</strong> The C5 has BLE 5, and ESP-Hosted transports <strong>HCI</strong> — the standard host-controller interface — as another channel on the bus. The controller runs on the C5; the Bluetooth <em>host</em> stack (NimBLE or Bluedroid) runs on the P4 alongside your app. Same layer-split philosophy as the Wi-Fi side: link-layer realtime on the radio chip, protocol logic on the big chip. A dedicated 2-wire UART HCI is also an option if you'd rather keep BT off the data bus.</p>
+<p><strong>Network split and host power-save.</strong> This one's genuinely clever. The C5 <em>can</em> run a small lwIP of its own, sharing the host's IP address, with traffic divided by port ranges — and then the P4 can go to <strong>deep sleep while the C5 keeps the network alive</strong>: MQTT keepalives answered, the association maintained, and a packet filter deciding which inbound traffic is worth waking the host for. For a battery device carrying a chip as hungry as the P4, "the radio babysits the connection while the CPU sleeps" is the difference between days and months. And here the kode dot schematic shows its homework: the two dedicated <strong>wake lines</strong> from the transport section — one from the C5 to the P4, one from the P4 to the C5 — are exactly the out-of-band "wake up, something happened" signals this feature needs, wired in both directions, independent of the SDIO bus. The hardware is ready for host power-save even before the firmware turns it on.</p>
+<p><strong>802.15.4, too.</strong> The C5 carries an 802.15.4 radio, and ESP-Hosted can proxy OpenThread the same way it proxies Wi-Fi — there are Thread border-router examples in the tree. One co-processor, three radios, one bus.</p>
+<p><strong>The co-processor as an IO expander.</strong> Spare C5 pins are real GPIOs a host can drive over RPC (there's a stock GPIO-expander example), and the kode dot uses them with intent: the <strong>IR transceiver hangs off the C5</strong>, and the speaker amplifier's enable and the SD card-detect line live there too, pins the P4 simply doesn't have to spare. The consequence for the firmware plan is worth stating plainly: our slave project is not the stock <code>cp/</code> example with different pin numbers — it carries kode-specific duties (IR at minimum), which is one more reason the C5 image is versioned, tested and shipped as a first-class part of every kodeOS release, not vendored once and forgotten.</p>
+<h2 id="so-what-is-esp-hosted-then">So what is ESP-Hosted, then?<a class="headerlink" href="#so-what-is-esp-hosted-then" title="Permanent link">&para;</a></h2>
+<p>Three things, same shape as always:</p>
+<ul>
+<li><strong>A shim</strong> — <code>esp_wifi_remote</code>, the whole <code>esp_wifi</code> API regenerated per ESP-IDF version for chips that lack it, forwarding through weak symbols to whichever backend is linked in.</li>
+<li><strong>A protocol</strong> — protobuf-serialized RPC for control and events, raw encapsulated frames for data, multiplexed as channels (Wi-Fi, HCI, serial) over one bus.</li>
+<li><strong>Two firmwares</strong> — a host component that pretends to be a Wi-Fi driver in front of <code>esp_netif</code>, and a slave application that pretends to be the rest of the chip.</li>
+</ul>
+<p>The parts that felt like magic are bookkeeping again. The station example compiles on a radio-less chip because a generator scraped <code>esp_wifi.h</code> and emitted matching shims. <code>esp_wifi_connect()</code> returns <code>ESP_OK</code> because a task blocked on a semaphore until a protobuf response crossed the SDIO bus. <code>IP_EVENT_STA_GOT_IP</code> fires on the P4 because DHCP never left it — only ethernet frames did.</p>
+<p>And it's the same boundary-moving story as the other notes, one floor further out. The <a href="../esp_idf_how_does_it_work/">ESP-IDF note</a> put the boundary at the driver API; <a href="../what_is_esp_bmgr_and_how_does_work/">BMGR</a> pushed it up so the <em>pin numbers</em> weren't yours; ESP-Hosted pushes it clean off the die — now the <em>radio</em> isn't yours either, it's a described, versioned, replaceable thing on the far side of a bus. On the kode dot that trade reads: kodeOS gets the P4's compute with the C5's dual-band Wi-Fi 6 behind the standard API; in exchange we ship two firmwares that version together, respect a handshake, keep the test pads reachable on the bench, and treat every release as a pair — P4 image plus C5 image, staged, streamed over six traces, and activated only after it verifies. For a chip with no radio, that's not a workaround — it's the design.</p>
+<div class="admonition note">
+<p class="admonition-title">Where to look next</p>
+<ul>
+<li><a href="https://github.com/espressif/esp-hosted-mcu"><code>espressif/esp-hosted-mcu</code></a> — the source; <code>docs/</code> has the transport guides (SDIO, SPI), <code>wifi_design.md</code>, <code>bluetooth_design.md</code> and the troubleshooting guide.</li>
+<li><a href="https://components.espressif.com/components/espressif/esp_hosted"><code>esp_hosted</code> on the component registry</a> — current version and the 78 examples, each with its <code>cp/</code> co-processor project.</li>
+<li><a href="https://components.espressif.com/components/espressif/esp_wifi_remote"><code>esp_wifi_remote</code></a> — the shim, worth reading for the generated-API trick alone.</li>
+<li><a href="https://components.espressif.com/components/espressif/esp_hosted/versions/2.8.3/examples/host_performs_slave_ota?language=en"><code>host_performs_slave_ota</code> example</a> — the co-processor OTA flow from the remote-update section, runnable: begin/write/end/activate with HTTPS, host-partition and filesystem image sources.</li>
+<li><a href="https://github.com/espressif/esp-hosted-mcu/blob/main/docs/esp32_p4_function_ev_board.md">ESP32-P4-Function-EV-Board guide</a> — the P4+C6 reference bring-up; everything transfers to a C5 design.</li>
+<li><a href="https://docs.espressif.com/projects/esp-techpedia/en/latest/esp-friends/solution-introduction/multimedia/application-solution/esp-hosted-mcu.html">ESP-Hosted-MCU on ESP-Techpedia</a> — the compact official overview, with the version-compatibility table.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Jorge Benedicto Centeno &ndash; content licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Emoji by <a href="https://github.com/twitter/twemoji">Twemoji</a> (CC BY 4.0); icons from Material Design Icons (Apache&nbsp;2.0) and Octicons (MIT).
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.indexes", "navigation.instant", "navigation.instant.progress", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

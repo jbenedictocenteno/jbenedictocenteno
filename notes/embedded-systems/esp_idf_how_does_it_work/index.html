@@ -1,0 +1,2997 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Personal notes and projects">
+      
+      
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../how_does_an_mcu_boot/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>How does ESP-IDF work? - Personal Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-does-esp-idf-work" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Personal Notes" class="md-header__button md-logo" aria-label="Personal Notes" data-md-component="logo">
+      
+  <img src="../../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Personal Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              How does ESP-IDF work?
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../projects/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Projects
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Personal Notes" class="md-nav__button md-logo" aria-label="Personal Notes" data-md-component="logo">
+      
+  <img src="../../../assets/logo.png" alt="logo">
+
+    </a>
+    Personal Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../cybersecurity/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cybersecurity
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cybersecurity
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cybersecurity/how_do_signatures_prove_identity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How do signatures and certificates prove who you are?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cybersecurity/how_does_tls_work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does TLS work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cybersecurity/what_is_an_rsa_key/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is an RSA key?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Embedded Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does ESP-IDF work?
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does ESP-IDF work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-example-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The example project.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-a-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a component?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What is a component?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-components-come-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where components come from.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-layer-cake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The layer cake.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kconfig-and-sdkconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kconfig and sdkconfig.
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kconfig and sdkconfig.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-file-does-menuconfig-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which file does menuconfig write?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-idfpy-actually-runs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What idf.py actually runs.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linking-where-does-the-linker-script-come-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linking: where does the linker script come from?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Linking: where does the linker script come from?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#making-it-do-something-for-us" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Making it do something for us.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-any-of-this-exists-code-runs-from-flash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why any of this exists: code runs from flash.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-elf-to-bin-the-image-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From .elf to .bin: the image format.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-it-all-lands-the-partition-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where it all lands: the partition table.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#booting-for-real" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Booting, for real.
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Booting, for real.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stage-1-the-rom-bootloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 1 — the ROM bootloader.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-2-the-second-stage-bootloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 2 — the second-stage bootloader.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-3-the-app-starts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3 — the app starts.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-init-functions-nobody-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The init functions nobody calls.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-4-freertos-and-finally-app_main" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 4 — FreeRTOS, and finally app_main.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-probes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The probes.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#so-what-is-esp-idf-then" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        So what is ESP-IDF, then?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_does_an_mcu_boot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does an MCU get to main()?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i2c_explained/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does I²C actually work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../what_is_esp_bmgr_and_how_does_work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is the Espressif board manager and how does it work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../what_is_esp_hosted_and_how_does_work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is ESP-Hosted and how does it work?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../programming/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Programming
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Programming
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../programming/c-cpp/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C/Cpp
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    C/Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../programming/c-cpp/how_does_a_machine_know_c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How does a machine know C?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../regulations/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Regulations
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Regulations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../regulations/how_do_you_build_the_rules_into_a_device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How do you build the rules into a device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../regulations/what_does_the_cra_ask_of_an_iot_device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What does the CRA ask of an IoT device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../regulations/what_does_the_fcc_ask_of_an_iot_device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What does the FCC ask of an IoT device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../regulations/what_does_the_red_ask_of_an_iot_device/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What does the RED ask of an IoT device?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../regulations/what_rules_does_an_iot_device_have_to_pass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What rules does an IoT device have to pass before you can sell it?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../projects/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projects
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/kodeos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kodeOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/kode_sdk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kode SDK
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/park20/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PARK20
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/omni20wune/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OMNI20WUNE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-example-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The example project.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-a-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a component?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What is a component?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-components-come-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where components come from.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-layer-cake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The layer cake.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kconfig-and-sdkconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kconfig and sdkconfig.
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kconfig and sdkconfig.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-file-does-menuconfig-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which file does menuconfig write?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-idfpy-actually-runs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What idf.py actually runs.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linking-where-does-the-linker-script-come-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linking: where does the linker script come from?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Linking: where does the linker script come from?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#making-it-do-something-for-us" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Making it do something for us.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-any-of-this-exists-code-runs-from-flash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why any of this exists: code runs from flash.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-elf-to-bin-the-image-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From .elf to .bin: the image format.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-it-all-lands-the-partition-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where it all lands: the partition table.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#booting-for-real" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Booting, for real.
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Booting, for real.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stage-1-the-rom-bootloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 1 — the ROM bootloader.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-2-the-second-stage-bootloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 2 — the second-stage bootloader.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-3-the-app-starts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3 — the app starts.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-init-functions-nobody-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The init functions nobody calls.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-4-freertos-and-finally-app_main" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 4 — FreeRTOS, and finally app_main.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-probes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The probes.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#so-what-is-esp-idf-then" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        So what is ESP-IDF, then?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="how-does-esp-idf-work">How does ESP-IDF work?<a class="headerlink" href="#how-does-esp-idf-work" title="Permanent link">&para;</a></h1>
+<p>In <a href="../how_does_an_mcu_boot/">How does an MCU get to <code>main()</code>?</a> we booted an STM32 with three files we wrote ourselves: a vector table, a <code>Reset_Handler</code> that copied <code>.data</code> and zeroed <code>.bss</code>, and a linker script that said where everything lives. Nothing was hidden, because nothing was there that we hadn't typed.</p>
+<p>Now open an ESP32 project and every one of those pieces is gone. There's no vector table in sight. There's no linker script in the project. Your entry point isn't <code>main</code>, it's <code>app_main</code> — and <em>nobody calls it</em> from any code you can see. You type <code>idf.py build</code>, a thousand files compile, and something works.</p>
+<p>This note is about what those thousand files are doing. We'll build a real project, then take it apart: where components come from, how a setting in a menu becomes a <code>#define</code>, who writes the linker script, why your code runs from flash instead of RAM, and what actually happens between power-on and the first line of <code>app_main</code>.</p>
+<h2 id="introduction">Introduction.<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p><strong>ESP-IDF</strong> stands for <strong>Espressif IoT Development Framework</strong>: the official C framework for their chips, as opposed to Arduino-ESP32 or MicroPython. The abbreviation turns up everywhere once you start looking — <code>$IDF_PATH</code> is where it is installed, <code>idf.py</code> is its command-line tool, <code>CONFIG_IDF_TARGET</code> is the chip you are building for.</p>
+<p>And the first thing worth saying about it is that it is not one thing. It's four things that ship in one folder, and most confusion comes from mixing them up:</p>
+<ul>
+<li><strong>A build system.</strong> CMake and Ninja, wrapped in a set of rules where the unit of code is a <em>component</em>.</li>
+<li><strong>A configuration system.</strong> Kconfig — the same one the Linux kernel uses — which turns a menu of options into a <code>sdkconfig</code> file and a generated C header.</li>
+<li><strong>A pile of libraries.</strong> 141 components in v6.0.2: FreeRTOS, drivers, WiFi, TCP/IP, a C library, the bootloader.</li>
+<li><strong>A pile of host tools.</strong> <code>idf.py</code>, <code>esptool</code>, the partition table generator, the linker script generator, the component manager.</li>
+</ul>
+<p>Everything below is one of those four wearing a costume.</p>
+<p>I'll target an <strong>ESP32-P4</strong> on <strong>ESP-IDF v6.0.2</strong>, and every command, address, and log line in this note is copy-pasted from a real build running on a real board. Three facts about this target, because they shape everything else:</p>
+<ul>
+<li>It's <strong>RISC-V</strong>, so the toolchain is <code>riscv32-esp-elf-gcc</code>. (Older ESP32 and ESP32-S3 are Xtensa, <code>xtensa-esp32-elf-gcc</code>. Same ideas, different opcodes — see <a href="../../programming/c-cpp/how_does_a_machine_know_c/">How does a machine know C?</a>.)</li>
+<li>It has <strong>two CPU cores</strong>, which is why the startup code keeps talking about "CPU0" and "CPU1".</li>
+<li>Its <strong>code lives in flash and is executed from there</strong>, through a memory-management unit and a cache. This is the single biggest difference from the STM32 note, and half of this note is downstream of it.</li>
+</ul>
+<p>Here's the shape of the whole thing:</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph host ["On your computer"]
+        K["Kconfig files&lt;br/&gt;(one per component)"] --&gt; SDK["sdkconfig&lt;br/&gt;+ sdkconfig.h"]
+        SDK --&gt; CM["CMake + Ninja"]
+        C["components/&lt;br/&gt;(yours + ESP-IDF's)"] --&gt; CM
+        CM --&gt; LIBS["one .a per component"]
+        LF[".lf linker fragments"] --&gt; LDGEN["ldgen"]
+        LDGEN --&gt; SEC["sections.ld&lt;br/&gt;(generated)"]
+        LIBS --&gt; LD["linker"]
+        SEC --&gt; LD
+        LD --&gt; ELF["app.elf"]
+        ELF --&gt; BIN["app.bin&lt;br/&gt;(esptool elf2image)"]
+    end
+    subgraph chip ["On the chip"]
+        BIN --&gt; FL["flash&lt;br/&gt;0x2000 bootloader&lt;br/&gt;0x8000 partitions&lt;br/&gt;0x10000 app"]
+        FL --&gt; ROM["ROM bootloader&lt;br/&gt;(burned into silicon)"]
+        ROM --&gt; BL["2nd stage bootloader"]
+        BL --&gt; APP["app: cpu_start"]
+        APP --&gt; RTOS["FreeRTOS scheduler"]
+        RTOS --&gt; AM["app_main()"]
+    end</code></pre>
+<h2 id="the-example-project">The example project.<a class="headerlink" href="#the-example-project" title="Permanent link">&para;</a></h2>
+<p>Here's what we're building. It's small, but it has one of everything:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>esp_idf_how_does_it_work/
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>|- CMakeLists.txt          the project
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>|- sdkconfig.defaults      our defaults, overriding ESP-IDF's own
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>|- partitions.csv          how flash is divided up
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>|- main/
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>|   |- CMakeLists.txt      registers the main component
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>|   |- main.c              app_main()
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>|- components/my_led/
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    |- CMakeLists.txt      registers our own component
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    |- Kconfig             adds options to the config menu
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    |- linker.lf           tells the linker where to put one function
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    |- include/my_led.h
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    |- my_led.c
+</code></pre></div>
+<p>The root <code>CMakeLists.txt</code> is three lines, and their <strong>order matters more than it looks</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.22</span><span class="p">)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">include</span><span class="p">(</span><span class="o">$ENV{</span><span class="nv">IDF_PATH</span><span class="o">}</span><span class="s">/tools/cmake/project.cmake</span><span class="p">)</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nb">project</span><span class="p">(</span><span class="s">idf_tour</span><span class="p">)</span>
+</code></pre></div>
+<p>That <code>include</code> does something sneaky. Deep inside <a href="https://github.com/espressif/esp-idf/blob/v6.0.2/tools/cmake/project.cmake"><code>tools/cmake/project.cmake</code></a> there's this:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">macro</span><span class="p">(</span><span class="s">project</span><span class="w"> </span><span class="s">project_name</span><span class="p">)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="c"># ... a few hundred lines of ESP-IDF setup ...</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nb">idf_build_process</span><span class="p">(</span><span class="o">${</span><span class="nv">IDF_TARGET</span><span class="o">}</span><span class="w"> </span><span class="s">...</span><span class="p">)</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="c"># ... and only then ...</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nb">__project</span><span class="p">(</span><span class="o">${</span><span class="nv">project_name</span><span class="o">}</span><span class="w"> </span><span class="s">C</span><span class="w"> </span><span class="s">CXX</span><span class="w"> </span><span class="s">ASM</span><span class="p">)</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nb">endmacro</span><span class="p">()</span>
+</code></pre></div>
+<p>CMake already has a command called <code>project()</code>. ESP-IDF <strong>redefines it</strong>, and the comment right above it in the source says so plainly:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c"># Trick to temporarily redefine project(). When functions are overridden in CMake,</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c"># the originals can still be accessed using an underscore prefixed function of the</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c"># same name. The following lines make sure that __project calls the original project().</span>
+</code></pre></div>
+<p>That's the whole mechanism: override a command in CMake and the original is still reachable under an underscore-prefixed name. So the real <code>project()</code> becomes <code>__project()</code>, and ESP-IDF's macro takes over the name you type.</p>
+<p>So the last line of your <code>CMakeLists.txt</code> is not CMake's <code>project()</code>. It's ESP-IDF's, which scans for components, runs Kconfig, generates linker scripts, and <em>then</em> calls the real one. That's why <code>include()</code> must come first: put <code>project()</code> above it and you get a plain CMake project with no ESP-IDF in it at all.</p>
+<p>Now, <code>main.c</code>. I've kept the two probes from the STM32 note, because they ask the same question in a new place:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w">   </span><span class="cm">/* initialized  -&gt; lands in .data */</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">flag</span><span class="p">;</span><span class="w">          </span><span class="cm">/* zero-init    -&gt; lands in .bss  */</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="kt">void</span><span class="w"> </span><span class="nf">app_main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="p">{</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">"counter = %"</span><span class="w"> </span><span class="n">PRIu32</span><span class="w"> </span><span class="s">" (.data, expected 7)"</span><span class="p">,</span><span class="w"> </span><span class="n">counter</span><span class="p">);</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">"flag    = %"</span><span class="w"> </span><span class="n">PRIu32</span><span class="w"> </span><span class="s">" (.bss,  expected 0)"</span><span class="p">,</span><span class="w"> </span><span class="n">flag</span><span class="p">);</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="cm">/* ... */</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="p">}</span>
+</code></pre></div>
+<p>C promises that <code>counter</code> reads as <code>7</code> and <code>flag</code> reads as <code>0</code> by the time <code>app_main</code> runs. Silicon promises nothing of the sort: RAM is noise at power-on. So <em>something</em> has to copy that <code>7</code> out of flash into <code>counter</code>'s RAM address, and <em>something</em> has to write that <code>0</code> into <code>flag</code>'s.</p>
+<p>On the STM32 that something was us — the copy loop and the zero loop we typed into <code>Reset_Handler</code>. Delete them and these two lines print garbage. This project has no <code>Reset_Handler</code>, no copy loop and no zero loop; nothing we wrote touches either variable before the log call reads it.</p>
+<p>They print <code>7</code> and <code>0</code> anyway. So code we never wrote runs before <code>app_main</code> — and tracking down <a href="#booting-for-real">who writes each value, and where that code lives</a>, is most of what the rest of this note is about.</p>
+<h2 id="what-is-a-component">What is a component?<a class="headerlink" href="#what-is-a-component" title="Permanent link">&para;</a></h2>
+<p>A component is a folder with a <code>CMakeLists.txt</code> that calls <code>idf_component_register</code>. That's the entire definition. Here's ours:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">idf_component_register</span><span class="p">(</span><span class="s">SRCS</span><span class="w"> </span><span class="s2">"my_led.c"</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">                       </span><span class="s">INCLUDE_DIRS</span><span class="w"> </span><span class="s2">"include"</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">                       </span><span class="s">REQUIRES</span><span class="w"> </span><span class="s">esp_driver_gpio</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">                       </span><span class="s">PRIV_REQUIRES</span><span class="w"> </span><span class="s">log</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">                       </span><span class="s">LDFRAGMENTS</span><span class="w"> </span><span class="s2">"linker.lf"</span><span class="p">)</span>
+</code></pre></div>
+<p>Each component becomes <strong>one static library</strong> — this one becomes <code>libmy_led.a</code> — and the arguments say how it connects to the others:</p>
+<ul>
+<li><strong><code>SRCS</code></strong> — the files compiled into the library.</li>
+<li><strong><code>INCLUDE_DIRS</code></strong> — the <em>public</em> include path. Anything that depends on us gets <code>-I components/my_led/include</code> automatically. This is why you write <code>#include "my_led.h"</code> and never a relative path.</li>
+<li><strong><code>REQUIRES</code></strong> — public dependencies. Our public header declares <code>gpio_num_t my_led_pin(void)</code>, so <code>my_led.h</code> itself has to <code>#include "driver/gpio.h"</code> — and so does anyone who includes <em>our</em> header, or their compile fails on a type they've never heard of. Public dependencies are contagious: they propagate to whoever depends on us.</li>
+<li><strong><code>PRIV_REQUIRES</code></strong> — private dependencies. We use <code>esp_log.h</code> inside <code>my_led.c</code> only; it never appears in <code>my_led.h</code>. Nobody who uses us needs to know. Private dependencies stop at our boundary.</li>
+<li><strong><code>LDFRAGMENTS</code></strong> — a linker fragment file, which we'll get to in <a href="#linking-where-does-the-linker-script-come-from">Linking</a>.</li>
+</ul>
+<p>The <code>REQUIRES</code>/<code>PRIV_REQUIRES</code> split is exactly CMake's <code>target_link_libraries(PUBLIC ...)</code> versus <code>(PRIVATE ...)</code>, and the test for which list a component goes in is mechanical: <strong>open your public header.</strong> If another component's headers are reachable from it, that component is public. If it only ever appears in your <code>.c</code>, it's private.</p>
+<p>The thing that trips people up is that this is not about whose code ends up in the binary. <code>esp_log</code> is linked into the image either way — <code>libmy_led.a</code> calls its functions and the linker pulls them in regardless of which list it's in. The only thing the split controls is <strong>whose include path gets widened</strong>. <code>main.c</code> can write <code>gpio_num_t</code> without ever naming <code>esp_driver_gpio</code>, and cannot write <code>esp_log.h</code> even though <code>esp_log</code>'s code is right there in the same binary.</p>
+<p>It exists to keep include paths from becoming a free-for-all. <strong>Nothing is on your include path unless a component asked for it.</strong></p>
+<p>You find this out the first time you forget. While writing the example I added <code>#include "esp_app_desc.h"</code> to <code>main.c</code> without touching <code>main/CMakeLists.txt</code>, and the build stopped with:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>main.c:18:10: fatal error: esp_app_desc.h: No such file or directory
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Compilation failed because main.c (in "main" component) includes esp_app_desc.h,
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>provided by esp_app_format component(s).
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>However, esp_app_format component(s) is not in the requirements list of "main".
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>To fix this, add esp_app_format to PRIV_REQUIRES list of idf_component_register
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>call in .../main/CMakeLists.txt.
+</code></pre></div>
+<p>That is not a generic "file not found". The build system knows which component owns every header in the tree, so it can name the file, name the component that provides it, and name the line you need to edit. It's worth reading that message closely once, because it tells you the mental model: <em>components are the unit of dependency, and headers belong to components.</em></p>
+<h3 id="where-components-come-from">Where components come from.<a class="headerlink" href="#where-components-come-from" title="Permanent link">&para;</a></h3>
+<p>Four places, searched in this order:</p>
+<ol>
+<li><code>$IDF_PATH/components/</code> — the 141 that ship with ESP-IDF.</li>
+<li>Your project's <code>components/</code> folder — <code>my_led</code> lives here.</li>
+<li>Anything in the <code>EXTRA_COMPONENT_DIRS</code> CMake variable.</li>
+<li><code>managed_components/</code> — downloaded by the component manager from the <a href="https://components.espressif.com">ESP Component Registry</a> when a component declares them in an <code>idf_component.yml</code>.</li>
+</ol>
+<p><strong><code>main</code> is component number five, and it's special</strong>: it's always included, it implicitly depends on everything (so beginners don't have to think about <code>REQUIRES</code>), and it's where <code>app_main</code> is expected to live. That implicit-everything rule is also why a <code>hello_world</code> build compiles so much — you can turn it off with <code>idf_build_set_property(MINIMAL_BUILD ON)</code>.</p>
+<p>We can ask the build what it decided. Every build writes <code>build/project_description.json</code>, and reading the dependency fields back gives:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>target        : esp32p4
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>toolchain     : riscv32-esp-elf-
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>components    : 137
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  main             reqs=['my_led']          priv_reqs=['esp_app_format', 'app_update', 'esp_partition']
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  my_led           reqs=['esp_driver_gpio'] priv_reqs=['log']
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>  esp_driver_gpio  reqs=['esp_hal_gpio']    priv_reqs=['esp_pm']
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>  esp_hal_gpio     reqs=['soc', 'hal']      priv_reqs=[]
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>  soc              reqs=[]                  priv_reqs=[]
+</code></pre></div>
+<p>137 components for a program that blinks an LED. But look at the right-hand column, top to bottom: <code>main</code> → <code>my_led</code> → <code>esp_driver_gpio</code> → <code>esp_hal_gpio</code> → <code>soc</code> → nothing. That chain isn't arbitrary. It's a deliberate layer cake, and it's worth one section.</p>
+<h3 id="the-layer-cake">The layer cake.<a class="headerlink" href="#the-layer-cake" title="Permanent link">&para;</a></h3>
+<p>Our <code>my_led.c</code> calls <code>gpio_set_level(27, 1)</code>. Follow it down:</p>
+<p><strong>Layer 1 — the driver</strong> (<a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/esp_driver_gpio/src/gpio.c"><code>components/esp_driver_gpio/src/gpio.c</code></a>). This is the API you call. It knows about the operating system: it validates arguments, returns <code>esp_err_t</code>, and can take locks.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">esp_err_t</span><span class="w"> </span><span class="nf">gpio_set_level</span><span class="p">(</span><span class="n">gpio_num_t</span><span class="w"> </span><span class="n">gpio_num</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">level</span><span class="p">)</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="p">{</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="n">GPIO_CHECK</span><span class="p">(</span><span class="n">GPIO_IS_VALID_OUTPUT_GPIO</span><span class="p">(</span><span class="n">gpio_num</span><span class="p">),</span><span class="w"> </span><span class="s">"GPIO output gpio_num error"</span><span class="p">,</span><span class="w"> </span><span class="n">ESP_ERR_INVALID_ARG</span><span class="p">);</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="n">gpio_hal_set_level</span><span class="p">(</span><span class="n">gpio_context</span><span class="p">.</span><span class="n">gpio_hal</span><span class="p">,</span><span class="w"> </span><span class="n">gpio_num</span><span class="p">,</span><span class="w"> </span><span class="n">level</span><span class="p">);</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ESP_OK</span><span class="p">;</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Layer 2 — the HAL</strong>, and under it the <strong>LL</strong> ("low level") layer (<a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/esp_hal_gpio/esp32p4/include/hal/gpio_ll.h"><code>components/esp_hal_gpio/esp32p4/include/hal/gpio_ll.h</code></a>). No OS, no error codes, no locks. Just registers. This is the bottom:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">gpio_ll_set_level</span><span class="p">(</span><span class="n">gpio_dev_t</span><span class="w"> </span><span class="o">*</span><span class="n">hw</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">gpio_num</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">level</span><span class="p">)</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="p">{</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">level</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">gpio_num</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">            </span><span class="n">hw</span><span class="o">-&gt;</span><span class="n">out_w1ts</span><span class="p">.</span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">gpio_num</span><span class="p">;</span><span class="w">      </span><span class="cm">/* write-1-to-set   */</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">            </span><span class="n">hw</span><span class="o">-&gt;</span><span class="n">out1_w1ts</span><span class="p">.</span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">gpio_num</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">gpio_num</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">            </span><span class="n">hw</span><span class="o">-&gt;</span><span class="n">out_w1tc</span><span class="p">.</span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">gpio_num</span><span class="p">;</span><span class="w">      </span><span class="cm">/* write-1-to-clear */</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">            </span><span class="n">hw</span><span class="o">-&gt;</span><span class="n">out1_w1tc</span><span class="p">.</span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">gpio_num</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Layer 3 — <code>soc</code></strong>, which is where <code>gpio_dev_t</code> and the address of the GPIO block are defined. It contains no code at all: it's pure description of the silicon, generated from the chip's register spec.</p>
+<p>So <code>gpio_set_level(27, 1)</code> bottoms out at <code>GPIO.out_w1ts.val = 1 &lt;&lt; 27</code> — a single store to a hardware register. <code>w1ts</code> means <em>write 1 to set</em>: writing a <code>1</code> bit turns that pin on and writing <code>0</code> does nothing, so you never have to read-modify-write, and two tasks setting different pins can't clobber each other. That's a hardware feature, and the reason this layer needs no locks.</p>
+<p>The reason for the layering is portability. <code>esp_driver_gpio</code> is written once and works on every chip; <code>esp_hal_gpio/esp32p4/</code>, <code>esp_hal_gpio/esp32c6/</code>, and so on hold the per-chip differences. When you see <code>esp_hal_*</code> and <code>esp_driver_*</code> as separate components, that's ESP-IDF 6 splitting what used to be one <code>hal</code> and one <code>driver</code> component. On v5.x the same code lives in <code>components/hal/</code> and <code>components/driver/</code>.</p>
+<h2 id="kconfig-and-sdkconfig">Kconfig and sdkconfig.<a class="headerlink" href="#kconfig-and-sdkconfig" title="Permanent link">&para;</a></h2>
+<p>Now the second of our four things: configuration.</p>
+<p>Any component can drop a <code>Kconfig</code> file next to its <code>CMakeLists.txt</code>. Ours does:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">menu</span><span class="w"> </span><span class="s2">"my_led"</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="k">config</span><span class="w"> </span>MY_LED_GPIO
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">        </span><span class="nb">int</span><span class="w"> </span><span class="s2">"LED GPIO number"</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">        </span><span class="k">range</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">56</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">        </span><span class="k">default</span><span class="w"> </span><span class="mi">27</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">        </span><span class="k">help</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="sd">            GPIO the LED is wired to.</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">    </span><span class="k">config</span><span class="w"> </span>MY_LED_ACTIVE_LOW
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">        </span><span class="nb">bool</span><span class="w"> </span><span class="s2">"LED is active low"</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">        </span><span class="k">default</span><span class="w"> </span>n
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="k">endmenu</span>
+</code></pre></div>
+<p>Run <code>idf.py menuconfig</code> and a "my_led" menu appears alongside ESP-IDF's own, with the range check and the help text wired up. But the menu is just an editor. What matters is what the value turns into, and it turns into <strong>three different files</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>sdkconfig                     CONFIG_MY_LED_GPIO=27
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>build/config/sdkconfig.h      #define CONFIG_MY_LED_GPIO 27
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>build/config/sdkconfig.cmake  set(CONFIG_MY_LED_GPIO "27")
+</code></pre></div>
+<p>Those are real lines from the example's build. One value, three audiences: <code>sdkconfig</code> is the one you edit and commit, <code>sdkconfig.h</code> is for C code, and <code>sdkconfig.cmake</code> is so the build system itself can branch on settings.</p>
+<p>Note the <code>CONFIG_</code> prefix — we wrote <code>MY_LED_GPIO</code> in the Kconfig file and the generator adds <code>CONFIG_</code>. Every <code>CONFIG_SOMETHING</code> you've ever seen in ESP-IDF source came from a Kconfig file this way.</p>
+<p>Then <code>my_led.c</code> just uses it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"sdkconfig.h"</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">gpio_num_t</span><span class="w"> </span><span class="n">s_pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">gpio_num_t</span><span class="p">)</span><span class="n">CONFIG_MY_LED_GPIO</span><span class="p">;</span>
+</code></pre></div>
+<p>To the compiler that line reads <code>static const gpio_num_t s_pin = 27;</code>. <strong>The setting is baked into the machine code</strong> — there's no lookup table and nothing to read at run time. Disassembling <code>my_led_set</code> from the built ELF shows the <code>27</code> as a literal instruction operand:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>40014d6a &lt;my_led_set&gt;:
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>40014d6a:  addi  sp,sp,-16
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>40014d6e:  mv    a1,a0
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>40014d74:  sb    a0,-924(a5)        # s_state
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>40014d78:  li    a0,27              &lt;-- CONFIG_MY_LED_GPIO
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>40014d7a:  jal   4000c746 &lt;gpio_set_level&gt;
+</code></pre></div>
+<p><code>li a0,27</code> — "load immediate 27". Change the value in <code>menuconfig</code> and that instruction changes.</p>
+<p>One small mystery worth clearing: <code>sdkconfig.h</code> lives in <code>build/config/</code>, which is nowhere near your source. Why does <code>#include "sdkconfig.h"</code> find it? Because of one line in <a href="https://github.com/espressif/esp-idf/blob/v6.0.2/tools/cmake/kconfig.cmake"><code>tools/cmake/kconfig.cmake</code></a>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nb">idf_build_set_property</span><span class="p">(</span><span class="s">INCLUDE_DIRECTORIES</span><span class="w"> </span><span class="o">${</span><span class="nv">config_dir</span><span class="o">}</span><span class="w"> </span><span class="s">APPEND</span><span class="p">)</span>
+</code></pre></div>
+<p><code>build/config/</code> gets appended to the include path of <em>every</em> component in the build. That's the whole trick. It's an ordinary <code>#include</code> of an ordinary generated file.</p>
+<p>Two more things about config files:</p>
+<ul>
+<li><strong><code>sdkconfig.defaults</code></strong> is the one you commit; <code>sdkconfig</code> is generated from it on first build and then edited by <code>menuconfig</code>, so <code>sdkconfig</code> normally goes in <code>.gitignore</code>. If you delete <code>sdkconfig</code>, the next build regenerates it from the defaults — which is exactly how you undo an afternoon of menu-poking.</li>
+<li><strong><code>Kconfig.projbuild</code></strong> is a variant that hoists a component's menu to the <em>top level</em> of <code>menuconfig</code> instead of burying it under "Component config". The partition table menu uses it, which is why it's the first thing you see.</li>
+</ul>
+<p>Here is the example's <code>sdkconfig.defaults</code> in full. It's four settings and a comment block, and every one of them shows up again somewhere later in this note:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a># Defaults for the note's example project.
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>#
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a># sdkconfig.defaults is the *checked-in* file. sdkconfig is generated from it
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a># on the first build (and then edited by `idf.py menuconfig`), which is why
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a># sdkconfig itself is gitignored.
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a># Use our own partition table instead of the built-in single-app one.
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>CONFIG_PARTITION_TABLE_CUSTOM=y
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a># The board this was written against has 16 MB of flash.
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a># The board is ESP32-P4 silicon revision v1.3. ESP-IDF 6 builds for rev &gt;= v3.1
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a># by default, which is a different die, and esptool refuses to flash an image
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a># whose header asks for a revision the chip does not have. These two options
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a># lower the minimum written into the image header. Drop them if your P4 is v3+.
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>CONFIG_ESP32P4_SELECTS_REV_LESS_V3=y
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>CONFIG_ESP32P4_REV_MIN_100=y
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a># Our own component's option (declared in components/my_led/Kconfig).
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a># Set here so the note can follow one value all the way from this file to a
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a># #define in build/config/sdkconfig.h and into the compiled code.
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>CONFIG_MY_LED_GPIO=27
+</code></pre></div>
+<p><code>CONFIG_MY_LED_GPIO=27</code> is the value we just followed into <code>sdkconfig.h</code>. The two <code>PARTITION_TABLE</code> lines are why <code>partitions.csv</code> is used at all. And the two <code>ESP32P4_*_REV_*</code> lines are the ones that let a v1.3 board accept the image — which only makes sense once you've seen the image header, so they come back later.</p>
+<h3 id="which-file-does-menuconfig-write">Which file does <code>menuconfig</code> write?<a class="headerlink" href="#which-file-does-menuconfig-write" title="Permanent link">&para;</a></h3>
+<p>Not the one you commit. <code>menuconfig</code> writes <code>sdkconfig</code>, and never touches <code>sdkconfig.defaults</code>. The arrow points one way only:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>sdkconfig.defaults  --first build--&gt;  sdkconfig  --generates--&gt;  sdkconfig.h
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>        ^                                 ^
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>        |                                 |
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>   you, by hand                      menuconfig
+</code></pre></div>
+<p>This is worth internalizing because of how it fails. You spend an afternoon in <code>menuconfig</code>, the build finally does what you want, you commit — and you have committed nothing. <code>sdkconfig</code> is gitignored, and <code>sdkconfig.defaults</code> is exactly as it was. Someone clones the repo, builds, and gets a different configuration.</p>
+<p>So the real loop is: poke at <code>menuconfig</code>, test, and then move the settings you care about into <code>sdkconfig.defaults</code> yourself. That last step has a tool:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>idf.py<span class="w"> </span>save-defconfig
+</code></pre></div>
+<p>It reads the current <code>sdkconfig</code>, discards every option still sitting at its factory value, and writes a minimal <code>sdkconfig.defaults</code> with only what you actually changed — for this project, essentially the file printed above.</p>
+<p>The reason it isn't automatic is worth a sentence. <code>sdkconfig</code> is your <em>working state</em>: it includes the <code>LOG_LEVEL=5</code> you set an hour ago to chase a bug. <code>sdkconfig.defaults</code> is your <em>intent</em>. ESP-IDF does not assume the first is the second, so <code>save-defconfig</code> is you saying so explicitly.</p>
+<p>Config also decides what gets compiled at all. ESP-IDF source is full of this pattern — from <a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/freertos/app_startup.c"><code>components/freertos/app_startup.c</code></a>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="cp">#if CONFIG_ESP_INT_WDT</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">    </span><span class="n">esp_int_wdt_init</span><span class="p">();</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">    </span><span class="n">esp_int_wdt_cpu_init</span><span class="p">();</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="cp">#endif</span>
+</code></pre></div>
+<p>Turn off the interrupt watchdog in <code>menuconfig</code> and that code is not disabled at run time — it isn't in your binary.</p>
+<h2 id="what-idfpy-actually-runs">What <code>idf.py</code> actually runs.<a class="headerlink" href="#what-idfpy-actually-runs" title="Permanent link">&para;</a></h2>
+<p><code>idf.py</code> is a Python script (<a href="https://github.com/espressif/esp-idf/blob/v6.0.2/tools/idf.py"><code>tools/idf.py</code></a>). It compiles nothing. It's a friendly front end that runs other programs:</p>
+<table>
+<thead>
+<tr>
+<th>You type</th>
+<th>It runs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>idf.py set-target esp32p4</code></td>
+<td>wipes <code>sdkconfig</code>, picks <code>toolchain-esp32p4.cmake</code>, re-runs CMake</td>
+</tr>
+<tr>
+<td><code>idf.py menuconfig</code></td>
+<td>the <code>kconfgen</code> tool, then regenerates <code>sdkconfig.h</code></td>
+</tr>
+<tr>
+<td><code>idf.py build</code></td>
+<td>CMake (if needed), then <strong>Ninja</strong></td>
+</tr>
+<tr>
+<td><code>idf.py flash</code></td>
+<td><strong>esptool</strong>, with arguments read from <code>build/flasher_args.json</code></td>
+</tr>
+<tr>
+<td><code>idf.py monitor</code></td>
+<td><code>esp_idf_monitor</code>, a serial terminal that also decodes crash dumps</td>
+</tr>
+<tr>
+<td><code>idf.py size</code></td>
+<td>a script that parses the <code>.map</code> file</td>
+</tr>
+</tbody>
+</table>
+<p>Everything it can do is a subcommand in <a href="https://github.com/espressif/esp-idf/tree/v6.0.2/tools/idf_py_actions"><code>tools/idf_py_actions/</code></a>, and you can always run the underlying tool yourself. In fact <code>idf.py build</code> tells you how, at the end of every build:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Project build complete. To flash, run:
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a> idf.py flash
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>or
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a> python -m esptool --chip esp32p4 -b 460800 --before default-reset --after hard-reset \
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>   write-flash --flash-mode dio --flash-size 16MB --flash-freq 80m \
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>   0x2000 build/bootloader/bootloader.bin \
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>   0x8000 build/partition_table/partition-table.bin \
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>   0x10000 build/idf_tour.bin
+</code></pre></div>
+<p>Three files, at three fixed addresses. Hold on to those numbers — we'll meet all three again when the chip boots.</p>
+<p>The other thing worth knowing is what's in <code>build/</code>, because it's all readable:</p>
+<ul>
+<li><strong><code>idf_tour.elf</code></strong> — the linked program, with symbols and debug info.</li>
+<li><strong><code>idf_tour.bin</code></strong> — the flat image actually written to flash.</li>
+<li><strong><code>idf_tour.map</code></strong> — the linker's report of where every symbol went. Huge, and the ground truth when you're wondering why something is in RAM.</li>
+<li><strong><code>config/sdkconfig.h</code></strong> — from the previous section.</li>
+<li><strong><code>compile_commands.json</code></strong> — every compiler invocation, which is how your editor's autocomplete knows anything.</li>
+<li><strong><code>project_description.json</code></strong> — the component list we read earlier.</li>
+<li><strong><code>flasher_args.json</code></strong> — offsets and flash settings, so <code>esptool</code> doesn't need to be told.</li>
+<li><strong><code>bootloader/</code></strong> and <strong><code>partition_table/</code></strong> — two <em>separate</em> sub-projects, built independently. The bootloader is its own program with its own <code>sdkconfig</code>-driven build; it just happens to be built for you.</li>
+</ul>
+<p>And <code>idf.py size</code> reads the map file back:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>┃ Memory Type/Section ┃ Used [bytes] ┃ Used [%] ┃ Remain [bytes] ┃ Total [bytes] ┃
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>│ Flash               │       124180 │          │                │               │
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>│    .text            │        85484 │          │                │               │
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>│    .rodata          │        38168 │          │                │               │
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>│ DIRAM               │        68716 │    12.01 │         503652 │        572368 │
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>│    .text            │        52688 │     9.21 │                │               │
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>│    .data            │         9772 │     1.71 │                │               │
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>│    .bss             │         6256 │     1.09 │                │               │
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>└─────────────────────┴──────────────┴──────────┴────────────────┴───────────────┘
+</code></pre></div>
+<p>Notice there are <strong>two</strong> <code>.text</code> rows: 85,484 bytes of code in flash, and another 52,688 bytes of code sitting in RAM. On the STM32 all code was in flash and that was that. Here code is split across both, and <em>which</em> code goes where is a decision somebody made deliberately. That's the next section.</p>
+<h2 id="linking-where-does-the-linker-script-come-from">Linking: where does the linker script come from?<a class="headerlink" href="#linking-where-does-the-linker-script-come-from" title="Permanent link">&para;</a></h2>
+<p>In the STM32 note we wrote <code>linker.ld</code> by hand — 40 lines, one <code>MEMORY</code> block, a handful of sections. An ESP-IDF project has no linker script in it. So where does one come from?</p>
+<p>It gets <strong>generated, on every build</strong>, from two kinds of input.</p>
+<p><strong>Input one: templates.</strong> <a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/esp_system/ld/esp32p4/memory.ld.in"><code>components/esp_system/ld/esp32p4/memory.ld.in</code></a> and <code>sections.ld.in</code> are ordinary linker scripts with <code>#if CONFIG_...</code> sprinkled in. They go through the C preprocessor, so your <code>sdkconfig</code> choices change the memory map itself.</p>
+<p><strong>Input two: linker fragments.</strong> Every component may ship a <code>.lf</code> file listing where its code should go. Here's the default one, <a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/esp_system/app.lf"><code>components/esp_system/app.lf</code></a>, which is the rule for everything that doesn't say otherwise:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>[scheme:default]
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>entries:
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    if APP_BUILD_USE_FLASH_SECTIONS = y:
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>        text -&gt; flash_text
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>        rodata -&gt; flash_rodata
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>    else:
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>        text -&gt; iram0_text
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>        rodata -&gt; dram0_data
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>    data -&gt; dram0_data
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>    bss -&gt; dram0_bss
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>    common -&gt; dram0_bss
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>    iram -&gt; iram0_text
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a>    iram_data -&gt; iram0_data
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a>    iram_bss -&gt; iram0_bss
+</code></pre></div>
+<p>Read it as a table of "this kind of thing goes to that place". By default <code>text</code> (code) goes to <code>flash_text</code> and <code>bss</code> goes to <code>dram0_bss</code>.</p>
+<p>A tool called <strong>ldgen</strong> (<a href="https://github.com/espressif/esp-idf/tree/v6.0.2/tools/ldgen"><code>tools/ldgen/</code></a>) reads the templates and every <code>.lf</code> in the build, and writes <code>build/esp-idf/esp_system/ld/sections.ld</code>. <em>That</em> is the linker script — thousands of lines, generated fresh, and the reason you never find one in your project.</p>
+<h3 id="making-it-do-something-for-us">Making it do something for us.<a class="headerlink" href="#making-it-do-something-for-us" title="Permanent link">&para;</a></h3>
+<p>Our component ships a four-line fragment:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>[mapping:my_led]
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>archive: libmy_led.a
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>entries:
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>    my_led:my_led_toggle_fast (noflash)
+</code></pre></div>
+<p>Read as: <em>in the library <code>libmy_led.a</code>, in the object file <code>my_led.o</code>, take the symbol <code>my_led_toggle_fast</code> and apply the <code>noflash</code> scheme</em> — which means put its code in IRAM and its constants in DRAM instead of leaving them in flash.</p>
+<p>Did it work? Search the generated script for our library and exactly two lines come back, from two different output sections:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a> 515: *libmy_led.a:my_led.*(.literal.my_led_toggle_fast .text.my_led_toggle_fast)
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a> 989: *libmy_led.a:my_led.*(.text .text.my_led_init .text.my_led_set)
+</code></pre></div>
+<p>Line 515 sits inside the IRAM section and names <strong>one function</strong>. Line 989 sits inside the flash section and names <strong>the other two</strong>. ldgen split our single object file across two regions because our four lines told it to.</p>
+<p>And the symbol table proves it landed (<code>riscv32-esp-elf-nm -n</code>, filtered to our own symbols):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>4000ac3c T app_main
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>40014d14 T my_led_init
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>40014d6a T my_led_set
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>4ff01e78 T app_blink_isr_safe
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>4ff0b202 T my_led_toggle_fast
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>4ff0cecc D counter
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>4ff10c60 B flag
+</code></pre></div>
+<p>Two clean groups. <code>0x400xxxxx</code> is flash; <code>0x4ffxxxxx</code> is internal RAM. <code>my_led_init</code> and <code>my_led_set</code> are in flash; <code>my_led_toggle_fast</code> — same source file, same object file — is in RAM.</p>
+<p><code>app_blink_isr_safe</code> got to RAM a different way. It's in <code>main.c</code> with an attribute:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">IRAM_ATTR</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">app_blink_isr_safe</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">my_led_toggle_fast</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<p>which is defined in <a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/esp_common/include/esp_attr.h"><code>components/esp_common/include/esp_attr.h</code></a> as nothing more exotic than:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="cp">#define IRAM_ATTR _SECTION_ATTR_IMPL(".iram1", __COUNTER__)</span>
+</code></pre></div>
+<p>A <code>__attribute__((section(".iram1")))</code>, and the linker script collects <code>.iram1</code> into IRAM. <strong>Two roads to the same place</strong>: <code>IRAM_ATTR</code> decides in the source, a linker fragment decides at link time. Use the attribute for your own code; use a fragment when you need to move code you can't edit — somebody else's library, or a single function out of a big file.</p>
+<h3 id="why-any-of-this-exists-code-runs-from-flash">Why any of this exists: code runs from flash.<a class="headerlink" href="#why-any-of-this-exists-code-runs-from-flash" title="Permanent link">&para;</a></h3>
+<p>Here's the part that has no equivalent in the STM32 note.</p>
+<p>On the STM32, flash was at <code>0x08000000</code> and the CPU fetched instructions straight from it. Simple, and the address in the linker script was the address on the chip.</p>
+<p>The ESP32-P4 has <strong>no internal flash at all</strong>. The flash is a separate chip on the other end of a SPI bus — a serial bus, a few wires. You cannot fetch instructions over it one at a time and expect to run at 360 MHz.</p>
+<p>So there's hardware in between: an <strong>MMU</strong> that maps a window of the address space onto flash, and a <strong>cache</strong> that holds recently used chunks. When the CPU reads <code>0x40014d14</code>, the cache either has that chunk already (fast) or fetches a 64 KB page over SPI and then serves it (slow, but amortized). This is <strong>XIP</strong>, execute in place. Code lives in flash, appears at a normal address, and mostly runs at full speed.</p>
+<p>Look at the section headers of the ELF (<code>riscv32-esp-elf-objdump -h</code>, trimmed):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>Idx Name                Size      VMA       LMA       File off  Algn
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>  7 .iram0.text         0000cdd0  4ff00000  4ff00000  00041000  2**6
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a> 13 .dram0.data         0000262c  4ff0ce00  4ff0ce00  0004de00  2**3
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a> 15 .dram0.bss          00001870  4ff0f430  4ff0f430  0005042c  2**4
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a> 19 .flash.text         00014dec  40000020  40000020  00002020  2**1
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a> 21 .flash.appdesc      00000100  40020020  40020020  00037020  2**4
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a> 22 .flash.rodata       00009518  40020120  40020120  00037120  2**4
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a> 25 .dram0.heap_start   00000000  4ff10ca0  4ff10ca0  00051000  2**0
+</code></pre></div>
+<p>The ESP32-P4 address map, straight from <a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/soc/esp32p4/include/soc/soc.h"><code>components/soc/esp32p4/include/soc/soc.h</code></a>:</p>
+<ul>
+<li><strong><code>0x40000000</code> – <code>0x44000000</code></strong> — the flash window. <code>.flash.text</code> and <code>.flash.rodata</code> live here. Nothing is physically at these addresses; the MMU points them at flash.</li>
+<li><strong><code>0x4FF00000</code> – <code>0x4FFC0000</code></strong> — internal RAM, 768 KB. <code>.iram0.text</code>, <code>.dram0.data</code>, <code>.dram0.bss</code>, and the heap.</li>
+<li><strong><code>0x48000000</code></strong> — external PSRAM, if the board has it.</li>
+</ul>
+<p>Now the payoff question: <strong>if flash works fine, why put any code in RAM?</strong></p>
+<p>Because sometimes the cache is turned off. To write to flash you must disable the cache first — you can't read a chip you're busy programming. During that window, <em>any</em> code in the flash window is unreachable, and touching it doesn't cause a slow read, it causes a crash. So anything that might run during a flash write must already be in RAM:</p>
+<ul>
+<li>interrupt handlers registered with <code>ESP_INTR_FLAG_IRAM</code>,</li>
+<li>the flash driver itself,</li>
+<li>the panic handler, which has to work when everything else is broken.</li>
+</ul>
+<p>That's what <code>my_led_toggle_fast</code> is standing in for — at the cost of permanently occupying RAM you can't get back. RAM is 768 KB and flash is 16 MB, which is why the default is flash and IRAM is opt-in.</p>
+<p>But there's a catch, and our own example walks straight into it. Disassemble the IRAM copy:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>4ff0b202 &lt;my_led_toggle_fast&gt;:
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>4ff0b202:  addi   sp,sp,-16
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>4ff0b20a:  lbu    a1,-924(a5)        # s_state, in DRAM  — fine
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>4ff0b216:  li     a0,27
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>4ff0b218:  auipc  ra,0xf0101
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>4ff0b21c:  jalr   1326(ra)           # 4000c746 &lt;gpio_set_level&gt;  &lt;-- flash!
+</code></pre></div>
+<p>The function itself is in IRAM, but it <em>calls</em> <code>gpio_set_level</code>, which is at <code>0x4000c746</code> — in flash. <strong>Putting a function in IRAM does not move the functions it calls.</strong> If this ran with the cache disabled it would get as far as that <code>jalr</code> and then crash.</p>
+<p>So making something genuinely interrupt-safe means moving the whole call chain, which is why ESP-IDF ships so many <code>.lf</code> fragments: they're the accumulated list of every function that has to be reachable with the cache off. Our fragment demonstrates the mechanism; it doesn't finish the job.</p>
+<p>Finishing it is a config option, and ESP-IDF fixes it the same way we did. Here is <a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/esp_driver_gpio/linker.lf"><code>components/esp_driver_gpio/linker.lf</code></a>, in full:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>archive: libesp_driver_gpio.a
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>entries:
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>    if GPIO_CTRL_FUNC_IN_IRAM = y:
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>        gpio: gpio_set_level (noflash)
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>        gpio: gpio_intr_disable (noflash)
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>        gpio: gpio_get_level (noflash)
+</code></pre></div>
+<p>Same syntax as ours, one <code>if</code> richer: turn on <code>CONFIG_GPIO_CTRL_FUNC_IN_IRAM</code> in <code>menuconfig</code> and <code>gpio_set_level</code> moves to IRAM too, and the call chain is clean. The four lines we wrote are not a toy version of the mechanism — they're the mechanism, and ESP-IDF uses it on itself.</p>
+<p>Last detail from that dump. Compare <code>.flash.text</code> at <code>0x40000020</code> (file offset <code>0x2020</code>) with <code>.dram0.bss</code> at <code>0x4ff0f430</code>: <code>.bss</code> has an address but <strong>no file offset worth loading</strong> — same as the STM32's <code>NOLOAD</code>. Nothing stores a block of zeros. Somebody zeroes it at boot, and we're about to meet them.</p>
+<h2 id="from-elf-to-bin-the-image-format">From <code>.elf</code> to <code>.bin</code>: the image format.<a class="headerlink" href="#from-elf-to-bin-the-image-format" title="Permanent link">&para;</a></h2>
+<p>The <code>.elf</code> is a rich file full of symbols and debug info. Flash gets a flat image instead, produced by <code>esptool elf2image</code>. Its layout is defined by a struct you can read: <code>esp_image_header_t</code> in <a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/bootloader_support/include/esp_app_format.h"><code>components/bootloader_support/include/esp_app_format.h</code></a>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">magic</span><span class="p">;</span><span class="w">              </span><span class="cm">/*!&lt; Magic word ESP_IMAGE_HEADER_MAGIC */</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">segment_count</span><span class="p">;</span><span class="w">      </span><span class="cm">/*!&lt; Count of memory segments */</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">spi_mode</span><span class="p">;</span><span class="w">           </span><span class="cm">/*!&lt; flash read mode */</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">spi_speed</span><span class="o">:</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">       </span><span class="cm">/*!&lt; flash frequency */</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">spi_size</span><span class="o">:</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">        </span><span class="cm">/*!&lt; flash chip size */</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">entry_addr</span><span class="p">;</span><span class="w">        </span><span class="cm">/*!&lt; Entry address */</span>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">wp_pin</span><span class="p">;</span>
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">spi_pin_drv</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+<a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="w">    </span><span class="n">esp_chip_id_t</span><span class="w"> </span><span class="n">chip_id</span><span class="p">;</span><span class="w">      </span><span class="cm">/*!&lt; Chip identification number */</span>
+<a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">min_chip_rev</span><span class="p">;</span>
+<a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a><span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">min_chip_rev_full</span><span class="p">;</span>
+<a id="__codelineno-30-13" name="__codelineno-30-13" href="#__codelineno-30-13"></a><span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">max_chip_rev_full</span><span class="p">;</span>
+<a id="__codelineno-30-14" name="__codelineno-30-14" href="#__codelineno-30-14"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">reserved</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+<a id="__codelineno-30-15" name="__codelineno-30-15" href="#__codelineno-30-15"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">hash_appended</span><span class="p">;</span><span class="w">      </span><span class="cm">/*!&lt; If 1, a SHA256 digest is appended */</span>
+<a id="__codelineno-30-16" name="__codelineno-30-16" href="#__codelineno-30-16"></a><span class="p">}</span><span class="w"> </span><span class="n">__attribute__</span><span class="p">((</span><span class="n">packed</span><span class="p">))</span><span class="w"> </span><span class="n">esp_image_header_t</span><span class="p">;</span>
+</code></pre></div>
+<p>24 bytes, packed. So let's read the first 24 bytes of our actual image (<code>od -A d -t x1 -N 24 build/idf_tour.bin</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>0000000    e9  06  02  4f  28  0a  f0  4f  ee  00  00  00  12  00  00  64
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>0000016    00  c7  00  00  00  00  00  01
+</code></pre></div>
+<p>Field by field, against the struct:</p>
+<ul>
+<li><strong><code>e9</code></strong> — the magic byte. Every ESP32 app image and bootloader starts with <code>0xE9</code>. If the first byte isn't <code>E9</code>, the bootloader stops right there.</li>
+<li><strong><code>06</code></strong> — six segments.</li>
+<li><strong><code>02</code></strong> — SPI mode 2, DIO.</li>
+<li><strong><code>4f</code></strong> — two 4-bit fields in one byte. Low nibble <code>spi_speed = 0xF</code> (80 MHz), high nibble <code>spi_size = 0x4</code> (16 MB).</li>
+<li><strong><code>28 0a f0 4f</code></strong> — <code>entry_addr</code>, little-endian, so <code>0x4FF00A28</code>. <strong>The address the bootloader jumps to.</strong> This is the ESP32's answer to the STM32's reset vector — except it's in a header the bootloader reads, not a table the silicon reads.</li>
+<li><strong><code>ee</code></strong> — <code>wp_pin</code>, <code>0xEE</code> meaning "disabled".</li>
+<li><strong><code>00 00 00</code></strong> — SPI pin drive strengths.</li>
+<li><strong><code>12 00</code></strong> — <code>chip_id = 0x0012</code> = 18 = ESP32-P4. Flash an ESP32-C6 image onto a P4 and this is the byte that catches it.</li>
+<li><strong><code>00</code></strong> — legacy <code>min_chip_rev</code>.</li>
+<li><strong><code>64 00</code></strong> — <code>min_chip_rev_full = 0x0064</code> = 100, encoded as <code>major*100 + minor</code>, so <strong>v1.0</strong>.</li>
+<li><strong><code>c7 00</code></strong> — <code>max_chip_rev_full = 0x00C7</code> = 199, so <strong>v1.99</strong>.</li>
+<li><strong><code>00 00 00 00</code></strong> — reserved.</li>
+<li><strong><code>01</code></strong> — <code>hash_appended</code>: a SHA-256 of the whole image is stapled to the end.</li>
+</ul>
+<p>Every one of those readings checks out against esptool's own decoder (<code>esptool image-info</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>ESP32-P4 Image Header
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>=====================
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>Image version: 1
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>Entry point: 0x4ff00a28
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>Segments: 6
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>Flash size: 16MB
+<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a>Flash freq: 80m
+<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a>Flash mode: DIO
+<a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a>
+<a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a>Chip ID: 18 (ESP32-P4)
+<a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a>Minimal chip revision: v1.0, (legacy min_rev = 0)
+<a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a>Maximal chip revision: v1.99
+<a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a>
+<a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a>Segments Information
+<a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a>====================
+<a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a>Segment   Length   Load addr   File offs  Memory types
+<a id="__codelineno-32-17" name="__codelineno-32-17" href="#__codelineno-32-17"></a>-------  -------  ----------  ----------  ------------
+<a id="__codelineno-32-18" name="__codelineno-32-18" href="#__codelineno-32-18"></a>      0  0x09728  0x40020020  0x00000018  DROM, IROM
+<a id="__codelineno-32-19" name="__codelineno-32-19" href="#__codelineno-32-19"></a>      1  0x00088  0x30100000  0x00009748
+<a id="__codelineno-32-20" name="__codelineno-32-20" href="#__codelineno-32-20"></a>      2  0x06838  0x4ff00000  0x000097d8  DRAM, BYTE_ACCESSIBLE, IRAM
+<a id="__codelineno-32-21" name="__codelineno-32-21" href="#__codelineno-32-21"></a>      3  0x14dec  0x40000020  0x00010018  DROM, IROM
+<a id="__codelineno-32-22" name="__codelineno-32-22" href="#__codelineno-32-22"></a>      4  0x06598  0x4ff06838  0x00024e0c  DRAM, BYTE_ACCESSIBLE, IRAM
+<a id="__codelineno-32-23" name="__codelineno-32-23" href="#__codelineno-32-23"></a>      5  0x0262c  0x4ff0ce00  0x0002b3ac  DRAM, BYTE_ACCESSIBLE, IRAM
+<a id="__codelineno-32-24" name="__codelineno-32-24" href="#__codelineno-32-24"></a>
+<a id="__codelineno-32-25" name="__codelineno-32-25" href="#__codelineno-32-25"></a>ESP32-P4 Image Footer
+<a id="__codelineno-32-26" name="__codelineno-32-26" href="#__codelineno-32-26"></a>=====================
+<a id="__codelineno-32-27" name="__codelineno-32-27" href="#__codelineno-32-27"></a>Checksum: 0xa1 (valid)
+<a id="__codelineno-32-28" name="__codelineno-32-28" href="#__codelineno-32-28"></a>Validation hash: cb72d2832321a0d4...e691b7fb09e574ecf3 (valid)
+</code></pre></div>
+<p>Those two chip-revision fields are not academic. The board I used is silicon <strong>v1.3</strong>, and ESP-IDF 6 builds for v3.1+ by default. The first flash attempt was refused outright:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>A fatal error occurred: 'bootloader/bootloader.bin' requires chip revision in
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>range [v3.1 - v3.99] (this chip is revision v1.3).
+</code></pre></div>
+<p>The two lines we saw in <code>sdkconfig.defaults</code> earlier — <code>CONFIG_ESP32P4_SELECTS_REV_LESS_V3=y</code> and <code>CONFIG_ESP32P4_REV_MIN_100=y</code> — lower the minimum, which changes those bytes in the header, which makes esptool agree to flash it. Config → header bytes → tool behaviour, all visible.</p>
+<p><strong>The segment table</strong> is the other half of the format. After the header comes a list of segments, each just <code>{load_addr, data_len}</code> followed by that many bytes — <code>esp_image_segment_header_t</code>, two words. There's no relocation and no clever loader: each segment says "put these bytes at this address". Segments at <code>0x4ffxxxxx</code> get copied into RAM. Segments at <code>0x400xxxxx</code> are <em>not</em> copied — they're the flash-window ones, and the bootloader just points the MMU at them where they already sit.</p>
+<p>Finally, the image carries a description of itself: <code>esp_app_desc_t</code> from <a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/esp_app_format/include/esp_app_desc.h"><code>components/esp_app_format/include/esp_app_desc.h</code></a>, placed at a fixed offset right after the header — that's the <code>.flash.appdesc</code> section we saw at <code>0x40020020</code>. It's the project name, version, IDF version, and compile time, and both esptool and your running program can read it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>Application Information
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>=======================
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>Project name: idf_tour
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>Compile time: Aug  4 2026 15:17:34
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>ESP-IDF: v6.0.2
+</code></pre></div>
+<h2 id="where-it-all-lands-the-partition-table">Where it all lands: the partition table.<a class="headerlink" href="#where-it-all-lands-the-partition-table" title="Permanent link">&para;</a></h2>
+<p>We have an image. Where in a 16 MB flash chip does it go, and how does anything know?</p>
+<p>Flash is divided by a <strong>partition table</strong>: a 3 KB binary blob at a fixed offset, <code>0x8000</code>. You write it as a CSV — ours is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a># Name,     Type, SubType, Offset,  Size, Flags
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>nvs,        data, nvs,     ,        24K,
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>phy_init,   data, phy,     ,        4K,
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>factory,    app,  factory, 0x10000, 2M,
+</code></pre></div>
+<p><a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/partition_table/gen_esp32part.py"><code>components/partition_table/gen_esp32part.py</code></a> turns that into the blob, and can turn it back:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a># ESP-IDF Partition Table
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a># Name, Type, SubType, Offset, Size, Flags
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>nvs,data,nvs,0x9000,24K,
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a>phy_init,data,phy,0xf000,4K,
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>factory,app,factory,0x10000,2M,
+</code></pre></div>
+<p>Blank offsets got filled in: <code>nvs</code> at <code>0x9000</code> (the first free sector after the table), then <code>phy_init</code> right after it at <code>0xf000</code>. Only <code>factory</code> had a fixed offset, because app partitions must be aligned to 64 KB.</p>
+<p><strong>Type and subtype</strong> are what make partitions more than bookkeeping. <code>type=app</code> partitions can be booted; <code>type=data</code> ones hold data. Of the subtypes below, our table uses exactly three — <code>factory</code>, <code>nvs</code> and <code>phy_init</code>. The other two are <strong>not in this project</strong>: they are what the table grows into once you want over-the-air updates, and they are listed here for the contrast.</p>
+<ul>
+<li><strong><code>factory</code></strong> — <em>in our table.</em> The default app, and the only bootable partition here: a single-app setup boots it unconditionally, with nothing to decide.</li>
+<li><strong><code>ota_0</code>, <code>ota_1</code></strong> — <em>not in our table.</em> Two app slots for over-the-air updates. You run from one, download into the other, then switch. <code>factory</code> usually disappears when these arrive: it would be a third copy of the app that nobody boots.</li>
+<li><strong><code>otadata</code></strong> — <em>not in our table.</em> Exactly 8 KB, two sectors, recording <em>which</em> OTA slot to boot. The bootloader reads it to decide, and without it there is no OTA.</li>
+<li><strong><code>nvs</code></strong> — <em>in our table.</em> Key/value storage. WiFi credentials live here, which is why they survive a reflash of the app but not an erase of <code>nvs</code>.</li>
+<li><strong><code>phy_init</code></strong> — <em>in our table.</em> Radio calibration data.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">This project has no OTA</p>
+<p><code>ota_0</code>, <code>ota_1</code> and <code>otadata</code> are listed above for contrast only. They are
+<strong>not</strong> in <code>partitions.csv</code>, they are never built, and they never appear on
+the chip. Our table has three entries — <code>nvs</code>, <code>phy_init</code>, <code>factory</code> — which
+is why the boot log further down lists exactly three partitions and then
+stops. Turning this into an OTA project means adding an <code>otadata</code> partition
+and replacing the single <code>factory</code> with two app slots, at which point a
+16 MB flash chip starts to feel small.</p>
+</div>
+<p>So the fixed flash layout for an ESP32-P4 project is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>0x0000    (empty)
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>0x2000    bootloader.bin        &lt;- ROM bootloader loads this
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>0x8000    partition-table.bin   &lt;- bootloader reads this
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>0x9000    nvs
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>0xf000    phy_init
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a>0x10000   idf_tour.bin          &lt;- the app
+</code></pre></div>
+<p>Those are exactly the three offsets <code>idf.py build</code> printed earlier.</p>
+<p>One thing to be explicit about, because the wording usually trips people up. <code>0x2000</code> is a <strong>flash offset</strong>, and what sits there is the <em>second-stage</em> bootloader: <code>bootloader.bin</code>, compiled from source in your own build, sitting in <code>build/bootloader/</code> right now. The ROM bootloader is not at <code>0x2000</code>, and not at any other flash address either — it lives in ROM inside the chip and never appears in flash at all.</p>
+<p>What the ROM fixes is the <strong>address</strong>, not the program. It is hardwired to go looking for a second-stage image at <code>0x2000</code> on the ESP32-P4, and at <code>0x1000</code> on the original ESP32, so that number is not yours to pick. <code>CONFIG_BOOTLOADER_OFFSET_IN_FLASH</code> reports it; it does not let you change it.</p>
+<p>At run time your program can read the table back, because <code>esp_partition</code> parses the same blob:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="k">const</span><span class="w"> </span><span class="n">esp_partition_t</span><span class="w"> </span><span class="o">*</span><span class="n">running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">esp_ota_get_running_partition</span><span class="p">();</span>
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">"running from partition '%s' at 0x%"</span><span class="w"> </span><span class="n">PRIx32</span><span class="p">,</span><span class="w"> </span><span class="n">running</span><span class="o">-&gt;</span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="n">running</span><span class="o">-&gt;</span><span class="n">address</span><span class="p">);</span>
+</code></pre></div>
+<p>which on the board prints <code>running from partition 'factory' at 0x10000</code>. The program can see the map it was loaded from.</p>
+<h2 id="booting-for-real">Booting, for real.<a class="headerlink" href="#booting-for-real" title="Permanent link">&para;</a></h2>
+<p>Everything so far was preparation. Now: power-on to <code>app_main</code>, on hardware.</p>
+<p>The STM32 had <strong>one</strong> stage — the silicon loads SP and PC from the vector table, and you're running. The ESP32 has <strong>three</strong>, because the code isn't in the CPU's address space until somebody puts it there.</p>
+<pre class="mermaid"><code>flowchart TD
+    P["power on / reset"] --&gt; R["ROM bootloader&lt;br/&gt;(masked into silicon)"]
+    R --&gt;|"reads strapping pins"| D{"download mode?"}
+    D --&gt;|yes| U["wait for esptool on UART/USB"]
+    D --&gt;|no| L["load 2nd stage bootloader&lt;br/&gt;from flash 0x2000 into RAM"]
+    L --&gt; B["2nd stage bootloader&lt;br/&gt;bootloader_start.c"]
+    B --&gt; PT["read partition table @ 0x8000"]
+    PT --&gt; SEL["pick boot partition&lt;br/&gt;(otadata, anti-rollback)"]
+    SEL --&gt; V["verify image, map flash via MMU"]
+    V --&gt; E["jump to entry_addr&lt;br/&gt;= call_start_cpu0"]
+    E --&gt; CS["app: cpu_start.c&lt;br/&gt;zero .bss, init heap, start CPU1"]
+    CS --&gt; ST["startup.c&lt;br/&gt;init functions, C++ constructors"]
+    ST --&gt; FR["FreeRTOS&lt;br/&gt;create main task, start scheduler"]
+    FR --&gt; AM["main_task -&gt; app_main()"]</code></pre>
+<p>Here's the real log from the board, in four pieces.</p>
+<h3 id="stage-1-the-rom-bootloader">Stage 1 — the ROM bootloader.<a class="headerlink" href="#stage-1-the-rom-bootloader" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>ESP-ROM:esp32p4-eco2-20240710
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>Build:Jul 10 2024
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>rst:0x1 (POWERON),boot:0x30f (SPI_FAST_FLASH_BOOT)
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a>SPI mode:DIO, clock div:1
+<a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a>load:0x4ff33ce0,len:0x15e0
+<a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a>load:0x4ff28ed0,len:0xe54
+<a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a>load:0x4ff2bbd0,len:0x35dc
+<a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a>entry 0x4ff28eda
+</code></pre></div>
+<p>This code is <strong>burned into the silicon</strong> and cannot be changed — note <code>Build:Jul 10 2024</code>, the date Espressif compiled it, years before your project existed. It's the true equivalent of the STM32's <code>Reset_Handler</code>: the first instructions after reset, at an address fixed by hardware.</p>
+<p>Reading it line by line:</p>
+<ul>
+<li><strong><code>rst:0x1 (POWERON)</code></strong> — the reset reason, read from a register. Other values appear here for a watchdog reset, a software reset, or a deep-sleep wake, and your program can read the same value with <code>esp_reset_reason()</code>.</li>
+<li><strong><code>boot:0x30f (SPI_FAST_FLASH_BOOT)</code></strong> — the <em>strapping pins</em>, latched at reset. A few GPIOs are sampled the instant the chip comes out of reset, and their level picks the boot mode. This one says "boot normally from flash". Hold the other combination — which is what the BOOT button on a dev board does — and the ROM enters <strong>download mode</strong> and waits for esptool instead. That is the whole mechanism behind flashing a chip, and it's why a board can never be permanently bricked by bad firmware: the decision is made before your code exists.</li>
+<li><strong><code>load:</code> ×3, then <code>entry</code></strong> — the ROM copying the second-stage bootloader out of flash <code>0x2000</code> into RAM, in three chunks, then jumping to it. It's parsing exactly the image format from the last section: <code>0xE9</code>, segment list, <code>entry_addr</code>.</li>
+</ul>
+<p>The ROM's job ends here. It knows how to read the SPI flash and how to parse an image, and nothing else — no partition tables, no OTA, no signatures.</p>
+<h3 id="stage-2-the-second-stage-bootloader">Stage 2 — the second-stage bootloader.<a class="headerlink" href="#stage-2-the-second-stage-bootloader" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>I (25) boot: ESP-IDF v6.0.2 2nd stage bootloader
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>I (26) boot: compile time Aug  4 2026 15:17:31
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>I (26) boot: Multicore bootloader
+<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a>I (27) boot: chip revision: v1.3
+<a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a>I (32) boot.esp32p4: SPI Speed      : 80MHz
+<a id="__codelineno-40-6" name="__codelineno-40-6" href="#__codelineno-40-6"></a>I (36) boot.esp32p4: SPI Mode       : DIO
+<a id="__codelineno-40-7" name="__codelineno-40-7" href="#__codelineno-40-7"></a>I (40) boot.esp32p4: SPI Flash Size : 16MB
+<a id="__codelineno-40-8" name="__codelineno-40-8" href="#__codelineno-40-8"></a>I (48) boot: Partition Table:
+<a id="__codelineno-40-9" name="__codelineno-40-9" href="#__codelineno-40-9"></a>I (51) boot: ## Label            Usage          Type ST Offset   Length
+<a id="__codelineno-40-10" name="__codelineno-40-10" href="#__codelineno-40-10"></a>I (57) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+<a id="__codelineno-40-11" name="__codelineno-40-11" href="#__codelineno-40-11"></a>I (64) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+<a id="__codelineno-40-12" name="__codelineno-40-12" href="#__codelineno-40-12"></a>I (70) boot:  2 factory          factory app      00 00 00010000 00200000
+<a id="__codelineno-40-13" name="__codelineno-40-13" href="#__codelineno-40-13"></a>I (78) boot: End of partition table
+<a id="__codelineno-40-14" name="__codelineno-40-14" href="#__codelineno-40-14"></a>I (80) esp_image: segment 0: paddr=00010020 vaddr=40020020 size=09728h ( 38696) map
+<a id="__codelineno-40-15" name="__codelineno-40-15" href="#__codelineno-40-15"></a>I (95) esp_image: segment 1: paddr=00019750 vaddr=30100000 size=00088h (   136) load
+<a id="__codelineno-40-16" name="__codelineno-40-16" href="#__codelineno-40-16"></a>I (97) esp_image: segment 2: paddr=000197e0 vaddr=4ff00000 size=06838h ( 26680) load
+<a id="__codelineno-40-17" name="__codelineno-40-17" href="#__codelineno-40-17"></a>I (108) esp_image: segment 3: paddr=00020020 vaddr=40000020 size=14dech ( 85484) map
+<a id="__codelineno-40-18" name="__codelineno-40-18" href="#__codelineno-40-18"></a>I (125) esp_image: segment 4: paddr=00034e14 vaddr=4ff06838 size=06598h ( 26008) load
+<a id="__codelineno-40-19" name="__codelineno-40-19" href="#__codelineno-40-19"></a>I (132) esp_image: segment 5: paddr=0003b3b4 vaddr=4ff0ce00 size=0262ch (  9772) load
+<a id="__codelineno-40-20" name="__codelineno-40-20" href="#__codelineno-40-20"></a>I (138) boot: Loaded app from partition at offset 0x10000
+</code></pre></div>
+<p>This is <em>our</em> code — a normal ESP-IDF program, built from <a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/bootloader/subproject/main/bootloader_start.c"><code>components/bootloader/subproject/main/bootloader_start.c</code></a>, whose whole body is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">__attribute__</span><span class="p">((</span><span class="k">noreturn</span><span class="p">))</span><span class="w"> </span><span class="n">call_start_cpu0</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="p">{</span>
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">    </span><span class="c1">// 1. Hardware initialization</span>
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bootloader_init</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ESP_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="w">        </span><span class="n">bootloader_reset</span><span class="p">();</span>
+<a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a>
+<a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="w">    </span><span class="c1">// 2. Select the number of boot partition</span>
+<a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a><span class="w">    </span><span class="n">bootloader_state_t</span><span class="w"> </span><span class="n">bs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">boot_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">select_partition_number</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bs</span><span class="p">);</span>
+<a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">boot_index</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">INVALID_INDEX</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-41-12" name="__codelineno-41-12" href="#__codelineno-41-12"></a><span class="w">        </span><span class="n">bootloader_reset</span><span class="p">();</span>
+<a id="__codelineno-41-13" name="__codelineno-41-13" href="#__codelineno-41-13"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-41-14" name="__codelineno-41-14" href="#__codelineno-41-14"></a>
+<a id="__codelineno-41-15" name="__codelineno-41-15" href="#__codelineno-41-15"></a><span class="w">    </span><span class="c1">// 3. Load the app image for booting</span>
+<a id="__codelineno-41-16" name="__codelineno-41-16" href="#__codelineno-41-16"></a><span class="w">    </span><span class="n">bootloader_utility_load_boot_image</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bs</span><span class="p">,</span><span class="w"> </span><span class="n">boot_index</span><span class="p">);</span>
+<a id="__codelineno-41-17" name="__codelineno-41-17" href="#__codelineno-41-17"></a><span class="p">}</span>
+</code></pre></div>
+<p>Three steps, and each one is a block of log above. <code>bootloader_init()</code> sets up clocks and the flash — that's the <code>SPI Speed / Mode / Size</code> lines. <code>select_partition_number()</code> loads the partition table and picks a slot, printing it. <code>bootloader_utility_load_boot_image()</code> produces the <code>esp_image:</code> lines and never returns.</p>
+<p>Now look closely at those six segment lines, because they show the whole XIP idea in one place. Every line has a <code>paddr</code> (where it sits in flash) and a <code>vaddr</code> (where it should appear to the CPU) — but the last word differs:</p>
+<ul>
+<li><strong><code>map</code></strong> — segments 0 and 3, with <code>vaddr</code> at <code>0x400xxxxx</code>. <strong>Nothing is copied.</strong> The bootloader programs the MMU so that flash address <code>0x00020020</code> appears at CPU address <code>0x40000020</code>. 85 KB of code becomes readable by pointing at it. This is the LMA/VMA distinction from the STM32 note taken to its conclusion: the load address stays in flash forever.</li>
+<li><strong><code>load</code></strong> — segments 1, 2, 4 and 5, with <code>vaddr</code> at <code>0x4ffxxxxx</code>. These <em>are</em> copied, byte by byte, into internal RAM. That includes <code>.dram0.data</code> at <code>0x4ff0ce00</code> — 9772 bytes containing, among other things, the <code>7</code> in our <code>counter</code>.</li>
+</ul>
+<p>And there's the answer to half of the probe question. <strong>Our <code>.data</code> copy loop is this line of the boot log.</strong> On the STM32 we wrote that loop by hand in <code>Reset_Handler</code>; here the bootloader does it while loading the image, because the image format already describes it as a segment.</p>
+<p>Two things this stage does that the ROM couldn't, worth knowing even though our simple setup skips them: it reads <code>otadata</code> to decide between <code>ota_0</code> and <code>ota_1</code>, and — with secure boot enabled — it verifies a signature before jumping. Both live here because both need to know about partitions.</p>
+<p>Then it jumps to <code>entry_addr</code> from the image header, which we decoded as <code>0x4FF00A28</code>. And that address is not a mystery:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>$ riscv32-esp-elf-nm -n build/idf_tour.elf | grep 4ff00a28
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>4ff00a28 T call_start_cpu0
+</code></pre></div>
+<p>The bytes in the header, the number esptool printed, and a real symbol in our ELF are the same address. That's the handoff.</p>
+<h3 id="stage-3-the-app-starts">Stage 3 — the app starts.<a class="headerlink" href="#stage-3-the-app-starts" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>I (151) cpu_start: Multicore app
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>I (161) cpu_start: GPIO 38 and 37 are used as console UART I/O pins
+<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a>I (162) cpu_start: Pro cpu start user code
+<a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a>I (162) cpu_start: cpu freq: 360000000 Hz
+<a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a>I (164) app_init: Application information:
+<a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a>I (167) app_init: Project name:     idf_tour
+<a id="__codelineno-43-7" name="__codelineno-43-7" href="#__codelineno-43-7"></a>I (176) app_init: Compile time:     Aug  4 2026 15:17:34
+<a id="__codelineno-43-8" name="__codelineno-43-8" href="#__codelineno-43-8"></a>I (185) app_init: ESP-IDF:          v6.0.2
+<a id="__codelineno-43-9" name="__codelineno-43-9" href="#__codelineno-43-9"></a>I (189) efuse_init: Min chip rev:     v1.0
+<a id="__codelineno-43-10" name="__codelineno-43-10" href="#__codelineno-43-10"></a>I (197) efuse_init: Chip rev:         v1.3
+<a id="__codelineno-43-11" name="__codelineno-43-11" href="#__codelineno-43-11"></a>I (201) heap_init: Initializing. RAM available for dynamic allocation:
+<a id="__codelineno-43-12" name="__codelineno-43-12" href="#__codelineno-43-12"></a>I (207) heap_init: At 4FF10CA0 len 0002A320 (168 KiB): RETENT_RAM
+<a id="__codelineno-43-13" name="__codelineno-43-13" href="#__codelineno-43-13"></a>I (213) heap_init: At 4FF3AFC0 len 00004BF0 (18 KiB): RAM
+<a id="__codelineno-43-14" name="__codelineno-43-14" href="#__codelineno-43-14"></a>I (218) heap_init: At 4FF40000 len 00060000 (384 KiB): RAM
+<a id="__codelineno-43-15" name="__codelineno-43-15" href="#__codelineno-43-15"></a>I (234) spi_flash: detected chip: generic
+</code></pre></div>
+<p>We're in <code>call_start_cpu0</code> in <a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/esp_system/port/cpu_start.c"><code>components/esp_system/port/cpu_start.c</code></a> — our code now, running from the image the bootloader just placed. And buried in that file is an old friend:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">_bss_start</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uintptr_t</span><span class="p">)</span><span class="o">&amp;</span><span class="n">_bss_end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="kt">uintptr_t</span><span class="p">)</span><span class="o">&amp;</span><span class="n">_bss_start</span><span class="p">);</span>
+</code></pre></div>
+<p>That is, line for line, the zero loop we hand-wrote for the STM32:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_sbss</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_ebss</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<p>Same idea, same linker-provided symbols, same reason. <code>.bss</code> is not in the image (nothing stores zeros), so somebody has to write them. <strong>That's the other half of the probe answer</strong>: the bootloader's <code>load</code> line handled <code>counter</code>, and this <code>memset</code> handles <code>flag</code>.</p>
+<p>Notice also the log line <code>At 4FF10CA0 ... RAM</code> and compare it to the <code>.dram0.heap_start</code> section at <code>0x4ff10ca0</code> from the objdump earlier. The heap is not a fixed region — it starts where the linker happened to stop putting static data, and runs to the end of RAM.</p>
+<p><code>cpu_start.c</code> also starts the second core, then calls <code>SYS_STARTUP_FN()</code>, which lands in <code>start_cpu0_default()</code> in <a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/esp_system/startup.c"><code>components/esp_system/startup.c</code></a>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">start_cpu0_default</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="p">{</span>
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="w">    </span><span class="n">do_core_init</span><span class="p">();</span>
+<a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a>
+<a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="w">    </span><span class="k">extern</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">__libc_init_array</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+<a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a><span class="w">    </span><span class="n">__libc_init_array</span><span class="p">();</span>
+<a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a>
+<a id="__codelineno-46-8" name="__codelineno-46-8" href="#__codelineno-46-8"></a><span class="w">    </span><span class="n">do_secondary_init</span><span class="p">();</span>
+<a id="__codelineno-46-9" name="__codelineno-46-9" href="#__codelineno-46-9"></a>
+<a id="__codelineno-46-10" name="__codelineno-46-10" href="#__codelineno-46-10"></a><span class="w">    </span><span class="n">esp_startup_start_app</span><span class="p">();</span>
+<a id="__codelineno-46-11" name="__codelineno-46-11" href="#__codelineno-46-11"></a>
+<a id="__codelineno-46-12" name="__codelineno-46-12" href="#__codelineno-46-12"></a><span class="w">    </span><span class="n">ESP_INFINITE_LOOP</span><span class="p">();</span>
+<a id="__codelineno-46-13" name="__codelineno-46-13" href="#__codelineno-46-13"></a><span class="p">}</span>
+</code></pre></div>
+<p>Four calls. <code>__libc_init_array()</code> is the one the STM32 note listed as "what we're skipping" — it runs C++ static constructors and anything in <code>.init_array</code> (that's the <code>.flash.init_array</code> section, 256 bytes in our build). The other three are worth a closer look.</p>
+<h3 id="the-init-functions-nobody-calls">The init functions nobody calls.<a class="headerlink" href="#the-init-functions-nobody-calls" title="Permanent link">&para;</a></h3>
+<p><code>do_core_init()</code> and <code>do_secondary_init()</code> are where every ESP-IDF component gets to run its own setup — the heap, the flash driver, the console, the watchdogs, all the <code>heap_init:</code> and <code>spi_flash:</code> lines above. But there's no list of them anywhere. So how does <code>esp_system</code> know what to call?</p>
+<p>A component registers a function like this (<a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/esp_system/startup_funcs.c"><code>components/esp_system/startup_funcs.c</code></a>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="n">ESP_SYSTEM_INIT_FN</span><span class="p">(</span><span class="n">init_brownout</span><span class="p">,</span><span class="w"> </span><span class="n">CORE</span><span class="p">,</span><span class="w"> </span><span class="n">BIT</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="mi">105</span><span class="p">)</span>
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="p">{</span>
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="w">    </span><span class="cm">/* ... set up the brownout detector ... */</span>
+<a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a><span class="p">}</span>
+</code></pre></div>
+<p>and the macro (<a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/esp_system/include/esp_private/startup_internal.h"><code>components/esp_system/include/esp_private/startup_internal.h</code></a>) expands to a function <em>plus a small struct placed in its own section</em>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="cp">#define ESP_SYSTEM_INIT_FN(f, stage_, c, priority, ...) \</span>
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="cp">    static esp_err_t __VA_ARGS__ __esp_system_init_fn_##f(void); \</span>
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="cp">    static __attribute__((used)) _SECTION_ATTR_IMPL(".esp_system_init_fn", priority) \</span>
+<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="cp">        esp_system_init_fn_t esp_system_init_fn_##f = { \</span>
+<a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a><span class="cp">            .fn = ( __esp_system_init_fn_##f), \</span>
+<a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a><span class="cp">            .cores = (c), \</span>
+<a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a><span class="cp">            .stage = ESP_SYSTEM_INIT_STAGE_##stage_ \</span>
+<a id="__codelineno-48-8" name="__codelineno-48-8" href="#__codelineno-48-8"></a><span class="cp">        }; \</span>
+<a id="__codelineno-48-9" name="__codelineno-48-9" href="#__codelineno-48-9"></a><span class="cp">    static esp_err_t __esp_system_init_fn_##f(void)</span>
+</code></pre></div>
+<p>The generated linker script then sweeps every one of those structs into a contiguous array, sorted by the priority number, and marks the boundaries:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>. = ALIGN(4);
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>_esp_system_init_fn_array_start = ABSOLUTE(.);
+<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a>KEEP (*(SORT_BY_INIT_PRIORITY(.esp_system_init_fn.*)))
+<a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a>_esp_system_init_fn_array_end = ABSOLUTE(.);
+</code></pre></div>
+<p>And <code>startup.c</code> walks it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="k">extern</span><span class="w"> </span><span class="n">esp_system_init_fn_t</span><span class="w"> </span><span class="n">_esp_system_init_fn_array_start</span><span class="p">;</span>
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="k">extern</span><span class="w"> </span><span class="n">esp_system_init_fn_t</span><span class="w"> </span><span class="n">_esp_system_init_fn_array_end</span><span class="p">;</span>
+<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a>
+<a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_esp_system_init_fn_array_start</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_esp_system_init_fn_array_end</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-50-5" name="__codelineno-50-5" href="#__codelineno-50-5"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">stage</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">stage_num</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">cores</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">BIT</span><span class="p">(</span><span class="n">core_id</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-50-6" name="__codelineno-50-6" href="#__codelineno-50-6"></a><span class="w">        </span><span class="n">esp_err_t</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">fn</span><span class="p">))();</span>
+<a id="__codelineno-50-7" name="__codelineno-50-7" href="#__codelineno-50-7"></a><span class="w">        </span><span class="p">...</span>
+<a id="__codelineno-50-8" name="__codelineno-50-8" href="#__codelineno-50-8"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-50-9" name="__codelineno-50-9" href="#__codelineno-50-9"></a><span class="p">}</span>
+</code></pre></div>
+<p>That's the trick, and it's a good one. A component in a folder <code>esp_system</code> has never heard of gets its init function called at exactly the right moment, with no registry, no list, and no <code>#include</code>. <strong>The linker builds the list</strong>, by collecting sections and sorting them — the same mechanism that put <code>my_led_toggle_fast</code> in IRAM, used for something completely different. The <code>KEEP</code> and the <code>used</code> attribute are there for the same reason as in the STM32 vector table: nothing references these structs, so without them the optimizer would throw the lot away.</p>
+<p>You can see them in the built binary:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>$ riscv32-esp-elf-nm build/idf_tour.elf | grep __esp_system_init_fn
+<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>4000065c t __esp_system_init_fn_esp_security_init
+<a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a>4000102c t __esp_system_init_fn_init_brownout
+<a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a>40001060 t __esp_system_init_fn_init_bootloader_offset
+<a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a>40002444 t __esp_system_init_fn_esp_hw_stack_guard_init
+<a id="__codelineno-51-6" name="__codelineno-51-6" href="#__codelineno-51-6"></a>40003e54 t __esp_system_init_fn_esp_sleep_startup_init
+<a id="__codelineno-51-7" name="__codelineno-51-7" href="#__codelineno-51-7"></a>40008776 t __esp_system_init_fn_esp_timer_init_nonos
+</code></pre></div>
+<h3 id="stage-4-freertos-and-finally-app_main">Stage 4 — FreeRTOS, and finally <code>app_main</code>.<a class="headerlink" href="#stage-4-freertos-and-finally-app_main" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>I (254) main_task: Started on CPU0
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a>I (284) main_task: Calling app_main()
+</code></pre></div>
+<p>The last call in <code>start_cpu0_default()</code> was <code>esp_startup_start_app()</code>, and it lives in <a href="https://github.com/espressif/esp-idf/blob/v6.0.2/components/freertos/app_startup.c"><code>components/freertos/app_startup.c</code></a>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">esp_startup_start_app</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a><span class="p">{</span>
+<a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a><span class="cp">#if CONFIG_ESP_INT_WDT</span>
+<a id="__codelineno-53-4" name="__codelineno-53-4" href="#__codelineno-53-4"></a><span class="w">    </span><span class="n">esp_int_wdt_init</span><span class="p">();</span>
+<a id="__codelineno-53-5" name="__codelineno-53-5" href="#__codelineno-53-5"></a><span class="w">    </span><span class="n">esp_int_wdt_cpu_init</span><span class="p">();</span>
+<a id="__codelineno-53-6" name="__codelineno-53-6" href="#__codelineno-53-6"></a><span class="cp">#endif</span>
+<a id="__codelineno-53-7" name="__codelineno-53-7" href="#__codelineno-53-7"></a><span class="w">    </span><span class="n">esp_crosscore_int_init</span><span class="p">();</span>
+<a id="__codelineno-53-8" name="__codelineno-53-8" href="#__codelineno-53-8"></a>
+<a id="__codelineno-53-9" name="__codelineno-53-9" href="#__codelineno-53-9"></a><span class="w">    </span><span class="n">BaseType_t</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xTaskCreatePinnedToCore</span><span class="p">(</span><span class="n">main_task</span><span class="p">,</span><span class="w"> </span><span class="s">"main"</span><span class="p">,</span>
+<a id="__codelineno-53-10" name="__codelineno-53-10" href="#__codelineno-53-10"></a><span class="w">                                             </span><span class="n">ESP_TASK_MAIN_STACK</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+<a id="__codelineno-53-11" name="__codelineno-53-11" href="#__codelineno-53-11"></a><span class="w">                                             </span><span class="n">ESP_TASK_MAIN_PRIO</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">ESP_TASK_MAIN_CORE</span><span class="p">);</span>
+<a id="__codelineno-53-12" name="__codelineno-53-12" href="#__codelineno-53-12"></a><span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">res</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">pdTRUE</span><span class="p">);</span>
+<a id="__codelineno-53-13" name="__codelineno-53-13" href="#__codelineno-53-13"></a>
+<a id="__codelineno-53-14" name="__codelineno-53-14" href="#__codelineno-53-14"></a><span class="w">    </span><span class="n">vTaskStartScheduler</span><span class="p">();</span>
+<a id="__codelineno-53-15" name="__codelineno-53-15" href="#__codelineno-53-15"></a><span class="p">}</span>
+</code></pre></div>
+<p>It creates <strong>one task</strong>, called <code>"main"</code>, and starts the scheduler. From this point the CPU belongs to FreeRTOS. And <code>main_task</code> is the function that finally does it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main_task</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">)</span>
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a><span class="p">{</span>
+<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a><span class="w">    </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">MAIN_TAG</span><span class="p">,</span><span class="w"> </span><span class="s">"Started on CPU%d"</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">xPortGetCoreID</span><span class="p">());</span>
+<a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a><span class="w">    </span><span class="cm">/* ... watchdog setup, wait for the other core ... */</span>
+<a id="__codelineno-54-5" name="__codelineno-54-5" href="#__codelineno-54-5"></a><span class="w">    </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">MAIN_TAG</span><span class="p">,</span><span class="w"> </span><span class="s">"Calling app_main()"</span><span class="p">);</span>
+<a id="__codelineno-54-6" name="__codelineno-54-6" href="#__codelineno-54-6"></a><span class="w">    </span><span class="k">extern</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">app_main</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+<a id="__codelineno-54-7" name="__codelineno-54-7" href="#__codelineno-54-7"></a><span class="w">    </span><span class="n">app_main</span><span class="p">();</span>
+<a id="__codelineno-54-8" name="__codelineno-54-8" href="#__codelineno-54-8"></a><span class="w">    </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">MAIN_TAG</span><span class="p">,</span><span class="w"> </span><span class="s">"Returned from app_main()"</span><span class="p">);</span>
+<a id="__codelineno-54-9" name="__codelineno-54-9" href="#__codelineno-54-9"></a><span class="w">    </span><span class="n">vTaskDelete</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+<a id="__codelineno-54-10" name="__codelineno-54-10" href="#__codelineno-54-10"></a><span class="p">}</span>
+</code></pre></div>
+<p>There it is — the one place in the entire system that calls <code>app_main</code>. Note <code>extern void app_main(void);</code> declared right there: <code>esp_system</code> and FreeRTOS don't include any header of yours, they just declare the symbol and let the linker find it. If you never define <code>app_main</code>, the failure is a link error, not a missing call.</p>
+<p>Two consequences of <code>app_main</code> being a task, and they trip people up:</p>
+<ul>
+<li><strong>You can return from it.</strong> <code>vTaskDelete(NULL)</code> deletes the main task and the rest of the system carries on — timers, WiFi, and any tasks you created keep running. That is the opposite of bare metal, where returning from <code>main()</code> falls into a <code>while(1)</code> because there's nothing else.</li>
+<li><strong>Its stack is fixed and separate.</strong> <code>ESP_TASK_MAIN_STACK</code> is a config option (<code>CONFIG_ESP_MAIN_TASK_STACK_SIZE</code>, 3584 bytes by default), not "all of RAM". A big local array in <code>app_main</code> overflows a task stack, not the system stack.</li>
+</ul>
+<h3 id="the-probes">The probes.<a class="headerlink" href="#the-probes" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>I (284) app: counter = 7 (.data, expected 7)
+<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a>I (284) app: flag    = 0 (.bss,  expected 0)
+<a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a>I (284) app: app_main            @ 0x4000ac3c (flash, via cache)
+<a id="__codelineno-55-4" name="__codelineno-55-4" href="#__codelineno-55-4"></a>I (294) app: app_blink_isr_safe  @ 0x4ff01e78 (IRAM, via IRAM_ATTR)
+<a id="__codelineno-55-5" name="__codelineno-55-5" href="#__codelineno-55-5"></a>I (294) app: my_led_toggle_fast  @ 0x4ff0b202 (IRAM, via linker.lf)
+<a id="__codelineno-55-6" name="__codelineno-55-6" href="#__codelineno-55-6"></a>I (304) app: counter             @ 0x4ff0cecc (DRAM)
+<a id="__codelineno-55-7" name="__codelineno-55-7" href="#__codelineno-55-7"></a>I (304) app: project 'idf_tour', IDF v6.0.2, built Aug  4 2026 15:17:34
+<a id="__codelineno-55-8" name="__codelineno-55-8" href="#__codelineno-55-8"></a>I (314) app: running from partition 'factory' at 0x10000, size 0x200000
+<a id="__codelineno-55-9" name="__codelineno-55-9" href="#__codelineno-55-9"></a>I (324) app: task 'main', free heap 608576 bytes
+<a id="__codelineno-55-10" name="__codelineno-55-10" href="#__codelineno-55-10"></a>I (324) my_led: init on GPIO 27
+</code></pre></div>
+<p><code>counter</code> is <code>7</code> and <code>flag</code> is <code>0</code>, and now we know precisely who did it: the <code>7</code> was copied into RAM by the bootloader's <code>load</code> of segment 5, and the <code>0</code> was written by the <code>memset</code> in <code>cpu_start.c</code>. Neither happened by magic, and neither happened for free — they're just two lines of code, a long way from your project, doing exactly what our <code>Reset_Handler</code> did on the STM32.</p>
+<p>And the four addresses the program printed about itself match the symbol table we dumped from the ELF earlier, byte for byte:</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>printed at run time</th>
+<th><code>nm</code> on the ELF</th>
+<th>where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app_main</code></td>
+<td><code>0x4000ac3c</code></td>
+<td><code>4000ac3c T app_main</code></td>
+<td>flash, via the MMU</td>
+</tr>
+<tr>
+<td><code>app_blink_isr_safe</code></td>
+<td><code>0x4ff01e78</code></td>
+<td><code>4ff01e78 T app_blink_isr_safe</code></td>
+<td>IRAM, via <code>IRAM_ATTR</code></td>
+</tr>
+<tr>
+<td><code>my_led_toggle_fast</code></td>
+<td><code>0x4ff0b202</code></td>
+<td><code>4ff0b202 T my_led_toggle_fast</code></td>
+<td>IRAM, via <code>linker.lf</code></td>
+</tr>
+<tr>
+<td><code>counter</code></td>
+<td><code>0x4ff0cecc</code></td>
+<td><code>4ff0cecc D counter</code></td>
+<td>DRAM</td>
+</tr>
+</tbody>
+</table>
+<p>The last line, <code>my_led: init on GPIO 27</code>, is <code>CONFIG_MY_LED_GPIO</code> from <code>sdkconfig.defaults</code> — through Kconfig, into <code>sdkconfig.h</code>, compiled into an immediate, and finally written to a <code>w1ts</code> register. The whole chain, end to end.</p>
+<h2 id="so-what-is-esp-idf-then">So what is ESP-IDF, then?<a class="headerlink" href="#so-what-is-esp-idf-then" title="Permanent link">&para;</a></h2>
+<p>Four things, and now with names attached:</p>
+<ul>
+<li><strong>A build system</strong> where a folder plus one <code>idf_component_register</code> call is a unit of code, and dependencies are declared rather than discovered.</li>
+<li><strong>A configuration system</strong> that turns a menu into <code>sdkconfig.h</code>, which is an ordinary header on an ordinary include path.</li>
+<li><strong>A layered set of libraries</strong> — <code>soc</code> describes the silicon, <code>esp_hal_*</code> pokes registers, <code>esp_driver_*</code> adds an OS-aware API — with FreeRTOS underneath everything.</li>
+<li><strong>A set of host tools</strong>, none of which <code>idf.py</code> hides from you: it prints the esptool command it runs.</li>
+</ul>
+<p>The parts that felt like magic all turned out to be a linker doing bookkeeping. <code>app_main</code> is called by a task in <code>app_startup.c</code>. The linker script is generated by ldgen from <code>.lf</code> files. The init functions are an array the linker built by sorting sections. The vector table and <code>Reset_Handler</code> we wrote by hand for the STM32 still exist — they're just in the ROM, in the bootloader, and in <code>cpu_start.c</code>, written by somebody else.</p>
+<p>There's exactly one thing here with no bare-metal equivalent, and it's the flash cache. Everything else is the STM32 note with more layers.</p>
+<div class="admonition note">
+<p class="admonition-title">One caveat, in fairness</p>
+<p>Bare metal is not entirely innocent here. On an STM32 with a single flash
+bank you cannot execute from flash while erasing or programming it either,
+which is what ST's <code>__RAM_FUNC</code> is for — the same idea as <code>IRAM_ATTR</code>.</p>
+<p>The difference is scope. STM32s integrate their flash: it sits inside the
+chip, at a real address, and running from RAM is an exception you make for
+a handful of functions. The ESP32 has no internal flash at all, so the
+<code>0x40000000</code> window is a view onto a separate chip, and running from flash
+is itself the arrangement — which is precisely why it is the arrangement
+that can be switched off underneath you.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Grab the code</p>
+<p>The complete, buildable project is in the repo at
+<a href="https://github.com/jbenedictocenteno/jbenedictocenteno/tree/main/examples/embedded-systems/esp_idf_how_does_it_work"><code>examples/embedded-systems/esp_idf_how_does_it_work/</code></a>:
+<code>main/</code>, <code>components/my_led/</code>, <code>partitions.csv</code>, <code>sdkconfig.defaults</code>, and an
+<code>inspect.sh</code> that reproduces every dump in this note in order.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>.<span class="w"> </span><span class="nv">$IDF_PATH</span>/export.sh
+<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a>idf.py<span class="w"> </span>set-target<span class="w"> </span>esp32p4
+<a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a>idf.py<span class="w"> </span>build
+<a id="__codelineno-56-4" name="__codelineno-56-4" href="#__codelineno-56-4"></a>./inspect.sh
+</code></pre></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Jorge Benedicto Centeno &ndash; content licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Emoji by <a href="https://github.com/twitter/twemoji">Twemoji</a> (CC BY 4.0); icons from Material Design Icons (Apache&nbsp;2.0) and Octicons (MIT).
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.indexes", "navigation.instant", "navigation.instant.progress", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
